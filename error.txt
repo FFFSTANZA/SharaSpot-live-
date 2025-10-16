@@ -1,0 +1,150 @@
+3. src/controllers/booking.ts - Booking Controller
+Current Issue:
+
+handleChargingStart() immediately shows success messages
+Sends session monitoring buttons too early
+
+Changes Needed:
+
+Line ~450-500 (in handleChargingStart() method):
+
+Remove immediate success message
+Remove session monitoring buttons that appear right after start
+
+
+Wait for verification:
+
+The success message should only come from photo-verification.ts after START photo confirmed
+Remove lines like: "⚡ Charging Started!", session controls, time estimates
+
+
+Line ~600-650 (in handleSuccessfulSessionStart() method):
+
+Delete or comment out this entire method
+Or make it only send: "📸 Please take initial photo..." (delegate to photo service)
+
+
+
+
+4. src/services/notification.ts - Notifications
+Current Issue:
+
+Sends "SESSION MONITORING ACTIVE" and "updates every 30 minutes"
+Shows session control buttons with pause/stop/extend
+
+Changes Needed:
+
+Line ~50-100 (in sendSessionStartNotification() method):
+
+Remove "🔄 You'll receive updates every 30 minutes"
+Remove "📊 Real-time cost tracking"
+Remove "🔔 Auto-notification when 80% charged"
+Remove session control list (pause, stop, extend buttons)
+
+
+Replace with simple message:
+
+  ✅ Charging session active
+  📊 Initial Reading: XXX kWh
+  💰 Rate: ₹22.5/kWh
+  
+  When done, use: /stop
+```
+
+- **Line ~150-200** (in `sendChargingCompletedNotification()` method):
+  - Keep this for END photo completion
+  - Show: Start kWh, End kWh, Consumption, Cost
+
+---
+
+### **5. `src/controllers/queue-webhook.ts`** - Queue Operations
+
+**Current Issue:**
+- Session monitoring buttons appear with time-based controls
+
+**Changes Needed:**
+- **Line ~120-150** (in `sendSessionManagementButtons()` method):
+  - Remove "⏸️ Pause Charging"
+  - Remove "⏰ Extend Session"
+  - Remove "⏱️ Time Estimate"
+  - Remove "🔧 Session Control" section entirely
+  
+- **Keep only**:
+  - "🛑 Stop & Complete" button (triggers END photo)
+  - "📊 Current Status" (shows simple: Initial kWh, Current Rate)
+
+---
+
+### **6. `src/db/schema.ts`** - Database Schema *(Optional but Recommended)*
+
+**Current Issue:**
+- Fields related to time-based tracking exist but aren't needed
+
+**Changes Needed:**
+- **Line ~50-80** (in `chargingSessions` table):
+  - Fields to keep: `sessionId`, `status`, `verificationStatus`, `startMeterReading`, `endMeterReading`, `energyDelivered`
+  - Fields to deprecate/ignore: `duration`, `startedAt`, `pausedAt`, `resumedAt`
+  
+- **Don't delete** (might break existing data):
+  - Just stop using time fields in calculations
+  - Calculate duration from photos if needed: `(endTime of END photo) - (confirmTime of START photo)`
+
+---
+
+### **7. `src/controllers/webhook.ts`** - Main Message Handler
+
+**Current Issue:**
+- Unknown where the immediate "⚡ Charging Started!" message originates
+
+**Changes Needed:**
+- **Search for**: "Charging Started", "Session Active", "Updates every 10 minutes"
+- **Line ~200-300** (likely in text message handler):
+  - Find and remove any hardcoded session start confirmations
+  - Ensure `/start` command only triggers `bookingController.handleChargingStart()`
+  - Let photo verification service handle all messaging
+
+---
+
+## 🎯 **Summary of Changes by Priority**
+
+### **HIGH PRIORITY** (Must Fix):
+1. **`booking.ts`** - Remove immediate success messages after `/start`
+2. **`session.ts`** - Keep status `'initiated'` until photo confirmed
+3. **`photo-verification.ts`** - Move "Charging Started" message to after confirmation
+4. **`notification.ts`** - Remove all time-based monitoring references
+
+### **MEDIUM PRIORITY** (Important for UX):
+5. **`queue-webhook.ts`** - Remove session control buttons (pause/extend)
+6. **`webhook.ts`** - Clean up any duplicate start messages
+
+### **LOW PRIORITY** (Nice to have):
+7. **`schema.ts`** - Document which fields are now unused
+
+---
+
+## ✅ **Expected Flow After Changes**
+```
+User: /start
+
+Bot: 📸 Please take a photo... [tips]
+
+User: [uploads START photo]
+
+Bot: ✅ Detected: 245.67 kWh
+     ❓ Correct?
+     ✓ Yes  ✗ Retake
+
+User: ✓ Yes
+
+Bot: ✅ Charging Started!
+     📊 Initial: 245.67 kWh
+     💰 Rate: ₹22.5/kWh
+     When done: /stop
+
+[No more messages until user stops]
+
+User: /stop
+
+Bot: 📸 Take final reading photo...
+
+[END photo flow, then show consumption and cost]

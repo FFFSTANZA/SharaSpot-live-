@@ -1,0 +1,199 @@
+2025-10-15 23:34:48 [ERROR]: ❌ Text message failed {
+  "service": "sharaspot-bot",
+  "to": "919876543211",
+  "error": {
+    "error": {
+      "message": "(#131030) Recipient phone number not in allowed list",
+      "type": "OAuthException",
+      "code": 131030,
+      "error_data": {
+        "messaging_product": "whatsapp",
+        "details": "Recipient phone number not in allowed list: Add recipient phone number to recipient list and try again."
+      },
+      "fbtrace_id": "AshiraO6X6vbJLWz-Xwm3hA"
+    }
+  }
+}
+2025-10-15 23:37:21 [ERROR]: ❌ Text message failed {
+  "service": "sharaspot-bot",
+  "to": "919876543211",
+  "error": {
+    "error": {
+      "message": "(#131030) Recipient phone number not in allowed list",
+      "type": "OAuthException",
+      "code": 131030,
+      "error_data": {
+        "messaging_product": "whatsapp",
+        "details": "Recipient phone number not in allowed list: Add recipient phone number to recipient list and try again."
+      },
+      "fbtrace_id": "AS9TQIrxO_hWd3roUaig4E7"
+    }
+  }
+}
+2025-10-15 23:39:18 [ERROR]: ❌ Text message failed {
+  "service": "sharaspot-bot",
+  "to": "919876543211",
+  "error": {
+    "error": {
+      "message": "(#131030) Recipient phone number not in allowed list",
+      "type": "OAuthException",
+      "code": 131030,
+      "error_data": {
+        "messaging_product": "whatsapp",
+        "details": "Recipient phone number not in allowed list: Add recipient phone number to recipient list and try again."
+      },
+      "fbtrace_id": "AsBpVkGKSv49iIAPoAsvh4i"
+    }
+  }
+}
+2025-10-15 23:40:20 [ERROR]: Error in verification button handler {
+  "service": "sharaspot-bot",
+  "buttonId": "confirm_start_reading",
+  "whatsappId": "919790294221",
+  "error": "Failed query: update \"charging_sessions\" set \"start_meter_reading\" = $1, \"verification_status\" = $2, \"start_verification_attempts\" = $3, \"start_reading_confidence\" = $4, \"meter_validated\" = $5, \"updated_at\" = $6 where \"charging_sessions\".\"session_id\" = $7\nparams: 10,start_verified,1,78.75,true,2025-10-15T18:10:20.597Z,session_1760551764891_j1m42b0hl"
+}
+2025-10-15 23:41:53 [ERROR]: Error in verification button handler {
+  "service": "sharaspot-bot",
+  "buttonId": "confirm_start_reading",
+  "whatsappId": "919790294221",
+  "error": "Failed query: update \"charging_sessions\" set \"start_meter_reading\" = $1, \"verification_status\" = $2, \"start_verification_attempts\" = $3, \"start_reading_confidence\" = $4, \"meter_validated\" = $5, \"updated_at\" = $6 where \"charging_sessions\".\"session_id\" = $7\nparams: 100,start_verified,3,78.21428571428571,true,2025-10-15T18:11:53.585Z,session_1760551764891_j1m42b0hl"
+}
+2025-10-16 02:36:44 [ERROR]: ❌ Mark as read failed {
+  "service": "sharaspot-bot",
+  "messageId": "wamid.HBgMOTE5NzkwMjk0MjIxFQIAEhggQTU3NDYxQUU1REFBQUI0REUzRUJBRTA0MjVEMTQ4RUIA",
+  "error": {
+    "error": {
+      "message": "Error validating access token: Session has expired on Wednesday, 15-Oct-25 13:00:00 PDT. The current time is Wednesday, 15-Oct-25 14:06:44 PDT.",
+      "type": "OAuthException",
+      "code": 190,
+      "error_subcode": 463,
+      "fbtrace_id": "Ah4bHOIQDDxxrRI_qoL3bxG"
+    }
+  }
+}
+2025-10-16 02:36:45 [ERROR]: ❌ Button message failed {
+  "service": "sharaspot-bot",
+  "to": "919790294221",
+  "error": {
+    "error": {
+      "message": "Error validating access token: Session has expired on Wednesday, 15-Oct-25 13:00:00 PDT. The current time is Wednesday, 15-Oct-25 14:06:44 PDT.",
+      "type": "OAuthException",
+      "code": 190,
+      "error_subcode": 463,
+      "fbtrace_id": "AhJo9tVtVCTLvmET7vjmXjY"
+    }
+  }
+}
+2025-10-16 02:37:32 [ERROR]: ❌ Mark as read failed {
+  "service": "sharaspot-bot",
+  "messageId": "wamid.HBgMOTE5NzkwMjk0MjIxFQIAEhggQTVCQ0QwNDM4NjdCN0I3MkZFMkU3MDA5NzZCMEU2NzIA",
+  "error": {
+    "error": {
+      "message": "Error validating access token: Session has expired on Wednesday, 15-Oct-25 13:00:00 PDT. The current time is Wednesday, 15-Oct-25 14:07:32 PDT.",
+      "type": "OAuthException",
+      "code": 190,
+      "error_subcode": 463,
+      "fbtrace_id": "A1FIB1YlE_FxDmcQA7KEb4G"
+    }
+  }
+}
+2025-10-16 02:37:32 [ERROR]: ❌ Button message failed {
+  "service": "sharaspot-bot",
+  "to": "919790294221",
+  "error": {
+    "error": {
+      "message": "Error validating access token: Session has expired on Wednesday, 15-Oct-25 13:00:00 PDT. The current time is Wednesday, 15-Oct-25 14:07:32 PDT.",
+      "type": "OAuthException",
+      "code": 190,
+      "error_subcode": 463,
+      "fbtrace_id": "AMItuGE6reMYrB_M1gPwiV4"
+    }
+  }
+}
+2025-10-16 02:39:14 [ERROR]: ❌ Text message failed {
+  "service": "sharaspot-bot",
+  "to": "919876543211",
+  "error": {
+    "error": {
+      "message": "(#131030) Recipient phone number not in allowed list",
+      "type": "OAuthException",
+      "code": 131030,
+      "error_data": {
+        "messaging_product": "whatsapp",
+        "details": "Recipient phone number not in allowed list: Add recipient phone number to recipient list and try again."
+      },
+      "fbtrace_id": "A6vWSQQ7o_qo3ovwEQYwLvx"
+    }
+  }
+}
+2025-10-16 10:12:19 [ERROR]: ❌ Text message failed {
+  "service": "sharaspot-bot",
+  "to": "919876543211",
+  "error": {
+    "error": {
+      "message": "(#131030) Recipient phone number not in allowed list",
+      "type": "OAuthException",
+      "code": 131030,
+      "error_data": {
+        "messaging_product": "whatsapp",
+        "details": "Recipient phone number not in allowed list: Add recipient phone number to recipient list and try again."
+      },
+      "fbtrace_id": "AnHN10abK2jgf3l7cFPN8Gi"
+    }
+  }
+}
+2025-10-16 10:14:55 [ERROR]: ❌ Vision API execution error {
+  "service": "sharaspot-bot",
+  "error": {
+    "code": 16,
+    "details": "Request had invalid authentication credentials. Expected OAuth 2 access token, login cookie or other valid authentication credential. See https://developers.google.com/identity/sign-in/web/devconsole-project.",
+    "metadata": {
+      "www-authenticate": [
+        "Bearer realm=\"https://accounts.google.com/\""
+      ]
+    },
+    "note": "Exception occurred in retry method that was not classified as transient"
+  }
+}
+2025-10-16 10:24:06 [ERROR]: ❌ Text message failed {
+  "service": "sharaspot-bot",
+  "to": "919876543211",
+  "error": {
+    "error": {
+      "message": "(#131030) Recipient phone number not in allowed list",
+      "type": "OAuthException",
+      "code": 131030,
+      "error_data": {
+        "messaging_product": "whatsapp",
+        "details": "Recipient phone number not in allowed list: Add recipient phone number to recipient list and try again."
+      },
+      "fbtrace_id": "ABGPy7I5QrRSDnRrBQpd9uF"
+    }
+  }
+}
+2025-10-16 10:24:48 [ERROR]: Failed to confirm START reading {
+  "service": "sharaspot-bot",
+  "userWhatsapp": "919790294221",
+  "sessionId": "session_1760590455222_s5m60t8r2",
+  "error": {
+    "query": "update \"charging_sessions\" set \"start_meter_reading\" = $1, \"verification_status\" = $2, \"start_verification_attempts\" = $3, \"start_reading_confidence\" = $4, \"meter_validated\" = $5, \"updated_at\" = $6 where \"charging_sessions\".\"session_id\" = $7",
+    "params": [
+      "155",
+      "start_verified",
+      1,
+      "80",
+      true,
+      "2025-10-16T04:54:48.730Z",
+      "session_1760590455222_s5m60t8r2"
+    ],
+    "cause": {
+      "name": "NeonDbError",
+      "severity": "ERROR",
+      "code": "22003",
+      "detail": "A field with precision 5, scale 4 must round to an absolute value less than 10^1.",
+      "file": "numeric.c",
+      "line": "7979",
+      "routine": "apply_typmod"
+    }
+  }
+}
