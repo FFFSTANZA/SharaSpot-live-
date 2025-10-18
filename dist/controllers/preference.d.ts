@@ -1,0 +1,44 @@
+export declare class PreferenceController {
+    private readonly STEPS;
+    private readonly CAR_MODELS;
+    private readonly BIKE_MODELS;
+    private readonly CONNECTOR_TYPES;
+    private contexts;
+    private lastCleanup;
+    startPreferenceGathering(whatsappId: string, isOnboarding?: boolean): Promise<void>;
+    private showWelcomeMessage;
+    handlePreferenceResponse(whatsappId: string, responseType: 'button' | 'text' | 'list', responseValue: string): Promise<void>;
+    private showVehicleTypeStep;
+    private handleVehicleType;
+    private showCarModelsStep;
+    private showBikeModelsStep;
+    showCarCategory(whatsappId: string, category: 'indian' | 'luxury'): Promise<void>;
+    private handleEVModel;
+    private setModel;
+    private requestCustomModel;
+    private showConnectorTypeStep;
+    private handleConnectorType;
+    private showChargingIntentStep;
+    private handleChargingIntent;
+    private showQueuePreferenceStep;
+    private handleQueuePreference;
+    private completePreferenceSetup;
+    private sendSuccessMessage;
+    private requestLocation;
+    private handleAddressInput;
+    private initializeContext;
+    private moveToStep;
+    private getValidatedContext;
+    private updateContext;
+    private convertToServiceContext;
+    private validatePreferenceData;
+    private sendConfirmation;
+    private sendError;
+    private sendSessionExpired;
+    private maybeCleanupContexts;
+    showPreferenceSummary(whatsappId: string): Promise<void>;
+    resetPreferences(whatsappId: string): Promise<void>;
+    getActiveContextsCount(): number;
+}
+export declare const preferenceController: PreferenceController;
+//# sourceMappingURL=preference.d.ts.map

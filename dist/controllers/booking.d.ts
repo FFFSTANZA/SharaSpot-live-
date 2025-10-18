@@ -1,0 +1,65 @@
+export declare class BookingController {
+    private readonly recentButtonActions;
+    handleMessage(message: any): Promise<void>;
+    private handleVerificationPhoto;
+    private downloadWhatsAppImageWithRetry;
+    handleButtonClick(buttonId: string, whatsappId: string): Promise<void>;
+    private routeButtonAction;
+    handleStationSelection(whatsappId: string, stationId: number): Promise<void>;
+    handleStationBooking(whatsappId: string, stationId: number): Promise<void>;
+    showStationDetails(whatsappId: string, stationId: number): Promise<void>;
+    handleJoinQueue(whatsappId: string, stationId: number): Promise<void>;
+    handleQueueStatus(whatsappId: string, stationId?: number): Promise<void>;
+    handleQueueCancel(whatsappId: string, stationId: number): Promise<void>;
+    handleChargingStart(whatsappId: string, stationId: number): Promise<void>;
+    handleSessionStatus(whatsappId: string, stationId: number): Promise<void>;
+    handleSessionStop(whatsappId: string, stationId: number): Promise<void>;
+    handleSessionExtend(whatsappId: string, stationId: number, minutes: number): Promise<void>;
+    private sendSessionSummary;
+    private handleInstantBooking;
+    private handleQueueBooking;
+    private handleExistingBooking;
+    private showInstantBookingSuccess;
+    private handleSuccessfulQueueJoin;
+    private handleSuccessfulCancellation;
+    private handleQueueJoinFailure;
+    private handleSessionStartFailure;
+    private handleNoValidReservation;
+    private handleUnavailableStation;
+    private displayQueueStatus;
+    private displayBasicSessionInfo;
+    private showNoActiveQueues;
+    private showExistingQueueStatus;
+    private sendQueueManagementButtons;
+    handleGetDirections(whatsappId: string, stationId: number): Promise<void>;
+    handleFindAlternatives(whatsappId: string, stationId: number): Promise<void>;
+    private getStationDetails;
+    private processStationData;
+    private showStationOverview;
+    private formatStationDetails;
+    private sendStationActionButtons;
+    private validateInput;
+    private isStationBookable;
+    private formatConnectorTypes;
+    private formatOperatingHours;
+    private getStatusWithEmoji;
+    private capitalizeFirst;
+    private estimateCost;
+    private handleError;
+    private sendError;
+    private sendNotFound;
+    getHealthStatus(): {
+        status: "healthy";
+        activeOperations: number;
+        lastActivity: string;
+        integrations: {
+            queueService: boolean;
+            sessionService: boolean;
+            notificationService: boolean;
+            photoVerification: boolean;
+        };
+    };
+    processQueueJoin(whatsappId: string, stationId: number): Promise<void>;
+}
+export declare const bookingController: BookingController;
+//# sourceMappingURL=booking.d.ts.map
