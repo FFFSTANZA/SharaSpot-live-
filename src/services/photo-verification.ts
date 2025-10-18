@@ -560,39 +560,52 @@ cleanupState(userWhatsapp: string): void {
 
   // ==================== VALIDATION ====================
 
-  private async validateConsumption(
-    sessionId: string, 
-    endReading: number
-  ): Promise<ConsumptionValidation> {
-    const session = await this.getSession(sessionId);
-    if (!session?.startMeterReading) {
-      return { isValid: false, error: 'Start reading not found' };
-    }
+  private async validateConsumption(sessionId: string, endReading: number): Promise<ConsumptionValidation> {
+  const session = await this.getSession(sessionId);
+  if (!session?.startMeterReading) {
+    return { isValid: false, error: 'Start reading not found' };
+  }
 
-    const startReading = parseFloat(session.startMeterReading);
-    const result = ocrProcessor.calculateConsumption(startReading, endReading);
+  const startReading = parseFloat(session.startMeterReading);
+  const result = ocrProcessor.calculateConsumption(startReading, endReading);
 
-    if (!result.valid) {
-      return { isValid: false, error: result.error };
-    }
+  if (!result.valid) {
+    return { isValid: false, error: result.error };
+  }
 
-    const durationMinutes = Math.floor(
-      (Date.now() - (session.startTime?.getTime() || Date.now())) / (1000 * 60)
-    );
-    const chargerPowerKw = session.maxPowerUsed || 50;
-    const contextValidation = ocrProcessor.validateConsumptionWithContext(
-      result.consumption!,
-      durationMinutes,
-      chargerPowerKw
-    );
-
+  // ✅ FIX: Use actual session start time from database
+  const sessionStartTime = session.startTime || session.startedAt || session.createdAt;
+  const durationMinutes = sessionStartTime 
+    ? Math.floor((Date.now() - sessionStartTime.getTime()) / (1000 * 60))
+    : 0;
+  
+  // ✅ FIX: If duration is 0 or negative, skip context validation
+  if (durationMinutes < 1) {
+    logger.warn('Charging duration too short for validation', { 
+      sessionId, 
+      durationMinutes 
+    });
     return {
-      isValid: contextValidation.valid,
+      isValid: true,
       consumption: result.consumption,
-      warnings: contextValidation.warnings,
-      error: contextValidation.error,
+      warnings: ['Duration too short for validation - using reading only']
     };
   }
+
+  const chargerPowerKw = session.maxPowerUsed || 50;
+  const contextValidation = ocrProcessor.validateConsumptionWithContext(
+    result.consumption!,
+    durationMinutes,
+    chargerPowerKw
+  );
+
+  return {
+    isValid: contextValidation.valid,
+    consumption: result.consumption,
+    warnings: contextValidation.warnings,
+    error: contextValidation.error,
+  };
+}
 
   // ==================== MESSAGING ====================
 
@@ -607,8 +620,8 @@ cleanupState(userWhatsapp: string): void {
         `• ${OCR_CONFIG.MESSAGES.RETRY_TIPS.focus}\n` +
         `• ${OCR_CONFIG.MESSAGES.RETRY_TIPS.visible}\n` +
         `• ${OCR_CONFIG.MESSAGES.RETRY_TIPS.numbers}\n\n` +
-        `📊 We need the *current kWh reading* to start your session.\n` +
-        `✨ Powered by Google Vision AI for accurate detection`
+        `📊 We need the *current kWh reading* to start your session.\n` 
+        
       : `📸 *Let's try again!* (Attempt ${attemptCount + 1} of ${OCR_CONFIG.GOOGLE_VISION.retry.maxAttempts})\n\n` +
         `💡 *Please ensure:*\n` +
         `• ${OCR_CONFIG.MESSAGES.RETRY_TIPS.lighting}\n` +
@@ -624,15 +637,15 @@ cleanupState(userWhatsapp: string): void {
   ): Promise<void> {
     const message = attemptCount === 0
       ? `📸 *Please take a photo of your FINAL charging reading*\n\n` +
-        `🎯 *Capture the final kWh display:*\n` +
+        `*Capture the final kWh display:*\n` +
         `• Same dashboard as start photo\n` +
         `• ${OCR_CONFIG.MESSAGES.RETRY_TIPS.focus}\n` +
         `• ${OCR_CONFIG.MESSAGES.RETRY_TIPS.lighting}\n` +
         `• ${OCR_CONFIG.MESSAGES.RETRY_TIPS.visible}\n\n` +
-        `📊 This will calculate your actual consumption.\n` +
-        `✨ Powered by Google Vision AI`
+        `📊 This will calculate your actual consumption.\n` 
+        
       : `📸 *Let's try again!* (Attempt ${attemptCount + 1} of ${OCR_CONFIG.GOOGLE_VISION.retry.maxAttempts})\n\n` +
-        `💡 *Please ensure:*\n` +
+        `*Please ensure:*\n` +
         `• ${OCR_CONFIG.MESSAGES.RETRY_TIPS.focus}\n` +
         `• ${OCR_CONFIG.MESSAGES.RETRY_TIPS.lighting}\n` +
         `• ${OCR_CONFIG.MESSAGES.RETRY_TIPS.numbers}`;
@@ -652,7 +665,7 @@ cleanupState(userWhatsapp: string): void {
     let confidenceIndicator = '';
     if (confidence > 0) {
       if (ocrProcessor.isGoodConfidence(confidence)) {
-        confidenceIndicator = `\n🎯 *High confidence* (${confidence.toFixed(0)}%)`;
+        confidenceIndicator = `\n*High confidence* (${confidence.toFixed(0)}%)`;
       } else if (ocrProcessor.shouldWarnLowConfidence(confidence)) {
         confidenceIndicator = `\n⚠️ *Low confidence* (${confidence.toFixed(0)}%) - Please verify carefully`;
       } else {
@@ -666,7 +679,7 @@ cleanupState(userWhatsapp: string): void {
       ? `\n⚡ Processed in ${(processingTime / 1000).toFixed(1)}s` 
       : '';
 
-    const message = `✅ *Reading Detected!*\n\n` +
+    const message = `*Reading Detected!*\n\n` +
       `📊 *${type === 'start' ? 'Start' : 'Final'} Reading:* ${formatted}` +
       `${confidenceIndicator}${processingInfo}\n\n` +
       `❓ *Is this correct?*`;
@@ -787,7 +800,7 @@ cleanupState(userWhatsapp: string): void {
 
     const tips = OCR_CONFIG.MESSAGES.RETRY_TIPS;
     const message = `⚠️ *Low Reading Confidence*\n\n` +
-      `Vision AI detected a reading but confidence is low (${confidence.toFixed(0)}%)\n\n` +
+      `We detected a reading but confidence is low (${confidence.toFixed(0)}%)\n\n` +
       `💡 *Please retake with:*\n` +
       `• ${tips.lighting}\n` +
       `• ${tips.focus}\n` +
@@ -926,7 +939,7 @@ cleanupState(userWhatsapp: string): void {
    * Log performance metrics
    */
   logPerformanceMetrics(): void {
-    logger.info('📊 Vision API Performance Metrics', {
+    logger.info('API Performance Metrics', {
       totalAttempts: this.ocrMetrics.totalAttempts,
       successfulReads: this.ocrMetrics.successfulReads,
       successRate: `${this.getSuccessRate().toFixed(1)}%`,

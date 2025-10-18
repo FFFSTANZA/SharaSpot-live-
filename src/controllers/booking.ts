@@ -469,10 +469,10 @@ async handleChargingStart(whatsappId: string, stationId: number): Promise<void> 
       const extendedTime = new Date(Date.now() + minutes * 60000);
       await whatsappService.sendTextMessage(
         whatsappId,
-        `⏰ *Session Extended*\n` +
-        `⚡ +${minutes} minutes\n` +
-        `🔋 New target: ${newTargetBattery}%\n` +
-        `🕐 Expected completion: ${extendedTime.toLocaleTimeString()}`
+        `*Session Extended*\n` +
+        `+${minutes} minutes\n` +
+        `New target: ${newTargetBattery}%\n` +
+        `Expected completion: ${extendedTime.toLocaleTimeString()}`
       );
     } catch (error) {
       await this.handleError(error, 'session extend', { whatsappId, stationId });
@@ -508,8 +508,7 @@ async handleChargingStart(whatsappId: string, stationId: number): Promise<void> 
         `📈 *Meter Readings:*\n` +
         `Start: ${session.startMeterReading} kWh\n` +
         `End: ${session.endMeterReading} kWh\n` +
-        `✅ Payment processing...\n` +
-        `📧 Receipt sent to your email.`
+        `Payment processing...\n` 
       );
     } catch (error) {
       logger.error('Failed to send session summary', { whatsappId, error });
@@ -540,15 +539,17 @@ async handleChargingStart(whatsappId: string, stationId: number): Promise<void> 
   }
 
   private async handleQueueBooking(whatsappId: string, station: ProcessedStation, user: any): Promise<void> {
-    const queueStats = await queueService.getQueueStats(station.id);
-    await whatsappService.sendTextMessage(
-      whatsappId,
-      `📋 *Join Queue at ${station.name}?*\n` +
-      `📊 ${queueStats.totalInQueue} people in queue\n` +
-      `⏱️ Average wait: ${queueStats.averageWaitTime} min\n` +
-      `💰 Rate: ${station.priceDisplay}\n` +
-      `💵 Estimated cost: ~₹${this.estimateCost(station, user)}`
-    );
+  const queueStats = await queueService.getQueueStats(station.id);
+  await whatsappService.sendTextMessage(
+    whatsappId,
+    `*Join Queue at ${station.name}?*\n\n` +
+    `📊 *People in queue:* ${queueStats.totalInQueue}\n` +
+    `⏱️ *Avg. wait time:* ${queueStats.averageWaitTime} min\n` +
+    `💰 *Rate:* ${station.priceDisplay}\n` +
+    `💵 *Estimated cost:* ~₹${this.estimateCost(station, user)}\n\n` +
+    `_Tap “Yes” to confirm or “No” to cancel._`
+  );
+
     setTimeout(() => whatsappService.sendButtonMessage(
       whatsappId,
       '🎯 *Proceed?*',
@@ -589,15 +590,15 @@ async handleChargingStart(whatsappId: string, stationId: number): Promise<void> 
   // SUCCESS & FAILURE HANDLERS
   // ===============================================
   private async showInstantBookingSuccess(whatsappId: string, station: ProcessedStation, user: any): Promise<void> {
-    await whatsappService.sendTextMessage(
-      whatsappId,
-      `🎉 *Slot Reserved!*\n` +
-      `📍 ${station.name}\n` +
-      `⚡ Reserved for 15 minutes\n` +
-      `💰 Rate: ${station.priceDisplay}\n` +
-      `💵 Estimated cost: ~₹${this.estimateCost(station, user)}\n` +
-      `⏰ Arrive within 15 minutes!`
-    );
+  await whatsappService.sendTextMessage(
+    whatsappId,
+    `*Slot Reserved!*\n\n` +
+    `*Location:* ${station.name}\n` +
+    `*Reserved for:* 15 minutes\n` +
+    `*Rate:* ${station.priceDisplay}\n` +
+    `*Estimated cost:* ~₹${this.estimateCost(station, user)}\n\n` +
+    `*Please arrive within 15 minutes to secure your slot!*`
+  );
     setTimeout(() => whatsappService.sendButtonMessage(
       whatsappId,
       '⚡ *Ready to Start?*',
@@ -611,17 +612,17 @@ async handleChargingStart(whatsappId: string, stationId: number): Promise<void> 
 
   private async handleSuccessfulQueueJoin(whatsappId: string, queuePosition: any): Promise<void> {
     const waitAdvice = queuePosition.estimatedWaitMinutes > 30
-      ? '\n💡 Long wait. Consider alternatives.'
-      : '\n✅ Reasonable wait time!';
+      ? '\n Long wait. Consider alternatives.'
+      : '\n Reasonable wait time!';
 
     await whatsappService.sendTextMessage(
-      whatsappId,
-      `📋 *Joined Queue Successfully!*\n` +
-      `📍 ${queuePosition.stationName}\n` +
-      `👥 Position: #${queuePosition.position}\n` +
-      `⏱️ Estimated wait: ~${queuePosition.estimatedWaitMinutes} min\n` +
-      `🔔 Live updates enabled${waitAdvice}`
-    );
+  whatsappId,
+  `*Joined Queue Successfully!*\n\n` +
+  `Location: ${queuePosition.stationName}\n` +
+  `Position: #${queuePosition.position}\n` +
+  `Estimated wait: ~${queuePosition.estimatedWaitMinutes} min\n` +
+  `Live updates enabled${waitAdvice}`
+);
     setTimeout(() => whatsappService.sendButtonMessage(
       whatsappId,
       '📱 *Manage Queue:*',
@@ -899,11 +900,11 @@ private async handleNoValidReservation(whatsappId: string, stationId: number): P
     await whatsappService.sendTextMessage(
       whatsappId,
       `${emoji} *Queue Status*\n` +
-      `📍 ${queue.stationName}\n` +
-      `📊 Status: ${this.capitalizeFirst(queue.status)}\n` +
-      `👥 Position: #${queue.position}\n` +
+      `${queue.stationName}\n` +
+      `Status: ${this.capitalizeFirst(queue.status)}\n` +
+      `Position: #${queue.position}\n` +
       `${timeInfo}\n` +
-      `📅 Joined: ${new Date(queue.createdAt).toLocaleString()}`
+      `Joined: ${new Date(queue.createdAt).toLocaleString()}`
     );
   }
 
@@ -914,18 +915,18 @@ private async handleNoValidReservation(whatsappId: string, stationId: number): P
       ? `${Math.floor(duration / 60)}h ${duration % 60}m`
       : `${duration}m`;
 
-    await whatsappService.sendTextMessage(
-      whatsappId,
-      `⚡ *Active Charging Session*\n` +
-      `📍 ${session.stationName || 'Charging Station'}\n` +
-      `🔋 Current: ${session.currentBatteryLevel || 0}%\n` +
-      `🎯 Target: ${session.targetBatteryLevel || 80}%\n` +
-      `⚡ Rate: ${session.chargingRate || 0} kW\n` +
-      `💰 Rate: ₹${session.pricePerKwh || 0}/kWh\n` +
-      `⏱️ Duration: ${durationText}\n` +
-      `📊 Estimated cost: ₹${session.totalCost?.toFixed(2) || '0.00'}\n` +
-      `🔄 Session is active`
-    );
+  await whatsappService.sendTextMessage(
+    whatsappId,
+  `*Active Charging Session*\n\n` +
+  `Location: ${session.stationName || 'Charging Station'}\n` +
+  `Current battery: ${session.currentBatteryLevel || 0}%\n` +
+  `Target battery: ${session.targetBatteryLevel || 80}%\n` +
+  `Charging rate: ${session.chargingRate || 0} kW\n` +
+  `Price: ₹${session.pricePerKwh || 0}/kWh\n` +
+  `Duration: ${durationText}\n` +
+  `Estimated cost: ₹${session.totalCost?.toFixed(2) || '0.00'}\n` +
+  `Session status: Active`
+  );
     setTimeout(() => whatsappService.sendButtonMessage(
       whatsappId,
       '🎛️ *Session Controls:*',
@@ -946,7 +947,6 @@ private async handleNoValidReservation(whatsappId: string, stationId: number): P
       whatsappId,
       '⚡ *Find Stations:*',
       [
-        { id: 'find_nearby_stations', title: '🗺️ Nearby' },
         { id: 'new_search', title: '🆕 Search' },
         { id: 'recent_searches', title: '🕒 Recent' }
       ]
@@ -956,7 +956,7 @@ private async handleNoValidReservation(whatsappId: string, stationId: number): P
   private async showExistingQueueStatus(whatsappId: string, existingQueue: any): Promise<void> {
     await whatsappService.sendTextMessage(
       whatsappId,
-      `📋 *Already in Queue*\n` +
+      `*Already in Queue*\n` +
       `You're already queued at this station.\n` +
       `👥 Position: #${existingQueue.position}\n` +
       `⏱️ Wait: ~${existingQueue.estimatedWaitMinutes} min\n` +
@@ -1007,11 +1007,11 @@ private async handleNoValidReservation(whatsappId: string, stationId: number): P
       await whatsappService.sendTextMessage(
         whatsappId,
         `🗺️ *Directions to ${station.name}*\n` +
-        `📍 ${station.address}\n` +
+        `${station.address}\n` +
         `🔗 *Navigate:*\n` +
-        `📱 Google Maps: ${googleMapsUrl}\n` +
-        `🚗 Waze: ${wazeUrl}\n` +
-        `💡 *Tips:*\n` +
+        `Google Maps: ${googleMapsUrl}\n` +
+        `Waze: ${wazeUrl}\n` +
+        `*Tips:*\n` +
         `• Save location for quick access\n` +
         `• Check hours before travel\n` +
         `• Arrive 5 min early for reservations`
@@ -1035,7 +1035,7 @@ private async handleNoValidReservation(whatsappId: string, stationId: number): P
     try {
       await whatsappService.sendTextMessage(
         whatsappId,
-        '🔍 *Finding Alternatives...*\n' +
+        '*Finding Alternatives...*\n' +
         'Searching for nearby options with:\n' +
         '• Similar charging speeds\n• Compatible connectors\n• Shorter waits\n• Better rates'
       );
@@ -1045,9 +1045,9 @@ private async handleNoValidReservation(whatsappId: string, stationId: number): P
           whatsappId,
           `🎯 *Alternative Strategies:*\n` +
           `**Quick Options:**\n` +
-          `🔍 Expand search radius\n` +
-          `⏰ Find shorter queues\n` +
-          `💰 Better rate stations\n` +
+          `Expand search radius\n` +
+          `Find shorter queues\n` +
+          `Better rate stations\n` +
           `**Smart Tips:**\n` +
           `${user?.connectorType ? `🔌 ${user.connectorType} compatible\n` : ''}` +
           `📊 Off-peak hours (10 PM - 8 AM)\n` +
@@ -1055,11 +1055,11 @@ private async handleNoValidReservation(whatsappId: string, stationId: number): P
         );
         await whatsappService.sendButtonMessage(
           whatsappId,
-          '🎯 *Next Move:*',
+          '*Next Move:*',
           [
-            { id: 'expand_search', title: '📡 Expand Area' },
-            { id: 'find_nearby_stations', title: '🗺️ Find Nearby' },
-            { id: 'new_search', title: '🆕 New Search' }
+            { id: 'expand_search', title: 'Expand Area' },
+            { id: 'find_nearby_stations', title: 'Find Nearby' },
+            { id: 'new_search', title: 'New Search' }
           ]
         );
       }, 3000);
@@ -1146,14 +1146,14 @@ private async handleNoValidReservation(whatsappId: string, stationId: number): P
     await whatsappService.sendTextMessage(
       whatsappId,
       `🏢 *${station.name}*\n` +
-      `📍 ${station.address}\n` +
-      `📏 ${station.distanceDisplay}\n` +
-      `⚡ ${station.slotsDisplay}\n` +
-      `💰 ${station.priceDisplay}\n` +
-      `⭐ ${station.ratingDisplay} (${station.finalReviews} reviews)\n` +
-      `🔌 *Connectors:* ${this.formatConnectorTypes(station.connectorTypes)}\n` +
-      `🕒 *Hours:* ${this.formatOperatingHours(station.operatingHours)}\n` +
-      `🎯 *Status:* ${this.getStatusWithEmoji(station.availability)} ${station.availability}`
+      `${station.address}\n` +
+      `${station.distanceDisplay}\n` +
+      `${station.slotsDisplay}\n` +
+      `${station.priceDisplay}\n` +
+      `${station.ratingDisplay} (${station.finalReviews} reviews)\n` +
+      `*Connectors:* ${this.formatConnectorTypes(station.connectorTypes)}\n` +
+      `*Hours:* ${this.formatOperatingHours(station.operatingHours)}\n` +
+      `*Status:* ${this.getStatusWithEmoji(station.availability)} ${station.availability}`
     );
     setTimeout(() => this.sendStationActionButtons(whatsappId, station), 2000);
   }
@@ -1161,12 +1161,12 @@ private async handleNoValidReservation(whatsappId: string, stationId: number): P
   private formatStationDetails(station: ProcessedStation): string {
     let details = `🏢 *${station.name}*\n` +
       `━━━━━━━━━━━━━━━━━━━━━━\n` +
-      `📍 *Location:*\n${station.address}\n` +
+      `*Location:*\n${station.address}\n` +
       `⚡ *Charging:*\n` +
       `• Slots: ${station.slotsDisplay}\n` +
       `• Price: ${station.priceDisplay}\n` +
       `• Connectors: ${this.formatConnectorTypes(station.connectorTypes)}\n` +
-      `🕒 *Hours:*\n${this.formatOperatingHours(station.operatingHours)}\n` +
+      `*Hours:*\n${this.formatOperatingHours(station.operatingHours)}\n` +
       `⭐ *Rating:* ${station.ratingDisplay}\n` +
       `📊 *Utilization:* ${station.utilization}%\n`;
 
@@ -1310,4 +1310,4 @@ private async handleNoValidReservation(whatsappId: string, stationId: number): P
 // ===============================================
 // EXPORT SINGLETON
 // ===============================================
-export const bookingController = new BookingController();
+export const bookingController = new BookingController(); 

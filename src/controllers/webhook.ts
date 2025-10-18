@@ -244,36 +244,52 @@ export class WebhookController {
   // ===============================================
 
   private async handleVerificationPhoto(
-    whatsappId: string,
-    message: ExtendedWhatsAppMessage,
-    state: any
-  ): Promise<void> {
-    try {
-      logger.info('📸 Processing verification photo', {
-        whatsappId,
-        attempt: state.attemptCount + 1
-      });
+  whatsappId: string,
+  message: ExtendedWhatsAppMessage,
+  state: any
+): Promise<void> {
+  try {
+    logger.info('📸 Processing verification photo', {
+      whatsappId,
+      attempt: state.attemptCount + 1,
+      type: state.type  // ✅ Log the type
+    });
 
-      const imageBuffer = await this.downloadWhatsAppImage(message.image?.id || '');
+    const imageBuffer = await this.downloadWhatsAppImage(message.image?.id || '');
 
-      if (!imageBuffer) {
-        await whatsappService.sendTextMessage(
-          whatsappId,
-          '❌ Failed to download image. Please try again.'
-        );
-        return;
-      }
-
-      await photoVerificationService.handleStartPhoto(whatsappId, imageBuffer);
-
-    } catch (error) {
-      logger.error('❌ Photo verification failed', { whatsappId, error: (error as Error).message });
+    if (!imageBuffer) {
       await whatsappService.sendTextMessage(
         whatsappId,
-        '❌ Failed to process photo. Please try again or type the reading manually.'
+        '❌ Failed to download image. Please try again.'
+      );
+      return;
+    }
+
+    // ✅ FIXED: Route to correct handler based on verification type
+    if (state.type === 'start') {
+      await photoVerificationService.handleStartPhoto(whatsappId, imageBuffer);
+    } else if (state.type === 'end') {
+      await photoVerificationService.handleEndPhoto(whatsappId, imageBuffer);
+    } else {
+      logger.error('Unknown verification type', { whatsappId, type: state.type });
+      await whatsappService.sendTextMessage(
+        whatsappId,
+        '❌ Invalid verification type. Please try again.'
       );
     }
+
+  } catch (error) {
+    logger.error('❌ Photo verification failed', { 
+      whatsappId, 
+      type: state.type,
+      error: (error as Error).message 
+    });
+    await whatsappService.sendTextMessage(
+      whatsappId,
+      '❌ Failed to process photo. Please try again or type the reading manually.'
+    );
   }
+}
 
   private async handleManualVerificationEntry(whatsappId: string, text: string): Promise<void> {
     try {
@@ -727,12 +743,26 @@ export class WebhookController {
 
 
   private looksLikeAddress(text: string): boolean {
-    const indicators = [
-      'road', 'street', 'st', 'rd', 'avenue', 'ave', 'nagar', 'colony',
-      'sector', 'block', 'phase', 'mall', 'plaza', 'complex', 'society',
-      'mumbai', 'delhi', 'bangalore', 'chennai', 'hyderabad', 'pune', 'kolkata',
-      'noida', 'gurgaon', 'ahmedabad', 'jaipur', 'lucknow', 'patna'
-    ];
+  const indicators = [
+    // Common address elements (pan-India + South India)
+    'road', 'street', 'st', 'rd', 'avenue', 'ave', 'lane', 'layout',
+    'nagar', 'puram', 'colony', 'society', 'layout', 'block', 'sector',
+    'phase', 'mall', 'plaza', 'complex', 'tower', 'building', 'estate',
+    'salai', 'veedhi', 'koil street', 'temple', 'church', 'mosque',
+    'bus stand', 'railway station', 'metro', 'junction', 'circle',
+
+    // Major Indian cities (with strong Tamil Nadu representation)
+    'chennai', 'coimbatore', 'madurai', 'tiruchirappalli', 'salem',
+    'tirunelveli', 'erode', 'vellore', 'thoothukudi', 'dindigul',
+    'kanchipuram', 'karur', 'hospet', 'nagercoil', 'pollachi',
+    'mumbai', 'delhi', 'bangalore', 'hyderabad', 'pune', 'kolkata',
+    'ahmedabad', 'jaipur', 'lucknow', 'patna', 'bhubaneswar', 'visakhapatnam',
+
+    // Tamil Nadu-specific locality suffixes & terms
+    'agraharam', 'pettai', 'ur', 'pudur', 'palayam', 'kottai',
+    'chavadi', 'medu', 'theru', 'kara', 'valavu'
+  ];
+
     const lower = text.toLowerCase();
     return text.length > 5 && // Increased minimum length
            text.length < 100 &&
@@ -854,48 +884,48 @@ export class WebhookController {
     );
   }
 
-  private async showHelp(whatsappId: string): Promise<void> {
-    const helpText = `🔋 *SharaSpot Help*\n\n` +
-      `*Quick Commands:*\n` +
-      `• "find" or "book" - Find stations\n` +
-      `• "gps" or "location" - Share GPS\n` +
-      `• "nearby" - Find nearby stations\n` +
-      `• "directions" - Get navigation\n` +
-      `• "profile" - View your profile\n` +
-      `• "preferences" - Update settings\n` +
-      `• "help" - Show this help\n` +
-      `• "owner" - Access owner portal\n\n` +
-      `*How to Find Stations:*\n` +
-      `1️⃣ Say "find" or tap "Find Stations"\n` +
-      `2️⃣ Share location or type address\n` +
-      `3️⃣ Browse and select stations\n` +
-      `4️⃣ Book your charging slot\n\n` +
-      `*Location Tips:*\n` +
-      `📍 GPS gives most accurate results\n` +
-      `📝 Type any address directly\n` +
-      `🕒 Recent searches saved\n` +
-      `🗺️ Use "directions" for navigation\n\n` +
-      `Need more help? Just ask!`;
+private async showHelp(whatsappId: string): Promise<void> {
+  const helpText = `*SharaSpot Help*\n\n` +
+    `*Quick Commands*\n` +
+    `• "find" or "book" – Find stations\n` +
+    `• "gps" or "location" – Share your location\n` +
+    `• "nearby" – Find nearby stations\n` +
+    `• "directions" – Get navigation\n` +
+    `• "profile" – View your EV profile\n` +
+    `• "preferences" – Update settings\n` +
+    `• "help" – Show this menu\n` +
+    `• "owner" – Access owner portal\n\n` +
+    `*How to Find Stations*\n` +
+    `1. Say "find" or tap "Find Stations"\n` +
+    `2. Share your location or type an address\n` +
+    `3. Browse available stations\n` +
+    `4. Book your charging slot\n\n` +
+    `*Tips*\n` +
+    `• GPS gives the most accurate results\n` +
+    `• You can type any address directly\n` +
+    `• Recent searches are saved\n` +
+    `• Use "directions" for turn-by-turn navigation\n\n` +
+    `Need more help? Just ask!`;
 
-    await whatsappService.sendTextMessage(whatsappId, helpText);
-  }
+  await whatsappService.sendTextMessage(whatsappId, helpText);
+}
 
   private async showLocationHelp(whatsappId: string): Promise<void> {
-    const helpText = `📍 *Location Help*\n\n` +
-      `*Share GPS Location:*\n` +
-      `1️⃣ Tap 📎 attachment icon\n` +
-      `2️⃣ Select "Location"\n` +
-      `3️⃣ Choose "Send current location"\n` +
-      `4️⃣ Tap "Send"\n\n` +
-      `*Type Address:*\n` +
-      `Just type your location:\n` +
-      `• "Anna Nagar, Chennai"\n` +
-      `• "Brigade Road, Bangalore"\n` +
-      `• "Sector 18, Noida"\n\n` +
-      `*Tips:*\n` +
-      `• GPS location is most accurate\n` +
-      `• Include city name\n` +
-      `• Try nearby landmarks`;
+    const helpText = `*Location Help*\n\n` +
+  `*Share Your Location via GPS*\n` +
+  `1. Tap the attachment icon (📎)\n` +
+  `2. Select "Location"\n` +
+  `3. Choose "Send your current location"\n` +
+  `4. Tap "Send"\n\n` +
+  `*Or Type an Address*\n` +
+  `Just send a message with your location, for example:\n` +
+  `• Anna Nagar, Chennai\n` +
+  `• Brigade Road, Bangalore\n` +
+  `• Sector 18, Noida\n\n` +
+  `*Tips*\n` +
+  `• GPS gives the most accurate results\n` +
+  `• Always include the city name\n` +
+  `• Landmarks like malls or stations also work`;
 
     await whatsappService.sendButtonMessage(
       whatsappId,
@@ -914,17 +944,17 @@ export class WebhookController {
   // ===============================================
 
   private async requestGPSLocation(whatsappId: string): Promise<void> {
-    await whatsappService.sendTextMessage(
-      whatsappId,
-      '📱 *Share Your GPS Location*\n\n' +
-      '1️⃣ Tap 📎 attachment icon\n' +
-      '2️⃣ Select "Location"\n' +
-      '3️⃣ Choose "Send your current location"\n' +
-      '4️⃣ Tap "Send"\n\n' +
-      '🎯 This gives the most accurate results!\n\n' +
-      '📝 Or type your address if you prefer'
-    );
-  }
+  await whatsappService.sendTextMessage(
+    whatsappId,
+    `*Share Your Location*\n\n` +
+    `To get the most accurate results, share your GPS location:\n\n` +
+    `1. Tap the attachment icon\n` +
+    `2. Select "Location"\n` +
+    `3. Choose "Send your current location"\n` +
+    `4. Tap "Send"\n\n` +
+    `Or simply type your address (e.g., "Anna Nagar, Chennai")`
+  );
+}
 
   private async requestAddressInput(whatsappId: string): Promise<void> {
     if (this.waitingUsers.size >= this.MAX_WAITING_USERS) {
@@ -936,13 +966,11 @@ export class WebhookController {
     this.waitingUsers.set(whatsappId, 'address');
     await whatsappService.sendTextMessage(
       whatsappId,
-      '📝 *Type Your Address*\n\n' +
+      '*Type Your Address*\n\n' +
       'Enter the location where you need charging:\n\n' +
       '*Examples:*\n' +
       '• Anna Nagar, Chennai\n' +
       '• Brigade Road, Bangalore\n' +
-      '• Sector 18, Noida\n' +
-      '• Phoenix Mall, Mumbai\n\n' +
       'Just type the address!'
     );
   }
@@ -957,9 +985,9 @@ export class WebhookController {
     this.waitingUsers.set(whatsappId, 'name');
     await whatsappService.sendTextMessage(
       whatsappId,
-      '✏️ *Update Your Name*\n\n' +
+      '*Update Your Name*\n\n' +
       'What would you like me to call you?\n\n' +
-      '💡 Examples: Ravi Kumar, Ashreya, Pooja\n\n' +
+      'Examples: Ravi Kumar, Ashreya, Pooja\n\n' +
       'Type your preferred name:'
     );
   }
@@ -994,7 +1022,7 @@ export class WebhookController {
       // Success: Name updated, no further action needed here.
       await whatsappService.sendTextMessage(
         whatsappId,
-        `✅ Your name has been updated to *${name}*!`
+        `Your name has been updated to *${name}*!`
       );
     } catch (error) {
       logger.error('❌ Name update process failed', { whatsappId, error: (error as Error).message });

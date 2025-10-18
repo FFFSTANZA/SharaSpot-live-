@@ -160,7 +160,7 @@ export class LocationMainController {
       // Show geocoding result
       await whatsappService.sendTextMessage(
         whatsappId,
-        `📍 *Found: ${location.formattedAddress}*\n\nSearching for nearby charging stations... ⚡`
+        `*Found: ${location.formattedAddress}*\n\nSearching for nearby charging stations... ⚡`
       );
 
       // Search for stations
@@ -170,7 +170,7 @@ export class LocationMainController {
       logger.error('Failed to handle address input', { whatsappId, address, error });
       await whatsappService.sendTextMessage(
         whatsappId,
-        '❌ Failed to find that location. Please try a different address or share your GPS location.'
+        'Failed to find that location. Please try a different address or share your GPS location.'
       );
     }
   }
@@ -239,7 +239,7 @@ export class LocationMainController {
       logger.error('Failed to start new search', { whatsappId, error });
       await whatsappService.sendTextMessage(
         whatsappId,
-        '❌ Failed to start new search. Please try again.'
+        'Failed to start new search. Please try again.'
       );
     }
   }
@@ -254,7 +254,7 @@ export class LocationMainController {
       if (recentSearches.length === 0) {
         await whatsappService.sendTextMessage(
           whatsappId,
-          '🕒 *No Recent Searches*\n\nYou haven\'t searched for any locations yet.\n\nShare your location or type an address to get started!'
+          '*No Recent Searches*\n\nYou haven\'t searched for any locations yet.\n\nShare your location or type an address to get started!'
         );
         return;
       }
@@ -268,7 +268,7 @@ export class LocationMainController {
 
       await whatsappService.sendListMessage(
         whatsappId,
-        '🕒 *Your Recent Searches*\n\nSelect a location to search again:',
+        '*Your Recent Searches*\n\nSelect a location to search again:',
         'Select Location',
         [
           {
@@ -283,7 +283,7 @@ export class LocationMainController {
       logger.error('Failed to show recent searches', { whatsappId, error });
       await whatsappService.sendTextMessage(
         whatsappId,
-        '❌ Failed to load recent searches. Please try again.'
+        'Failed to load recent searches. Please try again.'
       );
     }
   }

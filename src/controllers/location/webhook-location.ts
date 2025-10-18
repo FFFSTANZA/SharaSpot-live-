@@ -403,30 +403,29 @@ export class WebhookLocationController {
   }
 
   private async requestGPSLocation(whatsappId: string): Promise<void> {
-    await whatsappService.sendTextMessage(
-      whatsappId,
-      '📱 *Share Your GPS Location*\n\n' +
-      '1️⃣ Tap the 📎 attachment icon\n' +
-      '2️⃣ Select "Location"\n' +
-      '3️⃣ Choose "Send your current location"\n' +
-      '4️⃣ Tap "Send"\n\n' +
-      '🎯 This gives the most accurate results!'
-    );
-  }
+  await whatsappService.sendTextMessage(
+    whatsappId,
+    '📱 *Share Your GPS Location*\n\n' +
+    '1️⃣ Tap the 📎 *attachment* icon\n' +
+    '2️⃣ Select _Location_\n' +
+    '3️⃣ Choose _“Send your current location”_\n' +
+    '4️⃣ Tap _Send_\n\n' +
+    '🎯 *This gives the most accurate results!*'
+  );
+}
 
-  private async requestAddressInput(whatsappId: string): Promise<void> {
-    await whatsappService.sendTextMessage(
-      whatsappId,
-      '📝 *Type Your Address*\n\n' +
-      'Enter the location where you need charging:\n\n' +
-      '*Examples:*\n' +
-      '• Connaught Place, Delhi\n' +
-      '• Brigade Road, Bangalore\n' +
-      '• Sector 18, Noida\n' +
-      '• Phoenix Mall, Chennai\n\n' +
-      'Just type the address and press send!'
-    );
-  }
+ private async requestAddressInput(whatsappId: string): Promise<void> {
+  await whatsappService.sendTextMessage(
+    whatsappId,
+    '*Type Your Address*\n\n' +
+    'Please enter the location where you need charging:\n\n' +
+    '*Examples:*\n' +
+    '• Anna Nagar, Chennai\n' +
+    '• Brigade Road, Bangalore\n' +
+    '• Phoenix Mall, Chennai\n\n' +
+    '_Just type the address and press send!_'
+  );
+}
 
   private async showLocationHelp(whatsappId: string): Promise<void> {
     await locationController.showLocationHelp(whatsappId);

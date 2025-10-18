@@ -29,15 +29,15 @@ export class LocationSearchController {
     // ENHANCED: Get user with better error handling
     const user = await userService.getUserByWhatsAppId(whatsappId);
     if (!user) {
-      logger.error('❌ User not found for station search', { whatsappId });
+      logger.error('User not found for station search', { whatsappId });
       await whatsappService.sendTextMessage(
         whatsappId,
-        '❌ User profile not found. Please restart with /start command.'
+        'User profile not found. Please restart with /start command.'
       );
       return;
     }
 
-    logger.info('✅ User found for search', { 
+    logger.info('User found for search', { 
       whatsappId, 
       userId: user.id, 
       hasPrefs: user.preferencesCaptured 
@@ -56,14 +56,14 @@ export class LocationSearchController {
       sortBy: 'availability' as const, // Priority: availability > distance > price
     };
 
-    logger.info('🎯 Search options prepared', { whatsappId, searchOptions });
+    logger.info('Search options prepared', { whatsappId, searchOptions });
 
     // ENHANCED: Search for stations with detailed logging
     let searchResult;
     try {
       searchResult = await stationSearchService.searchStations(searchOptions);
       
-      logger.info('✅ Station search service completed', { 
+      logger.info('Station search service completed', { 
         whatsappId, 
         stationsFound: searchResult.stations?.length || 0,
         totalCount: searchResult.totalCount,
@@ -71,7 +71,7 @@ export class LocationSearchController {
       });
       
     } catch (searchServiceError) {
-      logger.error('❌ Station search service failed', { 
+      logger.error('station search service failed', { 
         whatsappId,
         searchOptions,
         error: searchServiceError instanceof Error ? searchServiceError.message : String(searchServiceError)
@@ -112,7 +112,7 @@ export class LocationSearchController {
       // Fallback: Send basic station info
       await whatsappService.sendTextMessage(
         whatsappId,
-        `✅ Found ${searchResult.stations.length} charging stations nearby!\n\n` +
+        `Found ${searchResult.stations.length} charging stations nearby!\n\n` +
         `Unfortunately, there was an issue displaying the results. Please try "find stations" again.`
       );
     }
@@ -126,7 +126,7 @@ export class LocationSearchController {
     
     await whatsappService.sendTextMessage(
       whatsappId,
-      '❌ Failed to search for stations. Please try again.\n\n' +
+      'Failed to search for stations. Please try again.\n\n' +
       'Troubleshooting tips:\n' +
       '• Make sure GPS is enabled on your phone\n' +
       '• Try typing your address instead\n' +
@@ -143,7 +143,7 @@ export class LocationSearchController {
       if (!context?.lastSearchResults) {
         await whatsappService.sendTextMessage(
           whatsappId,
-          '❓ No active search. Please share your location first.'
+          'No active search. Please share your location first.'
         );
         return;
       }
@@ -171,7 +171,7 @@ export class LocationSearchController {
           whatsappId,
           `*Station ${currentIndex + 1} of ${lastSearchResults.totalCount}*\n\nWhat would you like to do?`,
           buttons,
-          '🎯 Quick Actions'
+          'Quick Actions'
         );
       } else {
         // Load more stations from server

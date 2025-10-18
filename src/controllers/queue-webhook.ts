@@ -312,9 +312,9 @@ export class QueueWebhookController {
   private formatSessionStatus(sessionData: SessionData): string {
     // ✅ SIMPLIFIED: No duration, no real-time tracking
     let message = `⚡ *Charging Session*\n\n` +
-      `📍 *${sessionData.stationName}*\n` +
-      `💰 *Rate:* ₹${sessionData.currentRate}/kWh\n` +
-      `📊 *Status:* ${sessionData.status.toUpperCase()}\n\n`;
+      `*${sessionData.stationName}*\n` +
+      `*Rate:* ₹${sessionData.currentRate}/kWh\n` +
+      `*Status:* ${sessionData.status.toUpperCase()}\n\n`;
 
     if (sessionData.status === 'active' && sessionData.startReading) {
       message += `📊 *Initial Reading:* ${sessionData.startReading.toFixed(2)} kWh\n\n`;

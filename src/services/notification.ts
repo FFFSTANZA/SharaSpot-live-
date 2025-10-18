@@ -1,4 +1,4 @@
-// src/services/notification.ts - OPTIMIZED FOR PHOTO VERIFICATION
+// src/services/notification.ts 
 import { whatsappService } from './whatsapp';
 import { userService } from './userService';
 import { logger } from '../utils/logger';
@@ -35,11 +35,7 @@ function toRad(degrees: number): number {
 
 class NotificationService {
   private scheduledNotifications = new Map<string, NodeJS.Timeout>();
-
-  // ===============================================
-  // QUEUE NOTIFICATIONS
-  // ===============================================
-
+  
   /**
    * Send queue joined notification with rich content
    */
@@ -166,95 +162,59 @@ async sendChargingStartedNotification(userWhatsapp: string, session: any): Promi
    * OPTIMIZED: Complete charging notification with verified meter readings
    * Called AFTER end photo verification completes
    */
-  async sendChargingCompletedNotification(
-    userWhatsapp: string, 
-    session: any,
-    summary?: {
-      startReading: number;
-      endReading: number;
-      consumption: number;
-      duration: number;
-      totalCost: number;
-      pricePerKwh: number;
-    }
-  ): Promise<void> {
-    try {
-      const station = await this.getStationDetails(session.stationId);
-      
-      // Use provided summary or generate from session
-      const startReading = summary?.startReading || session.startMeterReading || 0;
-      const endReading = summary?.endReading || session.endMeterReading || 0;
-      const consumption = summary?.consumption || (endReading - startReading);
-      const totalCost = summary?.totalCost || session.totalCost || 0;
-      const duration = summary?.duration || session.duration || 0;
-      const pricePerKwh = summary?.pricePerKwh || session.pricePerKwh || station?.pricePerKwh || 12.5;
+  /**
+ * OPTIMIZED: Complete charging notification with verified meter readings
+ * Called AFTER end photo verification completes
+ */
+async sendChargingCompletedNotification(
+  userWhatsapp: string, 
+  session: any,
+  summary?: any
+): Promise<void> {
+  try {
+    // ✅ Safe access with fallbacks
+    const stationName = session?.stationName || 'Charging Station';
+    const duration = summary?.duration || 'N/A';
+    const energyDelivered = summary?.energyDelivered || session?.energyDelivered || 0;
+    const totalCost = summary?.totalCost || session?.totalCost || 0;
+    const startReading = session?.startMeterReading || 0;
+    const endReading = session?.endMeterReading || 0;
 
-      const durationHours = Math.floor(duration / 60);
-      const durationMins = duration % 60;
-      const durationText = durationHours > 0 
-        ? `${durationHours}h ${durationMins}m` 
-        : `${durationMins}m`;
+    const message = `✅ *CHARGING COMPLETE!*\n\n` +
+      `📍 *${stationName}*\n` +
+      `⏱️ *Duration:* ${duration}\n` +
+      `⚡ *Energy Delivered:* ${energyDelivered} kWh\n` +
+      `💰 *Total Cost:* ₹${totalCost}\n\n` +
+      `📊 *Meter Readings:*\n` +
+      `• Start: ${startReading} kWh\n` +
+      `• End: ${endReading} kWh\n\n` +
+      `🎯 *Thank you for using SharaSpot!*`;
 
-      const message = `✅ *CHARGING COMPLETE!*\n\n` +
-        `📍 *${station?.name || 'Charging Station'}*\n` +
-        `🕐 *Completed:* ${new Date().toLocaleTimeString()}\n\n` +
-        `📊 *Session Summary:*\n` +
-        `━━━━━━━━━━━━━━━━━━━━\n` +
-        `📈 *Start Reading:* ${startReading.toFixed(2)} kWh\n` +
-        `📉 *End Reading:* ${endReading.toFixed(2)} kWh\n` +
-        `⚡ *Consumption:* ${consumption.toFixed(2)} kWh\n` +
-        `⏱️ *Duration:* ${durationText}\n` +
-        `💰 *Rate:* ₹${pricePerKwh}/kWh\n` +
-        `━━━━━━━━━━━━━━━━━━━━\n` +
-        `💵 *Total Cost:* ₹${totalCost.toFixed(2)}\n\n` +
-        `🎉 *Thank you for using SharaSpot!*\n` +
-        `📧 Receipt sent to your email\n` +
-        `📱 Session saved to history`;
+    await whatsappService.sendTextMessage(userWhatsapp, message);
 
-      await whatsappService.sendTextMessage(userWhatsapp, message);
+    // Send follow-up actions
+    setTimeout(async () => {
+      await whatsappService.sendButtonMessage(
+        userWhatsapp,
+        '📊 *What\'s Next?*',
+        [
+          { id: `rate_session_5_${session.stationId}`, title: '⭐ Rate 5 Stars' },
+          { id: 'find_nearby_stations', title: '🔍 Find Stations' },
+          { id: 'view_session_history', title: '📜 View History' }
+        ]
+      );
+    }, 2000);
 
-      // Rating and next steps
-      setTimeout(async () => {
-        await whatsappService.sendButtonMessage(
-          userWhatsapp,
-          `🌟 *How was your experience?*\n\nYour feedback helps us improve!`,
-          [
-            { id: `rate_session_5_${session.stationId}`, title: '⭐⭐⭐⭐⭐ Excellent' },
-            { id: `rate_session_4_${session.stationId}`, title: '⭐⭐⭐⭐ Good' },
-            { id: `rate_session_3_${session.stationId}`, title: '⭐⭐⭐ Average' }
-          ]
-        );
-      }, 2000);
-
-      setTimeout(async () => {
-        await whatsappService.sendListMessage(
-          userWhatsapp,
-          '🚀 *What\'s Next?*',
-          'Continue your journey with SharaSpot:',
-          [
-            {
-              title: '🔍 Discover More',
-              rows: [
-                { id: 'find_nearby_stations', title: '🗺️ Find Nearby', description: 'Discover other charging stations' },
-                { id: 'view_session_history', title: '📊 My History', description: 'View past charging sessions' },
-                { id: 'explore_features', title: '✨ Explore Features', description: 'Learn about new features' }
-              ]
-            },
-            {
-              title: '⚡ Quick Actions',
-              rows: [
-                { id: 'book_again_same', title: '🔄 Book Again Here', description: 'Reserve another session' },
-                { id: 'recommend_friends', title: '👥 Invite Friends', description: 'Share SharaSpot with others' },
-                { id: 'setup_preferences', title: '⚙️ Update Preferences', description: 'Customize your experience' }
-              ]
-            }
-          ]
-        );
-      }, 4000);
-    } catch (error) {
-      logger.error('Failed to send charging completed notification', { userWhatsapp, session, error });
-    }
+  } catch (error) {
+    logger.error('Failed to send charging completed notification', { 
+      userWhatsapp, 
+      session, 
+      summary,
+      error: error instanceof Error ? error.message : String(error)
+    });
+    // ✅ Don't throw - notification failure shouldn't break session completion
   }
+}
 
   async sendQueueLeftNotification(userWhatsapp: string, stationId: number, reason: string): Promise<void> {
     try {

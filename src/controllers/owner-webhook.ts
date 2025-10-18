@@ -269,7 +269,7 @@ export class OwnerWebhookController {
     await whatsappService.sendTextMessage(
       whatsappId,
       `🏢 *Welcome ${ownerProfile?.name || 'Owner'}*\n\n` +
-      `📊 Quick Stats:\n` +
+      `Quick Stats:\n` +
       `• Stations: ${ownerProfile?.totalStations || 0}\n` +
       `• Status: ${ownerProfile?.isActive ? '🟢 Active' : '🔴 Inactive'}\n\n` +
       `What would you like to manage?`
@@ -346,7 +346,7 @@ export class OwnerWebhookController {
 
     await whatsappService.sendTextMessage(
       whatsappId,
-      '👋 *Exited Owner Mode*\n\n' +
+      '*Exited Owner Mode*\n\n' +
       'You are now back to the regular interface.\n\n' +
       'Type "owner" to re-enter owner mode.\n' +
       'Type "help" for regular commands.'

@@ -53,7 +53,7 @@ export class LocationDisplayController {
       logger.error('Failed to display station results', { whatsappId, error });
       await whatsappService.sendTextMessage(
         whatsappId,
-        '❌ Failed to display results. Please try again.'
+        'Failed to display results. Please try again.'
       );
     }
   }
@@ -101,12 +101,12 @@ export class LocationDisplayController {
       else if (matchScore >= 50) matchIcon = '✨';
 
       const stationCard = `${statusIcon} *${name}* ${matchIcon}\n\n` +
-        `📍 ${address}\n` +
-        `📏 ${distance}km away\n\n` +
-        `🔌 ${connectorDisplay}\n` +
-        `⚡ ${maxPowerKw}kW • ₹${pricePerKwh}/kWh\n` +
-        `🅿️ ${availablePorts}/${totalPorts} ports ${statusText}\n\n` +
-        `🎯 Match Score: ${matchScore}%`;
+        `${address}\n` +
+        `${distance}km away\n\n` +
+        `${connectorDisplay}\n` +
+        `${maxPowerKw}kW • ₹${pricePerKwh}/kWh\n` +
+        `${availablePorts}/${totalPorts} ports ${statusText}\n\n` +
+        `Match Score: ${matchScore}%`;
 
       await whatsappService.sendTextMessage(whatsappId, stationCard);
 

@@ -36,25 +36,23 @@ export class PreferenceController {
 
   // INDIAN EV MODELS
   private readonly CAR_MODELS = {
-    INDIAN: [
-      { id: 'Tata Nexon EV', name: 'Tata Nexon EV', desc: 'Most Popular SUV' },
-      { id: 'MG ZS EV', name: 'MG ZS EV', desc: 'Premium SUV' },
-      { id: 'Tata Tigor EV', name: 'Tata Tigor EV', desc: 'Compact Sedan' },
-      { id: 'Mahindra XUV400', name: 'Mahindra XUV400', desc: 'Electric SUV' },
-      { id: 'Hyundai Kona', name: 'Hyundai Kona', desc: 'Global Electric' },
-      { id: 'MG Comet EV', name: 'MG Comet EV', desc: 'City Car' },
-      { id: 'Tata Punch EV', name: 'Tata Punch EV', desc: 'Micro SUV' },
-      { id: 'Citroen eC3', name: 'Citroen eC3', desc: 'Affordable Hatchback' }
-    ],
-    LUXURY: [
-      { id: 'BMW iX', name: 'BMW iX', desc: 'Luxury SUV' },
-      { id: 'Mercedes EQC', name: 'Mercedes EQC', desc: 'Premium SUV' },
-      { id: 'Audi e-tron GT', name: 'Audi e-tron GT', desc: 'Sports Sedan' },
-      { id: 'Volvo XC40 Recharge', name: 'Volvo XC40', desc: 'Compact SUV' },
-      { id: 'Jaguar I-PACE', name: 'Jaguar I-PACE', desc: 'Performance SUV' },
-      { id: 'Porsche Taycan', name: 'Porsche Taycan', desc: 'Sports Car' }
-    ]
-  };
+  INDIAN: [
+    { id: 'Tata Nexon EV', name: 'Tata Nexon EV', desc: 'India’s best-selling EV SUV' },
+    { id: 'Tata Punch EV', name: 'Tata Punch EV', desc: 'Affordable micro-SUV with great range' },
+    { id: 'MG ZS EV', name: 'MG ZS EV', desc: 'Popular premium electric SUV' },
+    { id: 'Tata Tiago EV', name: 'Tata Tiago EV', desc: 'Compact city hatchback' },
+    { id: 'Mahindra XUV400', name: 'Mahindra XUV400', desc: 'Spacious electric SUV' },
+    { id: 'MG Comet EV', name: 'MG Comet EV', desc: 'Compact 4-seater city car' },
+    { id: 'Citroen eC3', name: 'Citroen eC3', desc: 'Budget-friendly electric hatchback' },
+    { id: 'BYD Atto 3', name: 'BYD Atto 3', desc: 'Modern SUV with global tech' }
+  ],
+  
+  LUXURY: [
+    { id: 'BMW iX', name: 'BMW iX', desc: 'Flagship luxury electric SUV' },
+    { id: 'Volvo XC40 Recharge', name: 'Volvo XC40 Recharge', desc: 'Premium compact SUV' },
+    { id: 'Mercedes EQB', name: 'Mercedes EQB', desc: '7-seater luxury EV (available in India)' }
+  ]
+};
 
   private readonly BIKE_MODELS = [
     { id: 'Ather 450X', name: 'Ather 450X', desc: 'Premium Smart Scooter' },
@@ -72,19 +70,19 @@ export class PreferenceController {
   ];
 
   private readonly CONNECTOR_TYPES = {
-    CAR: [
-      { id: 'CCS2', name: 'CCS2', desc: 'Most Indian EVs (Tata, MG)' },
-      { id: 'CHAdeMO', name: 'CHAdeMO', desc: 'Nissan, Mahindra' },
-      { id: 'Type2', name: 'Type2', desc: 'AC Charging (BMW, Audi)' },
-      { id: 'Bharat DC001', name: 'Bharat DC', desc: 'Indian Standard DC' }
-    ],
-    BIKE: [
-      { id: 'Type2', name: 'Standard Plug', desc: 'Most Indian Scooters' },
-      { id: 'Proprietary', name: 'Brand Specific', desc: 'Ather, Ola Custom' },
-      { id: '3-Pin', name: '3-Pin Socket', desc: 'Home Charging' },
-      { id: 'Fast Charge', name: 'Fast Charge', desc: 'DC Fast Charging' }
-    ]
-  };
+  CAR: [
+    { id: 'CCS2', name: 'CCS2', desc: 'Standard for most new EVs (Tata, MG, BYD)' },
+    { id: 'Bharat DC001', name: 'Bharat DC', desc: 'Indian DC fast-charging standard' },
+    { id: 'Type2', name: 'Type 2', desc: 'AC slow charging (used by many EVs at home/public)' },
+    { id: 'CHAdeMO', name: 'CHAdeMO', desc: 'Legacy support (rare; older Mahindra/Nissan)' }
+  ],
+  BIKE: [
+    { id: '3-Pin', name: '3-Pin Plug', desc: 'Standard home socket (most scooters)' },
+    { id: 'Proprietary', name: 'Brand-Specific Port', desc: 'Ather, Ola, TVS iQube' },
+    { id: 'Fast Charge', name: 'DC Fast Charging', desc: 'Used at select public stations' },
+    { id: 'Type2', name: 'Type 2', desc: 'Rare on bikes; some premium models' }
+  ]
+};
 
   private contexts = new Map<string, OptimizedUserContext>();
   private lastCleanup = Date.now();
@@ -103,8 +101,8 @@ export class PreferenceController {
 
   private async showWelcomeMessage(whatsappId: string, isOnboarding: boolean): Promise<void> {
     const welcomeText = isOnboarding 
-      ? '🚗⚡ *Welcome to SharaSpot!*\n\nIndia\'s smartest EV charging network. Let\'s set up your profile in 30 seconds!' 
-      : '🔄 *Updating Your EV Profile*\n\nLet\'s optimize your charging experience!';
+      ? '*Welcome to SharaSpot!*\n\nIndia\'s smartest EV charging network. Let\'s set up your profile in 30 seconds!' 
+      : '*Updating Your EV Profile*\n\nLet\'s optimize your charging experience!';
 
     await whatsappService.sendTextMessage(whatsappId, welcomeText);
     
@@ -152,11 +150,11 @@ export class PreferenceController {
   private async showVehicleTypeStep(whatsappId: string): Promise<void> {
     await whatsappService.sendButtonMessage(
       whatsappId,
-      '*Step 1/5: Vehicle Type* 🚗\n\nWhat do you drive?',
+      '*Step 1/5: Vehicle Type* \n\nWhat do you drive?',
       [
-        { id: 'Car', title: '🚗 Car' },
-        { id: 'Bike/Scooter', title: '🛵 Bike/Scooter' },
-        { id: 'Any', title: '🔀 Multiple/Any' }
+        { id: 'Car', title: 'Car' },
+        { id: 'Bike/Scooter', title: 'Bike/Scooter' },
+        { id: 'Any', title: 'Multiple/Any' }
       ],
       '🚗 Vehicle Selection'
     );
@@ -187,11 +185,11 @@ export class PreferenceController {
   private async showCarModelsStep(whatsappId: string): Promise<void> {
     await whatsappService.sendButtonMessage(
       whatsappId,
-      '*Step 2/5: Car Model* 🚗\n\nChoose your category:',
+      '*Step 2/5: Car Model*\n\nChoose your category:',
       [
-        { id: 'indian_cars', title: '🇮🇳 Indian Cars' },
-        { id: 'luxury_cars', title: '✨ Luxury Cars' },
-        { id: 'type_custom', title: '⌨️ Type Model' }
+        { id: 'indian_cars', title: '🇮Indian Cars' },
+        { id: 'luxury_cars', title: 'Luxury Cars' },
+        { id: 'type_custom', title: 'Type Model' }
       ],
       '🚗 Car Categories'
     );
@@ -211,9 +209,9 @@ export class PreferenceController {
 
     await whatsappService.sendListMessage(
       whatsappId,
-      '*Step 2/5: Bike/Scooter Model* 🛵\n\nSelect your model:',
+      '*Step 2/5: Bike/Scooter Model* \n\nSelect your model:',
       'Select Model',
-      [{ title: '🛵 Popular Models', rows }]
+      [{ title: ' Popular Models', rows }]
     );
   }
 
@@ -311,7 +309,7 @@ export class PreferenceController {
   private async showChargingIntentStep(whatsappId: string): Promise<void> {
     await whatsappService.sendButtonMessage(
       whatsappId,
-      '*Step 4/5: Charging Style* ⚡\n\nHow do you usually charge?',
+      '*Step 4/5: Charging Style* \n\nHow do you usually charge?',
       [
         { id: 'Quick Top-up', title: '⚡ Quick (15-30min)' },
         { id: 'Full Charge', title: '🔋 Full (1-3hrs)' },
@@ -338,13 +336,13 @@ export class PreferenceController {
   private async showQueuePreferenceStep(whatsappId: string): Promise<void> {
     await whatsappService.sendButtonMessage(
       whatsappId,
-      '*Step 5/5: Wait Time* 🕐\n\nHow long can you wait if stations are busy?',
+      '*Step 5/5: Wait Time* \n\nHow long can you wait if stations are busy?',
       [
         { id: 'Free Now', title: '🟢 Free Now Only' },
         { id: 'Wait 15m', title: '🟡 Up to 15min' },
         { id: 'Wait 30m', title: '🟠 Up to 30min' }
       ],
-      '🕐 Queue Preference'
+      'Queue Preference'
     );
 
     setTimeout(async () => {
@@ -412,8 +410,8 @@ export class PreferenceController {
 
   private async requestLocation(whatsappId: string, isOnboarding: boolean): Promise<void> {
     const text = isOnboarding 
-      ? '📍 *Let\'s Find Your First Charging Station!*' 
-      : '📍 *Ready to Find Stations Near You!*';
+      ? '*Let\'s Find Your First Charging Station!*' 
+      : '*Ready to Find Stations Near You!*';
 
     await whatsappService.sendTextMessage(whatsappId, `${text}\n\n🎯 Choose your location method:`);
 
@@ -561,15 +559,15 @@ export class PreferenceController {
         return;
       }
 
-      const summary = `📋 *Your EV Profile*\n\n` +
-        `🚗 Vehicle: ${user.vehicleType || 'Any'}\n` +
-        `🏷️ Model: ${user.evModel || 'Not set'}\n` +
-        `🔌 Connector: ${user.connectorType || 'Any'}\n` +
-        `⚡ Style: ${user.chargingIntent || 'Any'}\n` +
-        `🕐 Wait: ${user.queuePreference || 'Flexible'}\n\n` +
-        `💡 Type "settings" to update.`;
+  const summary = `*Your EV Profile*\n\n` +
+  `Vehicle: ${user.vehicleType || 'Any'}\n` +
+  `Model: ${user.evModel || 'Not set'}\n` +
+  `Connector: ${user.connectorType || 'Any'}\n` +
+  `Charging style: ${user.chargingIntent || 'Any'}\n` +
+  `Wait preference: ${user.queuePreference || 'Flexible'}\n\n` +
+  `Type "settings" to update your preferences.`;
 
-      await whatsappService.sendTextMessage(whatsappId, summary);
+await whatsappService.sendTextMessage(whatsappId, summary);
     } catch (error) {
       logger.error('Error showing summary', { whatsappId, error });
       await this.sendError(whatsappId, 'Unable to load preferences.');
