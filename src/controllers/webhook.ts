@@ -70,62 +70,93 @@ export class WebhookController {
     }
   }
 
-  async handleWebhook(req: Request, res: Response): Promise<void> {
+ async handleWebhook(req: Request, res: Response): Promise<void> {
     // ✅ CRITICAL FIX: Send response IMMEDIATELY to prevent timeouts and retries from WhatsApp
     res.status(200).send('EVENT_RECEIVED');
 
     try {
-      const webhookData: WhatsAppWebhook = req.body;
-
-      if (webhookData.object !== 'whatsapp_business_account') {
-        logger.debug('Skipping non-WABA webhook', { object: webhookData.object });
-        return;
-      }
-
-      const allMessages = this.extractMessages(webhookData);
-      if (allMessages.length === 0) {
-        logger.debug('No messages found in webhook payload');
-        return;
-      }
-
-      logger.info('📥 Processing webhook', {
-        totalMessages: allMessages.length,
-      });
-
-      // Process each message independently after the response is sent
-      for (const message of allMessages) {
-        // Deduplicate based on the unique message ID provided by WhatsApp
-        if (messageDeduplication.isDuplicate(message.id)) {
-          logger.debug('⏭️ Duplicate message skipped', { messageId: message.id });
-          continue;
+        // Early exit for empty or invalid payloads
+        const webhookData = req.body as WhatsAppWebhook;
+        if (!webhookData || !webhookData.object) {
+            logger.debug('Invalid webhook payload received', { payload: JSON.stringify(req.body).substring(0, 100) });
+            return;
         }
 
-        // Fire-and-forget processing for the message using setImmediate
-        // This ensures errors in processMessage don't affect the main request's response
-        setImmediate(async () => {
-          try {
-            await this.processMessage(message as ExtendedWhatsAppMessage);
-          } catch (error) {
-            logger.error('💥 Unhandled error during message processing (fire-and-forget)', {
-              messageId: message.id,
-              whatsappId: message.from,
-              error: (error as Error).message
-            });
-          }
-        });
-      }
+        if (webhookData.object !== 'whatsapp_business_account') {
+            logger.debug('Skipping non-WABA webhook', { object: webhookData.object });
+            return;
+        }
 
-      logger.info('📥 Webhook dispatch completed', { totalDispatched: allMessages.length });
+        const allMessages = this.extractMessages(webhookData);
+        if (allMessages.length === 0) {
+            logger.debug('No messages found in webhook payload');
+            return;
+        }
+
+        // Generate a unique batch ID for this webhook
+        const batchId = `batch-${Date.now()}-${Math.random().toString(36).substring(2, 9)}`;
+        logger.info('📥 Processing webhook batch', {
+            batchId,
+            totalMessages: allMessages.length,
+            firstMessageId: allMessages[0]?.id || 'unknown'
+        });
+
+        let duplicateCount = 0;
+
+        // Process each message independently after the response is sent
+        allMessages.forEach(message => {
+            // Add additional validation to prevent processing malformed messages
+            if (!message.id || !message.from) {
+                logger.warn('⚠️ Malformed message in webhook', { 
+                    messageDetails: JSON.stringify(message).substring(0, 200) 
+                });
+                return;
+            }
+
+            // Enhanced deduplication with more aggressive caching
+            const messageKey = `${message.id}-${message.from}`;
+            if (messageDeduplication.isDuplicate(messageKey)) {
+                duplicateCount++;
+                logger.debug('🔄 Duplicate message skipped', { 
+                    messageId: message.id,
+                    from: message.from, 
+                    batchId
+                });
+                return;
+            }
+
+            // Add a small delay between processing messages to prevent API rate limits
+            setTimeout(() => {
+                // Fire-and-forget processing for the message
+                setImmediate(async () => {
+                    try {
+                        await this.processMessage(message as ExtendedWhatsAppMessage);
+                    } catch (error) {
+                        logger.error('💥 Unhandled error during message processing', {
+                            messageId: message.id,
+                            whatsappId: message.from,
+                            error: (error as Error).message,
+                            batchId
+                        });
+                    }
+                });
+            }, Math.random() * 50); // Add small random delay (0-50ms) between messages
+        });
+
+        logger.info('📥 Webhook dispatch completed', { 
+            batchId,
+            totalDispatched: allMessages.length - duplicateCount,
+            duplicatesSkipped: duplicateCount 
+        });
 
     } catch (error) {
-      // This should ideally not happen if the try-catch in setImmediate works correctly,
-      // but it's a safety net for synchronous errors in the loop itself.
-      logger.error('❌ Unexpected error in handleWebhook top-level (should not happen)', {
-        error: (error as Error).message
-      });
-      // Do NOT send response here - already sent above.
+        logger.error('❌ Unexpected error in handleWebhook top-level', {
+            error: (error as Error).message,
+            stack: (error as Error).stack?.substring(0, 500)
+        });
+        // Response already sent above
     }
-  }
+}
 
   // ===============================================
   // MESSAGE PROCESSING PIPELINE

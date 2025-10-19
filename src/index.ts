@@ -1,15 +1,16 @@
-// src/index.ts - ULTRA OPTIMIZED TYPE-SAFE EXPRESS SERVER
+// src/index.ts
+
 import express, { Request, Response, NextFunction } from 'express';
 import cors from 'cors';
 import helmet from 'helmet';
 import { env } from './config/env';
 import { logger } from './utils/logger';
 import { webhookController } from './controllers/webhook';
-import { queueScheduler } from './utils/queue-scheduler';
+import { QueueScheduler } from './services/queueScheduler'; // ✅ Correct import path
 import { initializeDatabase } from './db/connection';
 
 // ===============================================
-// TYPE-SAFE ERROR HANDLING UTILITY
+// TYPE-SAFE ERROR HANDLING UTILITIES
 // ===============================================
 
 const getErrorMessage = (error: unknown): string => {
@@ -18,9 +19,8 @@ const getErrorMessage = (error: unknown): string => {
   return 'Unknown error occurred';
 };
 
-const getErrorStack = (error: unknown): string | undefined => {
-  return error instanceof Error ? error.stack : undefined;
-};
+const getErrorStack = (error: unknown): string | undefined =>
+  error instanceof Error ? error.stack : undefined;
 
 // ===============================================
 // EXPRESS APP CONFIGURATION
@@ -30,7 +30,7 @@ const app = express();
 const port = env.PORT || 3000;
 
 // ===============================================
-// OPTIMIZED SECURITY & MIDDLEWARE STACK
+// SECURITY & MIDDLEWARE STACK
 // ===============================================
 
 app.use(
@@ -70,7 +70,7 @@ app.use(
 );
 
 // ===============================================
-// SMART RATE LIMITING (Memory-efficient)
+// SMART RATE LIMITING (memory-safe)
 // ===============================================
 
 const rateLimitMap = new Map<string, { count: number; resetTime: number }>();
@@ -102,7 +102,7 @@ app.use((req: Request, res: Response, next: NextFunction) => {
       error: 'Rate limit exceeded',
       retryAfter: Math.ceil((limitData.resetTime - now) / 1000),
     });
-    return next(); // Explicit return with next() to satisfy TS and best practices
+    return;
   }
 
   res.set({
@@ -115,7 +115,7 @@ app.use((req: Request, res: Response, next: NextFunction) => {
 });
 
 // ===============================================
-// EFFICIENT REQUEST LOGGING
+// REQUEST LOGGING
 // ===============================================
 
 app.use((req: Request, res: Response, next: NextFunction) => {
@@ -147,7 +147,7 @@ app.use((req: Request, res: Response, next: NextFunction) => {
 });
 
 // ===============================================
-// ROOT ENDPOINT (for Render health checks)
+// HEALTH & ROOT ENDPOINTS
 // ===============================================
 
 app.get('/', (_req: Request, res: Response) => {
@@ -164,10 +164,6 @@ app.get('/', (_req: Request, res: Response) => {
   });
 });
 
-// ===============================================
-// TYPE-SAFE HEALTH CHECK ENDPOINT
-// ===============================================
-
 app.get('/health', async (_req: Request, res: Response) => {
   try {
     const healthStatus = {
@@ -183,14 +179,6 @@ app.get('/health', async (_req: Request, res: Response) => {
       },
     };
 
-    if (env.NODE_ENV === 'development') {
-      Object.assign(healthStatus, {
-        queue: queueScheduler?.getStatus?.() || { status: 'not_configured' },
-        database: 'connected',
-        activeConnections: rateLimitMap.size,
-      });
-    }
-
     res.set('Cache-Control', 'no-cache, no-store, must-revalidate');
     res.status(200).json(healthStatus);
   } catch (error) {
@@ -205,20 +193,17 @@ app.get('/health', async (_req: Request, res: Response) => {
 });
 
 // ===============================================
-// WEBHOOK ENDPOINTS (Core functionality)
+// WEBHOOK ROUTES
 // ===============================================
 
 app.get('/webhook', webhookController.verifyWebhook.bind(webhookController));
 app.post('/webhook', webhookController.handleWebhook.bind(webhookController));
 
 // ===============================================
-// API ROUTES (Future expansion ready)
+// API ROUTE PLACEHOLDER
 // ===============================================
 
-app.use('/api/v1', (req: Request, res: Response, next: NextFunction) => {
-  res.set('API-Version', 'v1');
-  next();
-}, (_req: Request, res: Response) => {
+app.use('/api/v1', (_req: Request, res: Response) => {
   res.status(501).json({
     message: 'API endpoints coming soon',
     version: 'v1',
@@ -227,7 +212,7 @@ app.use('/api/v1', (req: Request, res: Response, next: NextFunction) => {
 });
 
 // ===============================================
-// 404 HANDLER (MUST COME AFTER ALL ROUTES)
+// 404 HANDLER
 // ===============================================
 
 app.use('*', (req: Request, res: Response) => {
@@ -243,39 +228,37 @@ app.use('*', (req: Request, res: Response) => {
 });
 
 // ===============================================
-// TYPE-SAFE GLOBAL ERROR HANDLER
+// GLOBAL ERROR HANDLER
 // ===============================================
 
-app.use(
-  (err: unknown, req: Request, res: Response, _next: NextFunction) => {
-    const errorId = Date.now().toString(36) + Math.random().toString(36).substring(2);
-    const errorMessage = getErrorMessage(err);
-    const errorStack = getErrorStack(err);
-    const statusCode = (err as any)?.status || (err as any)?.statusCode || 500;
+app.use((err: unknown, req: Request, res: Response, _next: NextFunction) => {
+  const errorId = Date.now().toString(36) + Math.random().toString(36).substring(2);
+  const errorMessage = getErrorMessage(err);
+  const errorStack = getErrorStack(err);
+  const statusCode = (err as any)?.status || (err as any)?.statusCode || 500;
 
-    logger.error('Unhandled application error', {
-      errorId,
-      message: errorMessage,
-      stack: env.NODE_ENV === 'development' ? errorStack : undefined,
-      url: req.url,
-      method: req.method,
-      ip: req.ip,
-      userAgent: req.get('User-Agent')?.substring(0, 100),
-    });
+  logger.error('Unhandled application error', {
+    errorId,
+    message: errorMessage,
+    stack: env.NODE_ENV === 'development' ? errorStack : undefined,
+    url: req.url,
+    method: req.method,
+    ip: req.ip,
+    userAgent: req.get('User-Agent')?.substring(0, 100),
+  });
 
-    const errorResponse = {
-      error: 'Internal server error',
-      errorId,
-      timestamp: new Date().toISOString(),
-      ...(env.NODE_ENV === 'development' && { message: errorMessage, stack: errorStack }),
-    };
+  const errorResponse = {
+    error: 'Internal server error',
+    errorId,
+    timestamp: new Date().toISOString(),
+    ...(env.NODE_ENV === 'development' && { message: errorMessage, stack: errorStack }),
+  };
 
-    res.status(statusCode).json(errorResponse);
-  }
-);
+  res.status(statusCode).json(errorResponse);
+});
 
 // ===============================================
-// TYPE-SAFE SERVER LIFECYCLE MANAGEMENT
+// SERVER LIFECYCLE MANAGEMENT
 // ===============================================
 
 class ServerManager {
@@ -286,16 +269,18 @@ class ServerManager {
     try {
       logger.info('🚀 Starting SharaSpot Bot Server');
       await this.initializeDatabaseWithTimeout();
+
       this.server = app.listen(port, () => {
         logger.info('✅ SharaSpot Bot Server Ready', {
           port,
           environment: env.NODE_ENV,
           webhookUrl: `http://localhost:${port}/webhook`,
           healthUrl: `http://localhost:${port}/health`,
-          processId: process.pid,
+          pid: process.pid,
           nodeVersion: process.version,
         });
       });
+
       await this.startBackgroundServices();
       this.setupGracefulShutdown();
     } catch (error) {
@@ -320,15 +305,15 @@ class ServerManager {
 
   private async startBackgroundServices(): Promise<void> {
     const shouldStartScheduler = process.env.ENABLE_QUEUE_SCHEDULER !== 'false';
-    if (shouldStartScheduler && queueScheduler?.start) {
+    if (shouldStartScheduler) {
       try {
-        await queueScheduler.start();
-        logger.info('🤖 Background queue scheduler started');
+        await QueueScheduler.runScheduler();
+        logger.info('🤖 Queue scheduler started');
       } catch (error) {
         logger.warn('⚠️ Queue scheduler failed to start', { error: getErrorMessage(error) });
       }
     } else {
-      logger.info('⏸️ Queue scheduler disabled or not available');
+      logger.info('⏸️ Queue scheduler disabled');
     }
   }
 
@@ -337,7 +322,7 @@ class ServerManager {
       if (this.isShuttingDown) return;
       this.isShuttingDown = true;
 
-      logger.info(`🛑 ${signal} received - starting graceful shutdown`);
+      logger.info(`🛑 ${signal} received — starting graceful shutdown`);
 
       const shutdownTimeout = setTimeout(() => {
         logger.error('💥 Forced shutdown due to timeout');
@@ -346,21 +331,10 @@ class ServerManager {
 
       try {
         if (this.server) {
-          await new Promise<void>((resolve, reject) => {
-            this.server!.close((err) => {
-              if (err) {
-                reject(err);
-              } else {
-                resolve();
-              }
-            });
-          });
+          await new Promise<void>((resolve, reject) =>
+            this.server!.close((err) => (err ? reject(err) : resolve()))
+          );
           logger.info('🛑 HTTP server stopped');
-        }
-
-        if (queueScheduler?.stop) {
-          await queueScheduler.stop();
-          logger.info('🤖 Queue scheduler stopped');
         }
 
         rateLimitMap.clear();
@@ -401,25 +375,19 @@ if (require.main === module) {
 }
 
 // ===============================================
-// EXPORTS FOR TESTING & MONITORING
+// EXPORTS FOR TESTING / METRICS
 // ===============================================
 
 export { app, serverManager };
 
-export const getServerHealth = async (): Promise<{ status: string; [key: string]: any }> => {
-  try {
-    return {
-      status: 'healthy',
-      uptime: process.uptime(),
-      memory: process.memoryUsage(),
-      timestamp: new Date().toISOString(),
-      environment: env.NODE_ENV,
-      activeConnections: rateLimitMap.size,
-    };
-  } catch (error) {
-    return { status: 'unhealthy', error: getErrorMessage(error) };
-  }
-};
+export const getServerHealth = async () => ({
+  status: 'healthy',
+  uptime: process.uptime(),
+  timestamp: new Date().toISOString(),
+  memory: process.memoryUsage(),
+  environment: env.NODE_ENV,
+  activeConnections: rateLimitMap.size,
+});
 
 export const getServerMetrics = () => ({
   activeRateLimitEntries: rateLimitMap.size,

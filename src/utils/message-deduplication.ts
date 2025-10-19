@@ -1,89 +1,106 @@
-// src/utils/message-deduplication.ts
 import { logger } from './logger';
 
-/**
- * High-performance message deduplication service
- * Prevents duplicate webhook processing with automatic cleanup
- */
+
 class MessageDeduplicationService {
   private processedMessages = new Map<string, number>();
   private readonly TTL = 5 * 60 * 1000; // 5 minutes
-  private readonly CLEANUP_INTERVAL = 60 * 1000; // 1 minute
+  private readonly CLEANUP_INTERVAL = 2 * 60 * 1000; // 2 minutes
+  private readonly MAX_CACHE_SIZE = 5000; // Prevent memory bloat
   private cleanupTimer: NodeJS.Timeout;
+  private lastCleanupLog = 0; // prevent spammy logs
 
   constructor() {
     this.cleanupTimer = setInterval(() => this.cleanup(), this.CLEANUP_INTERVAL);
   }
 
   /**
-   * Check if message was already processed
+   * Checks if a message was already processed
    * Returns true if duplicate, false if new
    */
-  isDuplicate(messageId: string): boolean {
-    const now = Date.now();
-    const timestamp = this.processedMessages.get(messageId);
+// In your MessageDeduplicationService class
+/**
+ * Checks if a message was already processed
+ * Returns true if duplicate, false if new
+ */
+isDuplicate(messageKey: string): boolean {
+    if (!messageKey) return false; // fail-safe for missing keys
     
-    if (timestamp) {
-      // Check if still within TTL
-      if (now - timestamp < this.TTL) {
-        logger.debug('🔄 Duplicate message blocked', { messageId });
+    const now = Date.now();
+    const lastSeen = this.processedMessages.get(messageKey);
+    
+    // Fast return for active duplicates
+    if (lastSeen && now - lastSeen < this.TTL) {
         return true;
-      }
-      // Expired, remove and allow
-      this.processedMessages.delete(messageId);
     }
-
-    // Mark as processed
-    this.processedMessages.set(messageId, now);
+    
+    // If cache too large, trim oldest entries
+    if (this.processedMessages.size >= this.MAX_CACHE_SIZE) {
+        this.trimCache();
+    }
+    
+    this.processedMessages.set(messageKey, now);
     return false;
-  }
+}
 
   /**
-   * Clean up expired entries
+   * Removes expired message IDs periodically
    */
   private cleanup(): void {
     const now = Date.now();
-    let cleaned = 0;
+    let removed = 0;
 
-    for (const [messageId, timestamp] of this.processedMessages.entries()) {
-      if (now - timestamp > this.TTL) {
-        this.processedMessages.delete(messageId);
-        cleaned++;
+    for (const [id, ts] of this.processedMessages) {
+      if (now - ts > this.TTL) {
+        this.processedMessages.delete(id);
+        removed++;
       }
     }
 
-    if (cleaned > 0) {
-      logger.debug('🧹 Cleaned expired message IDs', { 
-        cleaned, 
-        remaining: this.processedMessages.size 
+    // Log only once every 5 minutes max to avoid spam
+    if (removed > 0 && now - this.lastCleanupLog > 5 * 60 * 1000) {
+      this.lastCleanupLog = now;
+      logger.info(`🧹 Message cache cleanup complete`, {
+        removed,
+        remaining: this.processedMessages.size,
       });
     }
   }
 
   /**
-   * Get service statistics
+   * Trims cache size when max limit reached (removes oldest 20%)
+   */
+  private trimCache(): void {
+    const removeCount = Math.floor(this.MAX_CACHE_SIZE * 0.2);
+    const keys = Array.from(this.processedMessages.keys()).slice(0, removeCount);
+    keys.forEach((key) => this.processedMessages.delete(key));
+    logger.warn('⚠️ Deduplication cache trimmed', {
+      removed: removeCount,
+      remaining: this.processedMessages.size,
+    });
+  }
+
+  /**
+   * Get statistics for monitoring
    */
   getStats() {
     return {
       trackedMessages: this.processedMessages.size,
-      ttlMs: this.TTL,
-      cleanupIntervalMs: this.CLEANUP_INTERVAL
+      ttlMinutes: this.TTL / 60000,
+      cleanupIntervalMinutes: this.CLEANUP_INTERVAL / 60000,
+      maxCacheSize: this.MAX_CACHE_SIZE,
     };
   }
 
   /**
-   * Manually clear a message ID (for testing)
+   * Manual clear (for tests or resets)
    */
   clear(messageId?: string): void {
-    if (messageId) {
-      this.processedMessages.delete(messageId);
-    } else {
-      this.processedMessages.clear();
-    }
+    if (messageId) this.processedMessages.delete(messageId);
+    else this.processedMessages.clear();
   }
 
   /**
-   * Cleanup on shutdown
+   * Clean up when shutting down the service
    */
   destroy(): void {
     clearInterval(this.cleanupTimer);
