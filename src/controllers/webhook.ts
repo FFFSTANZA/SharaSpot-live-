@@ -70,92 +70,129 @@ export class WebhookController {
     }
   }
 
- async handleWebhook(req: Request, res: Response): Promise<void> {
-    // ✅ CRITICAL FIX: Send response IMMEDIATELY to prevent timeouts and retries from WhatsApp
-    res.status(200).send('EVENT_RECEIVED');
+ // src/controllers/webhook.ts - OPTIMIZED FOR MESSAGE-ONLY PROCESSING
 
-    try {
-        // Early exit for empty or invalid payloads
-        const webhookData = req.body as WhatsAppWebhook;
-        if (!webhookData || !webhookData.object) {
-            logger.debug('Invalid webhook payload received', { payload: JSON.stringify(req.body).substring(0, 100) });
-            return;
-        }
+/**
+ * Enhanced early-exit logic to ignore non-message webhooks
+ * Only processes payloads with actual user-sent messages
+ */
+async handleWebhook(req: Request, res: Response): Promise<void> {
+  // ✅ IMMEDIATE ACK to prevent retries
+  res.status(200).send('EVENT_RECEIVED');
 
-        if (webhookData.object !== 'whatsapp_business_account') {
-            logger.debug('Skipping non-WABA webhook', { object: webhookData.object });
-            return;
-        }
+  try {
+    const webhookData = req.body as WhatsAppWebhook;
 
-        const allMessages = this.extractMessages(webhookData);
-        if (allMessages.length === 0) {
-            logger.debug('No messages found in webhook payload');
-            return;
-        }
-
-        // Generate a unique batch ID for this webhook
-        const batchId = `batch-${Date.now()}-${Math.random().toString(36).substring(2, 9)}`;
-        logger.info('📥 Processing webhook batch', {
-            batchId,
-            totalMessages: allMessages.length,
-            firstMessageId: allMessages[0]?.id || 'unknown'
-        });
-
-        let duplicateCount = 0;
-
-        // Process each message independently after the response is sent
-        allMessages.forEach(message => {
-            // Add additional validation to prevent processing malformed messages
-            if (!message.id || !message.from) {
-                logger.warn('⚠️ Malformed message in webhook', { 
-                    messageDetails: JSON.stringify(message).substring(0, 200) 
-                });
-                return;
-            }
-
-            // Enhanced deduplication with more aggressive caching
-            const messageKey = `${message.id}-${message.from}`;
-            if (messageDeduplication.isDuplicate(messageKey)) {
-                duplicateCount++;
-                logger.debug('🔄 Duplicate message skipped', { 
-                    messageId: message.id,
-                    from: message.from, 
-                    batchId
-                });
-                return;
-            }
-
-            // Add a small delay between processing messages to prevent API rate limits
-            setTimeout(() => {
-                // Fire-and-forget processing for the message
-                setImmediate(async () => {
-                    try {
-                        await this.processMessage(message as ExtendedWhatsAppMessage);
-                    } catch (error) {
-                        logger.error('💥 Unhandled error during message processing', {
-                            messageId: message.id,
-                            whatsappId: message.from,
-                            error: (error as Error).message,
-                            batchId
-                        });
-                    }
-                });
-            }, Math.random() * 50); // Add small random delay (0-50ms) between messages
-        });
-
-        logger.info('📥 Webhook dispatch completed', { 
-            batchId,
-            totalDispatched: allMessages.length - duplicateCount,
-            duplicatesSkipped: duplicateCount 
-        });
-
-    } catch (error) {
-        logger.error('❌ Unexpected error in handleWebhook top-level', {
-            error: (error as Error).message,
-            stack: (error as Error).stack?.substring(0, 500)
-        });
-        // Response already sent above
+    // 🔹 EARLY EXIT 1: Invalid or empty payload
+    if (!webhookData || !webhookData.object) {
+      logger.debug('🚫 Ignored: Empty or invalid webhook payload');
+      return;
     }
+
+    // 🔹 EARLY EXIT 2: Not a WhatsApp Business Account event
+    if (webhookData.object !== 'whatsapp_business_account') {
+      logger.debug('🚫 Ignored: Non-WABA object', { object: webhookData.object });
+      return;
+    }
+
+    // 🔹 EARLY EXIT 3: No entries or changes
+    const entries = webhookData.entry || [];
+    if (entries.length === 0) {
+      logger.debug('🚫 Ignored: No entries in webhook');
+      return;
+    }
+
+    // 🔹 Extract ONLY message-type changes with actual user messages
+    const messagePayloads: WhatsAppMessage[] = [];
+
+    for (const entry of entries) {
+      const changes = entry.changes || [];
+      for (const change of changes) {
+        // 🔸 Only care about "messages" field
+        if (change.field !== 'messages') continue;
+
+        const value = change.value;
+        if (!value || !Array.isArray(value.messages) || value.messages.length === 0) {
+          // This is likely a status/delivery/read receipt webhook → IGNORE
+          logger.debug('📩 Ignored: Non-message webhook (e.g., status/delivery event)', {
+            field: change.field,
+            hasMessages: !!value?.messages,
+            statuses: value?.statuses?.length || 0
+          });
+          continue;
+        }
+
+        // ✅ Only push if messages exist AND are from users (not system)
+        for (const msg of value.messages) {
+          // Optional: Skip if not from a user (e.g., system-generated)
+          if (msg.type === 'system') continue;
+
+          // WhatsApp message IDs are unique per message
+          if (!msg.id || !msg.from) {
+            logger.warn('⚠️ Malformed message skipped', { msg: JSON.stringify(msg).substring(0, 200) });
+            continue;
+          }
+
+          messagePayloads.push(msg);
+        }
+      }
+    }
+
+    // 🔹 EARLY EXIT 4: No actionable messages found
+    if (messagePayloads.length === 0) {
+      logger.debug('📭 No user messages to process in this webhook');
+      return;
+    }
+
+    // ✅ Now process only real user messages
+    const batchId = `batch-${Date.now()}-${Math.random().toString(36).substring(2, 9)}`;
+    logger.info('📥 Processing user message batch', {
+      batchId,
+      totalMessages: messagePayloads.length,
+      firstMessageId: messagePayloads[0]?.id
+    });
+
+    let duplicateCount = 0;
+
+    for (const message of messagePayloads) {
+      const messageKey = `${message.id}-${message.from}`;
+
+      if (messageDeduplication.isDuplicate(messageKey)) {
+        duplicateCount++;
+        logger.debug('🔄 Duplicate message skipped', { messageId: message.id, from: message.from, batchId });
+        continue;
+      }
+
+      // Small randomized delay to avoid rate limits
+      setTimeout(() => {
+        setImmediate(async () => {
+          try {
+            await this.processMessage(message as ExtendedWhatsAppMessage);
+          } catch (error) {
+            logger.error('💥 Unhandled error during message processing', {
+              messageId: message.id,
+              whatsappId: message.from,
+              error: (error as Error).message,
+              batchId
+            });
+          }
+        });
+      }, Math.random() * 50);
+    }
+
+    logger.info('✅ Webhook message batch dispatch completed', {
+      batchId,
+      processed: messagePayloads.length - duplicateCount,
+      duplicatesSkipped: duplicateCount
+    });
+
+  } catch (error) {
+    logger.error('❌ Top-level error in handleWebhook', {
+      error: (error as Error).message,
+      stack: (error as Error).stack?.substring(0, 500)
+    });
+    // Response already sent — no action needed
+  }
 }
 
   // ===============================================

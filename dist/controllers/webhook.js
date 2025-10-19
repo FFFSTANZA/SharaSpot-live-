@@ -55,41 +55,61 @@ class WebhookController {
         try {
             const webhookData = req.body;
             if (!webhookData || !webhookData.object) {
-                logger_1.logger.debug('Invalid webhook payload received', { payload: JSON.stringify(req.body).substring(0, 100) });
+                logger_1.logger.debug('🚫 Ignored: Empty or invalid webhook payload');
                 return;
             }
             if (webhookData.object !== 'whatsapp_business_account') {
-                logger_1.logger.debug('Skipping non-WABA webhook', { object: webhookData.object });
+                logger_1.logger.debug('🚫 Ignored: Non-WABA object', { object: webhookData.object });
                 return;
             }
-            const allMessages = this.extractMessages(webhookData);
-            if (allMessages.length === 0) {
-                logger_1.logger.debug('No messages found in webhook payload');
+            const entries = webhookData.entry || [];
+            if (entries.length === 0) {
+                logger_1.logger.debug('🚫 Ignored: No entries in webhook');
+                return;
+            }
+            const messagePayloads = [];
+            for (const entry of entries) {
+                const changes = entry.changes || [];
+                for (const change of changes) {
+                    if (change.field !== 'messages')
+                        continue;
+                    const value = change.value;
+                    if (!value || !Array.isArray(value.messages) || value.messages.length === 0) {
+                        logger_1.logger.debug('📩 Ignored: Non-message webhook (e.g., status/delivery event)', {
+                            field: change.field,
+                            hasMessages: !!value?.messages,
+                            statuses: value?.statuses?.length || 0
+                        });
+                        continue;
+                    }
+                    for (const msg of value.messages) {
+                        if (msg.type === 'system')
+                            continue;
+                        if (!msg.id || !msg.from) {
+                            logger_1.logger.warn('⚠️ Malformed message skipped', { msg: JSON.stringify(msg).substring(0, 200) });
+                            continue;
+                        }
+                        messagePayloads.push(msg);
+                    }
+                }
+            }
+            if (messagePayloads.length === 0) {
+                logger_1.logger.debug('📭 No user messages to process in this webhook');
                 return;
             }
             const batchId = `batch-${Date.now()}-${Math.random().toString(36).substring(2, 9)}`;
-            logger_1.logger.info('📥 Processing webhook batch', {
+            logger_1.logger.info('📥 Processing user message batch', {
                 batchId,
-                totalMessages: allMessages.length,
-                firstMessageId: allMessages[0]?.id || 'unknown'
+                totalMessages: messagePayloads.length,
+                firstMessageId: messagePayloads[0]?.id
             });
             let duplicateCount = 0;
-            allMessages.forEach(message => {
-                if (!message.id || !message.from) {
-                    logger_1.logger.warn('⚠️ Malformed message in webhook', {
-                        messageDetails: JSON.stringify(message).substring(0, 200)
-                    });
-                    return;
-                }
+            for (const message of messagePayloads) {
                 const messageKey = `${message.id}-${message.from}`;
                 if (message_deduplication_1.messageDeduplication.isDuplicate(messageKey)) {
                     duplicateCount++;
-                    logger_1.logger.debug('🔄 Duplicate message skipped', {
-                        messageId: message.id,
-                        from: message.from,
-                        batchId
-                    });
-                    return;
+                    logger_1.logger.debug('🔄 Duplicate message skipped', { messageId: message.id, from: message.from, batchId });
+                    continue;
                 }
                 setTimeout(() => {
                     setImmediate(async () => {
@@ -106,15 +126,15 @@ class WebhookController {
                         }
                     });
                 }, Math.random() * 50);
-            });
-            logger_1.logger.info('📥 Webhook dispatch completed', {
+            }
+            logger_1.logger.info('✅ Webhook message batch dispatch completed', {
                 batchId,
-                totalDispatched: allMessages.length - duplicateCount,
+                processed: messagePayloads.length - duplicateCount,
                 duplicatesSkipped: duplicateCount
             });
         }
         catch (error) {
-            logger_1.logger.error('❌ Unexpected error in handleWebhook top-level', {
+            logger_1.logger.error('❌ Top-level error in handleWebhook', {
                 error: error.message,
                 stack: error.stack?.substring(0, 500)
             });

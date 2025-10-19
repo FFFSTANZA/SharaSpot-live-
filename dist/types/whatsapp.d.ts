@@ -1,8 +1,9 @@
+export type WhatsAppMessageType = 'text' | 'button' | 'interactive' | 'location' | 'system';
 export interface WhatsAppMessage {
     id: string;
     from: string;
     timestamp: string;
-    type: 'text' | 'button' | 'interactive' | 'location';
+    type: WhatsAppMessageType;
     text?: {
         body: string;
     };
@@ -27,12 +28,16 @@ export interface WhatsAppMessage {
         name?: string;
         address?: string;
     };
+    system?: {
+        body?: string;
+    };
 }
 export interface WhatsAppWebhook {
     object: string;
     entry: Array<{
         id: string;
         changes: Array<{
+            field: string;
             value: {
                 messaging_product: string;
                 metadata: {
@@ -47,7 +52,6 @@ export interface WhatsAppWebhook {
                     recipient_id: string;
                 }>;
             };
-            field: string;
         }>;
     }>;
 }
