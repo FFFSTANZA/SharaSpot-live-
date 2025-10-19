@@ -589,51 +589,53 @@ class QueueScheduler {
   /**
    * Cleanup expired verification states
    */
-  private async cleanupVerificationStates(): Promise<void> {
-    try {
-      // Use the photoVerificationService cleanup method
-      photoVerificationService.cleanupExpiredStates();
+async cleanupVerificationStates() {
+  try {
+    // Use the photoVerificationService cleanup method
+    photoVerificationService.cleanupExpiredStates();
 
-      // Also cleanup orphaned verification sessions in DB
-      const orphanedSessions = await db
-        .select({
-          sessionId: chargingSessions.sessionId,
-          userWhatsapp: chargingSessions.userWhatsapp,
-          verificationStatus: chargingSessions.verificationStatus,
-          createdAt: chargingSessions.createdAt
-        })
-        .from(chargingSessions)
-        .where(
-          and(
-            sql`verification_status IN ('awaiting_start_photo', 'awaiting_end_photo')`,
-            lt(chargingSessions.createdAt, new Date(Date.now() - 30 * 60 * 1000)) // 30 min old
-          )
-        );
+    // Also cleanup orphaned verification sessions in DB
+    const orphanedSessions = await db
+      .select({
+        sessionId: chargingSessions.sessionId,
+        userWhatsapp: chargingSessions.userWhatsapp,
+        verificationStatus: chargingSessions.verificationStatus,
+        createdAt: chargingSessions.createdAt
+      })
+      .from(chargingSessions)
+      .where(
+        and(
+          // ✅ FIX: Use inArray instead of raw SQL
+          inArray(chargingSessions.verificationStatus, ['awaiting_start_photo', 'awaiting_end_photo']),
+          lt(chargingSessions.createdAt, new Date(Date.now() - 30 * 60 * 1000))
+        )
+      );
 
-      if (orphanedSessions.length > 0) {
-        logger.info(`🧹 Found ${orphanedSessions.length} orphaned verification sessions`);
+    if (orphanedSessions.length > 0) {
+      logger.info(`🧹 Found ${orphanedSessions.length} orphaned verification sessions`);
 
-        // Mark as failed or timeout
-        await db.transaction(async (tx) => {
-          for (const session of orphanedSessions) {
-            await tx.update(chargingSessions)
-              .set({
-                verificationStatus: 'verification_timeout',
-                status: 'cancelled',
-                updatedAt: new Date()
-              })
-              .where(eq(chargingSessions.sessionId, session.sessionId));
-          }
-        });
+      await db.transaction(async (tx) => {
+        for (const session of orphanedSessions) {
+          await tx.update(chargingSessions)
+            .set({
+              verificationStatus: 'verification_timeout',
+              status: 'cancelled',
+              updatedAt: new Date()
+            })
+            .where(eq(chargingSessions.sessionId, session.sessionId));
+        }
+      });
 
-        logger.info(`✅ Cleaned ${orphanedSessions.length} orphaned verification sessions`);
-      }
-
-    } catch (error) {
-      logger.error('Verification cleanup failed', { error });
+      logger.info(`✅ Cleaned ${orphanedSessions.length} orphaned verification sessions`);
     }
+  } catch (error) {
+    // ✅ Better error logging
+    logger.error('Verification cleanup failed', { 
+      error: error instanceof Error ? error.message : String(error),
+      stack: error instanceof Error ? error.stack : undefined
+    });
   }
-
+}
   // ===============================================
   // ALERT HANDLERS
   // ===============================================

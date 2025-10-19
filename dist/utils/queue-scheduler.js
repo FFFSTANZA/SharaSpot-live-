@@ -387,7 +387,7 @@ class QueueScheduler {
                 createdAt: schema_1.chargingSessions.createdAt
             })
                 .from(schema_1.chargingSessions)
-                .where((0, drizzle_orm_1.and)((0, drizzle_orm_1.sql) `verification_status IN ('awaiting_start_photo', 'awaiting_end_photo')`, (0, drizzle_orm_1.lt)(schema_1.chargingSessions.createdAt, new Date(Date.now() - 30 * 60 * 1000))));
+                .where((0, drizzle_orm_1.and)((0, drizzle_orm_1.inArray)(schema_1.chargingSessions.verificationStatus, ['awaiting_start_photo', 'awaiting_end_photo']), (0, drizzle_orm_1.lt)(schema_1.chargingSessions.createdAt, new Date(Date.now() - 30 * 60 * 1000))));
             if (orphanedSessions.length > 0) {
                 logger_1.logger.info(`🧹 Found ${orphanedSessions.length} orphaned verification sessions`);
                 await database_1.db.transaction(async (tx) => {
@@ -405,7 +405,10 @@ class QueueScheduler {
             }
         }
         catch (error) {
-            logger_1.logger.error('Verification cleanup failed', { error });
+            logger_1.logger.error('Verification cleanup failed', {
+                error: error instanceof Error ? error.message : String(error),
+                stack: error instanceof Error ? error.stack : undefined
+            });
         }
     }
     async checkAvailabilityAlerts() {

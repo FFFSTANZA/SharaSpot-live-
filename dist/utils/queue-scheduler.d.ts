@@ -29,7 +29,7 @@ declare class QueueScheduler {
     private updateQueueCounts;
     private monitorSessions;
     private getSessionFromDb;
-    private cleanupVerificationStates;
+    cleanupVerificationStates(): Promise<void>;
     private checkAvailabilityAlerts;
     private monitorPerformance;
     private countActiveQueues;
