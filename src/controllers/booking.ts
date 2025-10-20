@@ -10,6 +10,7 @@ import { db } from '../config/database';
 import { chargingStations, chargingSessions } from '../db/schema';
 import { eq, and, desc } from 'drizzle-orm';
 import { validateWhatsAppId } from '../utils/validation';
+import { handleBookingWithPayment } from './booking-payment-integration'; // ← ADD THIS
 
 // ===============================================
 // INTERFACES & TYPES
@@ -220,35 +221,55 @@ export class BookingController {
     }
   }
 
-  async handleStationBooking(whatsappId: string, stationId: number): Promise<void> {
-    if (!this.validateInput(whatsappId, stationId)) return;
-    try {
-      const [user, station] = await Promise.all([
-        userService.getUserByWhatsAppId(whatsappId),
-        this.getStationDetails(stationId)
-      ]);
-      if (!user || !station) {
-        await this.sendError(whatsappId, 'Unable to process booking');
-        return;
-      }
+async handleStationBooking(whatsappId: string, stationId: number): Promise<void> {
+  if (!this.validateInput(whatsappId, stationId)) return;
 
-      const existingQueues = await queueService.getUserQueueStatus(whatsappId);
-      if (existingQueues.length > 0) {
-        await this.handleExistingBooking(whatsappId, existingQueues[0]);
-        return;
-      }
+  try {
+    const [user, station] = await Promise.all([
+      userService.getUserByWhatsAppId(whatsappId),
+      this.getStationDetails(stationId)
+    ]);
 
-      if (station.isAvailable && station.availableSlots > 0) {
-        await this.handleInstantBooking(whatsappId, station, user);
-      } else if (this.isStationBookable(station)) {
-        await this.handleQueueBooking(whatsappId, station, user);
-      } else {
-        await this.handleUnavailableStation(whatsappId, station);
-      }
-    } catch (error) {
-      await this.handleError(error, 'station booking', { whatsappId, stationId });
+    if (!user) {
+      await this.sendError(whatsappId, 'User not found. Please register first.');
+      return;
     }
+
+    if (!station) {
+      await this.sendNotFound(whatsappId, 'Station not found');
+      return;
+    }
+
+    // ✅ Check for existing active bookings/queues
+    const existingQueues = await queueService.getUserQueueStatus(whatsappId);
+    if (existingQueues.length > 0) {
+      await this.handleExistingBooking(whatsappId, existingQueues[0]);
+      return;
+    }
+
+    // ✅ Validate station availability BEFORE payment
+    if (!station.isAvailable || !this.isStationBookable(station)) {
+      await this.handleUnavailableStation(whatsappId, station);
+      return;
+    }
+
+    // ✅ All validations passed → Trigger payment
+    await handleBookingWithPayment(
+      whatsappId,
+      stationId,
+      station.name,
+      50 // ₹50 booking fee
+    );
+
+    // 💡 Note: Actual booking (instant or queue) will be completed
+    // AFTER successful payment confirmation via Razorpay webhook.
+    // So we do NOT call handleInstantBooking or handleQueueBooking here.
+    // Instead, the webhook will resume the flow.
+
+  } catch (error) {
+    await this.handleError(error, 'station booking', { whatsappId, stationId });
   }
+}
 
   async showStationDetails(whatsappId: string, stationId: number): Promise<void> {
     if (!this.validateInput(whatsappId, stationId)) return;
@@ -643,7 +664,6 @@ async handleChargingStart(whatsappId: string, stationId: number): Promise<void> 
       whatsappId,
       '🔍 *Next Steps:*',
       [
-        { id: 'find_nearby_stations', title: '🗺️ Find Nearby' },
         { id: 'new_search', title: '🆕 New Search' },
         { id: 'recent_searches', title: '🕒 Recent' }
       ]

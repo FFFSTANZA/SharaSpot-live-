@@ -7,6 +7,7 @@ import { whatsappService } from './whatsapp';
 import { sessionService } from './session';
 import ocrProcessor from '../utils/ocr-processor';
 import { OCR_CONFIG } from '../config/ocr-config';
+import {chargingStations } from '../db/schema'; // ← Add chargingStations
 
 /**
  * Photo Verification Service - Google Vision API Enhanced
@@ -444,56 +445,89 @@ cleanupState(userWhatsapp: string): void {
    * ✅ Step 3: Confirm END reading - COMPLETES session
    */
   async confirmEndReading(userWhatsapp: string): Promise<boolean> {
-    const state = this.states.get(userWhatsapp);
-    if (!state || state.type !== 'end' || !state.lastReading) {
-      await whatsappService.sendTextMessage(
-        userWhatsapp,
-        '❌ No reading to confirm. Please take a photo first.'
-      );
-      return false;
-    }
-
-    const session = await this.getSession(state.sessionId);
-    if (!session?.startMeterReading) {
-      logger.error('Start reading not found during END confirmation', { sessionId: state.sessionId });
-      return false;
-    }
-
-    const startReading = parseFloat(session.startMeterReading);
-    const consumption = state.lastReading - startReading;
-
-    // ✅ Update session with END reading (Vision API)
-    await db
-      .update(chargingSessions)
-      .set({
-        endMeterReading: state.lastReading.toString(),
-        endReadingConfidence: state.lastConfidence?.toString(),
-        endVerificationAttempts: state.attemptCount,
-        energyDelivered: consumption.toString(),
-        verificationStatus: 'completed',
-        meterValidated: true,
-        updatedAt: new Date(),
-      })
-      .where(eq(chargingSessions.sessionId, state.sessionId));
-
-    logger.info('✅ END reading confirmed (Vision API)', {
+  const state = this.states.get(userWhatsapp);
+  if (!state || state.type !== 'end' || !state.lastReading) {
+    await whatsappService.sendTextMessage(
       userWhatsapp,
-      reading: state.lastReading,
-      consumption,
-      sessionId: state.sessionId,
-      confidence: state.lastConfidence,
-    });
-
-    // ✅ CRITICAL: Complete session with consumption
-    await sessionService.completeSessionAfterVerification(
-      state.sessionId,
-      state.lastReading,
-      consumption
+      '❌ No reading to confirm. Please take a photo first.'
     );
-
-    this.states.delete(userWhatsapp);
-    return true;
+    return false;
   }
+
+  const session = await this.getSession(state.sessionId);
+  if (!session?.startMeterReading) {
+    logger.error('Start reading not found during END confirmation', { sessionId: state.sessionId });
+    return false;
+  }
+
+  const startReading = parseFloat(session.startMeterReading);
+  const consumption = state.lastReading - startReading;
+
+  // ✅ Update session with END reading (Vision API)
+  await db
+    .update(chargingSessions)
+    .set({
+      endMeterReading: state.lastReading.toString(),
+      endReadingConfidence: state.lastConfidence?.toString(),
+      endVerificationAttempts: state.attemptCount,
+      energyDelivered: consumption.toString(),
+      verificationStatus: 'completed',
+      meterValidated: true,
+      updatedAt: new Date(),
+    })
+    .where(eq(chargingSessions.sessionId, state.sessionId));
+
+  logger.info('✅ END reading confirmed (Vision API)', {
+    userWhatsapp,
+    reading: state.lastReading,
+    consumption,
+    sessionId: state.sessionId,
+    confidence: state.lastConfidence,
+  });
+
+  // ✅ CRITICAL: Complete session with consumption
+  await sessionService.completeSessionAfterVerification(
+    state.sessionId,
+    state.lastReading,
+    consumption
+  );
+
+  // ✅ ADD PAYMENT INTEGRATION HERE (after session is complete, before cleanup)
+  try {
+    const [station] = await db
+      .select()
+      .from(chargingStations)
+      .where(eq(chargingStations.id, session.stationId))
+      .limit(1);
+
+    if (station) {
+      const { handleSessionPayment } = await import('../controllers/booking-payment-integration');
+      const pricePerKwh = parseFloat(station.pricePerKwh);
+
+      await handleSessionPayment(
+        userWhatsapp,
+        state.sessionId,
+        session.stationId,
+        consumption,
+        pricePerKwh
+      );
+    } else {
+      logger.warn('Station not found for payment', { stationId: session.stationId, sessionId: state.sessionId });
+    }
+  } catch (paymentError) {
+    logger.error('Failed to initiate session payment', {
+      error: paymentError instanceof Error ? paymentError.message : String(paymentError),
+      userWhatsapp,
+      sessionId: state.sessionId,
+      consumption,
+    });
+    // Note: Payment failure shouldn't roll back session completion,
+    // but you may want to notify admin or retry later.
+  }
+
+  this.states.delete(userWhatsapp);
+  return true;
+}
 
   /**
    * Retry END photo

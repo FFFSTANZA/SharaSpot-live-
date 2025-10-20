@@ -6,8 +6,9 @@ import helmet from 'helmet';
 import { env } from './config/env';
 import { logger } from './utils/logger';
 import { webhookController } from './controllers/webhook';
-import { QueueScheduler } from './services/queueScheduler'; // ✅ Correct import path
+import { QueueScheduler } from './services/queueScheduler';
 import { initializeDatabase } from './db/connection';
+import paymentRoutes from './routes/payment';
 
 // ===============================================
 // TYPE-SAFE ERROR HANDLING UTILITIES
@@ -29,6 +30,9 @@ const getErrorStack = (error: unknown): string | undefined =>
 const app = express();
 const port = env.PORT || 3000;
 
+// ✅ ONLY mount payment routes under /api/payment
+app.use('/api/payment', paymentRoutes);
+
 // ===============================================
 // SECURITY & MIDDLEWARE STACK
 // ===============================================
@@ -45,7 +49,7 @@ app.use(
   cors({
     origin:
       env.NODE_ENV === 'production'
-        ? process.env.ALLOWED_ORIGINS?.split(',') || false
+        ? env.ALLOWED_ORIGINS || false
         : true,
     credentials: true,
     methods: ['GET', 'POST', 'OPTIONS'],
@@ -55,7 +59,7 @@ app.use(
 
 app.use(
   express.json({
-    limit: '5mb',
+    limit: env.REQUEST_SIZE_LIMIT,
     strict: true,
     type: ['application/json', 'text/plain'],
   })
@@ -64,7 +68,7 @@ app.use(
 app.use(
   express.urlencoded({
     extended: true,
-    limit: '5mb',
+    limit: env.REQUEST_SIZE_LIMIT,
     parameterLimit: 50,
   })
 );
@@ -74,8 +78,8 @@ app.use(
 // ===============================================
 
 const rateLimitMap = new Map<string, { count: number; resetTime: number }>();
-const RATE_LIMIT_WINDOW = 60_000; // 1 minute
-const RATE_LIMIT_MAX = env.NODE_ENV === 'production' ? 60 : 100;
+const RATE_LIMIT_WINDOW = env.RATE_LIMIT_WINDOW;
+const RATE_LIMIT_MAX = env.RATE_LIMIT_MAX;
 
 setInterval(() => {
   const now = Date.now();
@@ -158,8 +162,9 @@ app.get('/', (_req: Request, res: Response) => {
     timestamp: new Date().toISOString(),
     endpoints: {
       health: '/health',
-      webhook: '/webhook',
-      api: '/api/v1',
+      whatsappWebhook: '/webhook',
+      paymentCallback: '/api/payment/callback',
+      paymentWebhook: '/api/payment/webhook',
     },
   });
 });
@@ -193,14 +198,14 @@ app.get('/health', async (_req: Request, res: Response) => {
 });
 
 // ===============================================
-// WEBHOOK ROUTES
+// WHATSAPP WEBHOOK (Meta) — MUST REMAIN INDEPENDENT
 // ===============================================
 
 app.get('/webhook', webhookController.verifyWebhook.bind(webhookController));
 app.post('/webhook', webhookController.handleWebhook.bind(webhookController));
 
 // ===============================================
-// API ROUTE PLACEHOLDER
+// API PLACEHOLDER
 // ===============================================
 
 app.use('/api/v1', (_req: Request, res: Response) => {
@@ -274,8 +279,10 @@ class ServerManager {
         logger.info('✅ SharaSpot Bot Server Ready', {
           port,
           environment: env.NODE_ENV,
-          webhookUrl: `http://localhost:${port}/webhook`,
-          healthUrl: `http://localhost:${port}/health`,
+          whatsappWebhookUrl: `${env.APP_BASE_URL}/webhook`,
+          paymentCallbackUrl: `${env.APP_BASE_URL}/api/payment/callback`,
+          paymentWebhookUrl: `${env.APP_BASE_URL}/api/payment/webhook`,
+          healthUrl: `${env.APP_BASE_URL}/health`,
           pid: process.pid,
           nodeVersion: process.version,
         });
@@ -304,8 +311,7 @@ class ServerManager {
   }
 
   private async startBackgroundServices(): Promise<void> {
-    const shouldStartScheduler = process.env.ENABLE_QUEUE_SCHEDULER !== 'false';
-    if (shouldStartScheduler) {
+    if (env.ENABLE_QUEUE_SCHEDULER) {
       try {
         await QueueScheduler.runScheduler();
         logger.info('🤖 Queue scheduler started');
@@ -375,7 +381,7 @@ if (require.main === module) {
 }
 
 // ===============================================
-// EXPORTS FOR TESTING / METRICS
+// EXPORTS
 // ===============================================
 
 export { app, serverManager };

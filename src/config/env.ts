@@ -25,6 +25,15 @@ const envSchema = z.object({
   PHONE_NUMBER_ID: z.string().min(10, 'Phone number ID must be at least 10 characters'),
   VERIFY_TOKEN: z.string().min(8, 'Verify token must be at least 8 characters'),
   
+  // Razorpay Configuration (Optional but recommended)
+  RAZORPAY_KEY_ID: z.string().optional(),
+  RAZORPAY_KEY_SECRET: z.string().optional(),
+  
+  // Application Base URL (Optional)
+  APP_BASE_URL: z.string()
+    .url('APP_BASE_URL must be a valid URL')
+    .default('http://localhost:3000'),
+  
   // Database Configuration (Required)
   DATABASE_URL: z.string()
     .url('Must be a valid database URL')
@@ -176,6 +185,12 @@ export const validateEnvironment = () => {
       report.warnings.push('Debug logging enabled in production');
       report.recommendations.push('Set LOG_LEVEL to "info" or "warn" in production');
     }
+
+    // Razorpay checks
+    if (!env.RAZORPAY_KEY_ID || !env.RAZORPAY_KEY_SECRET) {
+      report.warnings.push('Razorpay credentials missing in production');
+      report.recommendations.push('Set RAZORPAY_KEY_ID and RAZORPAY_KEY_SECRET for payment functionality');
+    }
   }
 
   // Development environment checks
@@ -234,6 +249,11 @@ export const getWhatsAppConfig = () => ({
   verifyToken: env.VERIFY_TOKEN
 });
 
+export const getRazorpayConfig = () => ({
+  keyId: env.RAZORPAY_KEY_ID,
+  keySecret: env.RAZORPAY_KEY_SECRET
+});
+
 export const getBackgroundJobConfig = () => ({
   enabled: env.ENABLE_QUEUE_SCHEDULER,
   processInterval: env.QUEUE_PROCESS_INTERVAL,
@@ -262,11 +282,13 @@ export const getConfigSummary = () => {
     features: {
       queueScheduler: env.ENABLE_QUEUE_SCHEDULER,
       requestLogging: env.ENABLE_REQUEST_LOGGING,
-      compression: env.ENABLE_COMPRESSION
+      compression: env.ENABLE_COMPRESSION,
+      razorpay: !!(env.RAZORPAY_KEY_ID && env.RAZORPAY_KEY_SECRET)
     },
     logging: {
       level: env.LOG_LEVEL
-    }
+    },
+    appBaseUrl: env.APP_BASE_URL
   };
 
   return summary;
@@ -301,4 +323,3 @@ if (process.env.NODE_ENV !== 'test') {
   console.info('✅ Environment configuration loaded successfully');
   console.info(`📊 Running in ${env.NODE_ENV} mode on port ${env.PORT}`);
 }
-
