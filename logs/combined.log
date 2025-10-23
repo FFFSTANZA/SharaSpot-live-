@@ -3343,3 +3343,6138 @@
 2025-10-20 23:00:15 [INFO]: 🛑 SIGTERM received — starting graceful shutdown {
   "service": "sharaspot-bot"
 }
+2025-10-20 23:10:28 [INFO]: 🚀 Starting SharaSpot Bot Server {
+  "service": "sharaspot-bot"
+}
+2025-10-20 23:10:28 [INFO]: 🔄 Initializing database connection... {
+  "service": "sharaspot-bot"
+}
+2025-10-20 23:10:28 [INFO]: ✅ Database connection successful {
+  "service": "sharaspot-bot"
+}
+2025-10-20 23:10:28 [INFO]: 🎉 Database initialized successfully {
+  "service": "sharaspot-bot"
+}
+2025-10-20 23:10:28 [INFO]: ✅ Database connected successfully {
+  "service": "sharaspot-bot"
+}
+2025-10-20 23:10:28 [INFO]: 🚀 Starting queue scheduler... {
+  "service": "sharaspot-bot"
+}
+2025-10-20 23:10:28 [INFO]: ✅ Queue scheduler started successfully {
+  "service": "sharaspot-bot"
+}
+2025-10-20 23:10:28 [INFO]: 🤖 Queue scheduler started {
+  "service": "sharaspot-bot"
+}
+2025-10-20 23:10:28 [INFO]: ✅ SharaSpot Bot Server Ready {
+  "service": "sharaspot-bot",
+  "port": 3000,
+  "environment": "development",
+  "whatsappWebhookUrl": "https://your-domain.com/webhook",
+  "paymentCallbackUrl": "https://your-domain.com/api/payment/callback",
+  "paymentWebhookUrl": "https://your-domain.com/api/payment/webhook",
+  "healthUrl": "https://your-domain.com/health",
+  "pid": 23028,
+  "nodeVersion": "v24.9.0"
+}
+2025-10-20 23:10:29 [INFO]: 📥 Processing user message batch {
+  "service": "sharaspot-bot",
+  "batchId": "batch-1760982029007-yknechy",
+  "totalMessages": 1,
+  "firstMessageId": "wamid.HBgMOTE5NzkwMjk0MjIxFQIAEhggQTVGNkE0MzNFRjdBMjY5M0E4RDZBNEFGNDg4OEVEOUUA"
+}
+2025-10-20 23:10:29 [INFO]: ✅ Webhook message batch dispatch completed {
+  "service": "sharaspot-bot",
+  "batchId": "batch-1760982029007-yknechy",
+  "processed": 1,
+  "duplicatesSkipped": 0
+}
+2025-10-20 23:10:29 [INFO]: HTTP Request {
+  "service": "sharaspot-bot",
+  "method": "POST",
+  "path": "/webhook",
+  "status": 200,
+  "duration": "8ms",
+  "ip": "::1",
+  "userAgent": "facebookexternalua"
+}
+2025-10-20 23:10:29 [INFO]: 📨 Processing message {
+  "service": "sharaspot-bot",
+  "whatsappId": "919790294221",
+  "type": "text",
+  "messageId": "wamid.HBgMOTE5NzkwMjk0MjIxFQIAEhggQTVGNkE0MzNFRjdBMjY5M0E4RDZBNEFGNDg4OEVEOUUA"
+}
+2025-10-20 23:10:29 [INFO]: 🔍 Looking for user {
+  "service": "sharaspot-bot",
+  "whatsappId": "919790294221"
+}
+2025-10-20 23:10:29 [INFO]: ✅ Found existing user {
+  "service": "sharaspot-bot",
+  "whatsappId": "919790294221",
+  "userId": 16
+}
+2025-10-20 23:10:29 [INFO]: 🔍 Looking for user {
+  "service": "sharaspot-bot",
+  "whatsappId": "919790294221"
+}
+2025-10-20 23:10:29 [INFO]: ✅ Found existing user {
+  "service": "sharaspot-bot",
+  "whatsappId": "919790294221",
+  "userId": 16
+}
+2025-10-20 23:10:32 [INFO]: ✅ Button message sent {
+  "service": "sharaspot-bot",
+  "to": "919790294221",
+  "messageId": "wamid.HBgMOTE5NzkwMjk0MjIxFQIAERgSNDlFMDE1MDVDM0NEODJBNkVGAA=="
+}
+2025-10-20 23:10:33 [INFO]: HTTP Request {
+  "service": "sharaspot-bot",
+  "method": "POST",
+  "path": "/webhook",
+  "status": 200,
+  "duration": "2ms",
+  "ip": "::1",
+  "userAgent": "facebookexternalua"
+}
+2025-10-20 23:10:33 [INFO]: HTTP Request {
+  "service": "sharaspot-bot",
+  "method": "POST",
+  "path": "/webhook",
+  "status": 200,
+  "duration": "2ms",
+  "ip": "::1",
+  "userAgent": "facebookexternalua"
+}
+2025-10-20 23:10:34 [INFO]: 📥 Processing user message batch {
+  "service": "sharaspot-bot",
+  "batchId": "batch-1760982034664-h7pzbr2",
+  "totalMessages": 1,
+  "firstMessageId": "wamid.HBgMOTE5NzkwMjk0MjIxFQIAEhggQTVDMjk4NzA3MkQzNTkyRkI2M0Y4QjY5NDU3MDgzMUIA"
+}
+2025-10-20 23:10:34 [INFO]: ✅ Webhook message batch dispatch completed {
+  "service": "sharaspot-bot",
+  "batchId": "batch-1760982034664-h7pzbr2",
+  "processed": 1,
+  "duplicatesSkipped": 0
+}
+2025-10-20 23:10:34 [INFO]: HTTP Request {
+  "service": "sharaspot-bot",
+  "method": "POST",
+  "path": "/webhook",
+  "status": 200,
+  "duration": "4ms",
+  "ip": "::1",
+  "userAgent": "facebookexternalua"
+}
+2025-10-20 23:10:34 [INFO]: 📨 Processing message {
+  "service": "sharaspot-bot",
+  "whatsappId": "919790294221",
+  "type": "interactive",
+  "messageId": "wamid.HBgMOTE5NzkwMjk0MjIxFQIAEhggQTVDMjk4NzA3MkQzNTkyRkI2M0Y4QjY5NDU3MDgzMUIA"
+}
+2025-10-20 23:10:34 [INFO]: 🔍 Looking for user {
+  "service": "sharaspot-bot",
+  "whatsappId": "919790294221"
+}
+2025-10-20 23:10:34 [INFO]: ✅ Found existing user {
+  "service": "sharaspot-bot",
+  "whatsappId": "919790294221",
+  "userId": 16
+}
+2025-10-20 23:10:34 [INFO]: 🔘 Button pressed {
+  "service": "sharaspot-bot",
+  "whatsappId": "919790294221",
+  "buttonId": "quick_book",
+  "title": "⚡ Find Stations"
+}
+2025-10-20 23:10:34 [INFO]: 🎯 Routing button {
+  "service": "sharaspot-bot",
+  "whatsappId": "919790294221",
+  "buttonId": "quick_book",
+  "parsed": {
+    "action": "quick_book",
+    "category": "system",
+    "stationId": 0
+  }
+}
+2025-10-20 23:10:35 [INFO]: ✅ Button message sent {
+  "service": "sharaspot-bot",
+  "to": "919790294221",
+  "messageId": "wamid.HBgMOTE5NzkwMjk0MjIxFQIAERgSMkQzNDREQTVBNzk1MjczOEJDAA=="
+}
+2025-10-20 23:10:36 [INFO]: HTTP Request {
+  "service": "sharaspot-bot",
+  "method": "POST",
+  "path": "/webhook",
+  "status": 200,
+  "duration": "1ms",
+  "ip": "::1",
+  "userAgent": "facebookexternalua"
+}
+2025-10-20 23:10:37 [INFO]: HTTP Request {
+  "service": "sharaspot-bot",
+  "method": "POST",
+  "path": "/webhook",
+  "status": 200,
+  "duration": "1ms",
+  "ip": "::1",
+  "userAgent": "facebookexternalua"
+}
+2025-10-20 23:10:39 [INFO]: 📥 Processing user message batch {
+  "service": "sharaspot-bot",
+  "batchId": "batch-1760982039015-c497z78",
+  "totalMessages": 1,
+  "firstMessageId": "wamid.HBgMOTE5NzkwMjk0MjIxFQIAEhggQTU3QjhGOEI5OEI1MThBNTI3NzNFNThBMjgzQzk5QkEA"
+}
+2025-10-20 23:10:39 [INFO]: ✅ Webhook message batch dispatch completed {
+  "service": "sharaspot-bot",
+  "batchId": "batch-1760982039015-c497z78",
+  "processed": 1,
+  "duplicatesSkipped": 0
+}
+2025-10-20 23:10:39 [INFO]: HTTP Request {
+  "service": "sharaspot-bot",
+  "method": "POST",
+  "path": "/webhook",
+  "status": 200,
+  "duration": "2ms",
+  "ip": "::1",
+  "userAgent": "facebookexternalua"
+}
+2025-10-20 23:10:39 [INFO]: 📨 Processing message {
+  "service": "sharaspot-bot",
+  "whatsappId": "919790294221",
+  "type": "interactive",
+  "messageId": "wamid.HBgMOTE5NzkwMjk0MjIxFQIAEhggQTU3QjhGOEI5OEI1MThBNTI3NzNFNThBMjgzQzk5QkEA"
+}
+2025-10-20 23:10:39 [INFO]: 🔍 Looking for user {
+  "service": "sharaspot-bot",
+  "whatsappId": "919790294221"
+}
+2025-10-20 23:10:39 [INFO]: ✅ Found existing user {
+  "service": "sharaspot-bot",
+  "whatsappId": "919790294221",
+  "userId": 16
+}
+2025-10-20 23:10:39 [INFO]: 🔘 Button pressed {
+  "service": "sharaspot-bot",
+  "whatsappId": "919790294221",
+  "buttonId": "recent_searches",
+  "title": "🕒 Recent Searches"
+}
+2025-10-20 23:10:39 [INFO]: 🎯 Routing button {
+  "service": "sharaspot-bot",
+  "whatsappId": "919790294221",
+  "buttonId": "recent_searches",
+  "parsed": {
+    "action": "recent_searches",
+    "category": "system",
+    "stationId": 0
+  }
+}
+2025-10-20 23:10:39 [INFO]: Location button pressed {
+  "service": "sharaspot-bot",
+  "whatsappId": "919790294221",
+  "buttonId": "recent_searches",
+  "buttonTitle": ""
+}
+2025-10-20 23:10:39 [WARN]: Could not parse button ID {
+  "service": "sharaspot-bot",
+  "buttonId": "recent_searches"
+}
+2025-10-20 23:10:40 [INFO]: ✅ List message sent {
+  "service": "sharaspot-bot",
+  "to": "919790294221",
+  "messageId": "wamid.HBgMOTE5NzkwMjk0MjIxFQIAERgSNjNEMUY3MkFGQkM4NkU5MkZEAA=="
+}
+2025-10-20 23:10:41 [INFO]: HTTP Request {
+  "service": "sharaspot-bot",
+  "method": "POST",
+  "path": "/webhook",
+  "status": 200,
+  "duration": "2ms",
+  "ip": "::1",
+  "userAgent": "facebookexternalua"
+}
+2025-10-20 23:10:42 [INFO]: HTTP Request {
+  "service": "sharaspot-bot",
+  "method": "POST",
+  "path": "/webhook",
+  "status": 200,
+  "duration": "1ms",
+  "ip": "::1",
+  "userAgent": "facebookexternalua"
+}
+2025-10-20 23:10:44 [INFO]: 📥 Processing user message batch {
+  "service": "sharaspot-bot",
+  "batchId": "batch-1760982044760-mp14o6n",
+  "totalMessages": 1,
+  "firstMessageId": "wamid.HBgMOTE5NzkwMjk0MjIxFQIAEhggQTU4MUQxNkM4Mzc4MzNBMzcxNDlCNjFCMkI5NkJFRTkA"
+}
+2025-10-20 23:10:44 [INFO]: ✅ Webhook message batch dispatch completed {
+  "service": "sharaspot-bot",
+  "batchId": "batch-1760982044760-mp14o6n",
+  "processed": 1,
+  "duplicatesSkipped": 0
+}
+2025-10-20 23:10:44 [INFO]: HTTP Request {
+  "service": "sharaspot-bot",
+  "method": "POST",
+  "path": "/webhook",
+  "status": 200,
+  "duration": "3ms",
+  "ip": "::1",
+  "userAgent": "facebookexternalua"
+}
+2025-10-20 23:10:44 [INFO]: 📨 Processing message {
+  "service": "sharaspot-bot",
+  "whatsappId": "919790294221",
+  "type": "interactive",
+  "messageId": "wamid.HBgMOTE5NzkwMjk0MjIxFQIAEhggQTU4MUQxNkM4Mzc4MzNBMzcxNDlCNjFCMkI5NkJFRTkA"
+}
+2025-10-20 23:10:44 [INFO]: 🔍 Looking for user {
+  "service": "sharaspot-bot",
+  "whatsappId": "919790294221"
+}
+2025-10-20 23:10:45 [INFO]: ✅ Found existing user {
+  "service": "sharaspot-bot",
+  "whatsappId": "919790294221",
+  "userId": 16
+}
+2025-10-20 23:10:45 [INFO]: 📋 List selected {
+  "service": "sharaspot-bot",
+  "whatsappId": "919790294221",
+  "listId": "recent_search_0",
+  "title": "Anna Nagar"
+}
+2025-10-20 23:10:45 [INFO]: Address input received {
+  "service": "sharaspot-bot",
+  "whatsappId": "919790294221",
+  "address": "Anna Nagar"
+}
+2025-10-20 23:10:46 [INFO]: ✅ Text message sent {
+  "service": "sharaspot-bot",
+  "to": "919790294221",
+  "messageId": "wamid.HBgMOTE5NzkwMjk0MjIxFQIAERgSQTYxRTU1MjA0OEY0RTU5RjE0AA=="
+}
+2025-10-20 23:10:47 [INFO]: HTTP Request {
+  "service": "sharaspot-bot",
+  "method": "POST",
+  "path": "/webhook",
+  "status": 200,
+  "duration": "1ms",
+  "ip": "::1",
+  "userAgent": "facebookexternalua"
+}
+2025-10-20 23:10:47 [INFO]: ✅ Text message sent {
+  "service": "sharaspot-bot",
+  "to": "919790294221",
+  "messageId": "wamid.HBgMOTE5NzkwMjk0MjIxFQIAERgSM0NDMzE2Q0Y3NDlGNTBFMTEzAA=="
+}
+2025-10-20 23:10:47 [INFO]: 🔍 Starting station search {
+  "service": "sharaspot-bot",
+  "whatsappId": "919790294221",
+  "coordinates": {
+    "latitude": 13.0878,
+    "longitude": 80.2086
+  },
+  "address": "Anna Nagar, Chennai, Tamil Nadu, India"
+}
+2025-10-20 23:10:48 [INFO]: User found for search {
+  "service": "sharaspot-bot",
+  "whatsappId": "919790294221",
+  "userId": 16,
+  "hasPrefs": true
+}
+2025-10-20 23:10:48 [INFO]: Search options prepared {
+  "service": "sharaspot-bot",
+  "whatsappId": "919790294221",
+  "searchOptions": {
+    "userWhatsapp": "919790294221",
+    "latitude": 13.0878,
+    "longitude": 80.2086,
+    "radius": 25,
+    "maxResults": 5,
+    "offset": 0,
+    "availableOnly": false,
+    "connectorTypes": [
+      "Proprietary"
+    ],
+    "sortBy": "availability"
+  }
+}
+2025-10-20 23:10:48 [INFO]: Searching stations {
+  "service": "sharaspot-bot",
+  "userWhatsapp": "919790294221",
+  "location": {
+    "lat": 13.0878,
+    "lng": 80.2086
+  },
+  "radius": 25
+}
+2025-10-20 23:10:48 [INFO]: HTTP Request {
+  "service": "sharaspot-bot",
+  "method": "POST",
+  "path": "/webhook",
+  "status": 200,
+  "duration": "2ms",
+  "ip": "::1",
+  "userAgent": "facebookexternalua"
+}
+2025-10-20 23:10:48 [INFO]: Station search service completed {
+  "service": "sharaspot-bot",
+  "whatsappId": "919790294221",
+  "stationsFound": 3,
+  "totalCount": 3,
+  "hasMore": false
+}
+2025-10-20 23:10:48 [INFO]: ✅ Search results stored in context {
+  "service": "sharaspot-bot",
+  "whatsappId": "919790294221"
+}
+2025-10-20 23:10:48 [INFO]: HTTP Request {
+  "service": "sharaspot-bot",
+  "method": "POST",
+  "path": "/webhook",
+  "status": 200,
+  "duration": "1ms",
+  "ip": "::1",
+  "userAgent": "facebookexternalua"
+}
+2025-10-20 23:10:49 [INFO]: HTTP Request {
+  "service": "sharaspot-bot",
+  "method": "POST",
+  "path": "/webhook",
+  "status": 200,
+  "duration": "2ms",
+  "ip": "::1",
+  "userAgent": "facebookexternalua"
+}
+2025-10-20 23:10:49 [INFO]: ✅ Text message sent {
+  "service": "sharaspot-bot",
+  "to": "919790294221",
+  "messageId": "wamid.HBgMOTE5NzkwMjk0MjIxFQIAERgSNUQ1MjcxMTc5OUEwNkIzNDNFAA=="
+}
+2025-10-20 23:10:50 [INFO]: ✅ Button message sent {
+  "service": "sharaspot-bot",
+  "to": "919790294221",
+  "messageId": "wamid.HBgMOTE5NzkwMjk0MjIxFQIAERgSQjUzQzg3NTUwNUNGMUEyRkRDAA=="
+}
+2025-10-20 23:10:50 [INFO]: ✅ Station results displayed successfully {
+  "service": "sharaspot-bot",
+  "whatsappId": "919790294221",
+  "stationsShown": 3
+}
+2025-10-20 23:10:50 [INFO]: HTTP Request {
+  "service": "sharaspot-bot",
+  "method": "POST",
+  "path": "/webhook",
+  "status": 200,
+  "duration": "2ms",
+  "ip": "::1",
+  "userAgent": "facebookexternalua"
+}
+2025-10-20 23:10:51 [INFO]: HTTP Request {
+  "service": "sharaspot-bot",
+  "method": "POST",
+  "path": "/webhook",
+  "status": 200,
+  "duration": "2ms",
+  "ip": "::1",
+  "userAgent": "facebookexternalua"
+}
+2025-10-20 23:10:51 [INFO]: HTTP Request {
+  "service": "sharaspot-bot",
+  "method": "POST",
+  "path": "/webhook",
+  "status": 200,
+  "duration": "2ms",
+  "ip": "::1",
+  "userAgent": "facebookexternalua"
+}
+2025-10-20 23:10:51 [INFO]: HTTP Request {
+  "service": "sharaspot-bot",
+  "method": "POST",
+  "path": "/webhook",
+  "status": 200,
+  "duration": "1ms",
+  "ip": "::1",
+  "userAgent": "facebookexternalua"
+}
+2025-10-20 23:10:51 [INFO]: ✅ Button message sent {
+  "service": "sharaspot-bot",
+  "to": "919790294221",
+  "messageId": "wamid.HBgMOTE5NzkwMjk0MjIxFQIAERgSNDAxNTkwMzY5QzlERkFGNUM1AA=="
+}
+2025-10-20 23:10:52 [INFO]: HTTP Request {
+  "service": "sharaspot-bot",
+  "method": "POST",
+  "path": "/webhook",
+  "status": 200,
+  "duration": "2ms",
+  "ip": "::1",
+  "userAgent": "facebookexternalua"
+}
+2025-10-20 23:10:53 [INFO]: HTTP Request {
+  "service": "sharaspot-bot",
+  "method": "POST",
+  "path": "/webhook",
+  "status": 200,
+  "duration": "2ms",
+  "ip": "::1",
+  "userAgent": "facebookexternalua"
+}
+2025-10-20 23:10:55 [INFO]: 📥 Processing user message batch {
+  "service": "sharaspot-bot",
+  "batchId": "batch-1760982055049-gtu8xyi",
+  "totalMessages": 1,
+  "firstMessageId": "wamid.HBgMOTE5NzkwMjk0MjIxFQIAEhggQTVDQTg4NTVDMTU2NkFGRTIxN0I1QUYxOEY0QjcxOTAA"
+}
+2025-10-20 23:10:55 [INFO]: ✅ Webhook message batch dispatch completed {
+  "service": "sharaspot-bot",
+  "batchId": "batch-1760982055049-gtu8xyi",
+  "processed": 1,
+  "duplicatesSkipped": 0
+}
+2025-10-20 23:10:55 [INFO]: HTTP Request {
+  "service": "sharaspot-bot",
+  "method": "POST",
+  "path": "/webhook",
+  "status": 200,
+  "duration": "3ms",
+  "ip": "::1",
+  "userAgent": "facebookexternalua"
+}
+2025-10-20 23:10:55 [INFO]: 📨 Processing message {
+  "service": "sharaspot-bot",
+  "whatsappId": "919790294221",
+  "type": "interactive",
+  "messageId": "wamid.HBgMOTE5NzkwMjk0MjIxFQIAEhggQTVDQTg4NTVDMTU2NkFGRTIxN0I1QUYxOEY0QjcxOTAA"
+}
+2025-10-20 23:10:55 [INFO]: 🔍 Looking for user {
+  "service": "sharaspot-bot",
+  "whatsappId": "919790294221"
+}
+2025-10-20 23:10:55 [INFO]: ✅ Found existing user {
+  "service": "sharaspot-bot",
+  "whatsappId": "919790294221",
+  "userId": 16
+}
+2025-10-20 23:10:55 [INFO]: 🔘 Button pressed {
+  "service": "sharaspot-bot",
+  "whatsappId": "919790294221",
+  "buttonId": "book_station_23",
+  "title": "⚡ Book Now"
+}
+2025-10-20 23:10:55 [INFO]: 🎯 Routing button {
+  "service": "sharaspot-bot",
+  "whatsappId": "919790294221",
+  "buttonId": "book_station_23",
+  "parsed": {
+    "action": "book",
+    "category": "station",
+    "stationId": 23
+  }
+}
+2025-10-20 23:10:55 [INFO]: Location button pressed {
+  "service": "sharaspot-bot",
+  "whatsappId": "919790294221",
+  "buttonId": "book_station_23",
+  "buttonTitle": ""
+}
+2025-10-20 23:10:55 [INFO]: Processing booking request from location {
+  "service": "sharaspot-bot",
+  "whatsappId": "919790294221",
+  "stationId": 23
+}
+2025-10-20 23:10:56 [INFO]: 🎫 Initiating booking payment {
+  "service": "sharaspot-bot",
+  "whatsappId": "919790294221",
+  "stationId": 23,
+  "stationName": "OMR IT Corridor Station"
+}
+2025-10-20 23:10:56 [INFO]: ✅ Booking payment link created {
+  "service": "sharaspot-bot",
+  "userWhatsappId": "919790294221",
+  "stationId": 23,
+  "amount": 50,
+  "paymentLinkId": "plink_RVoTrOuC6tcAI5",
+  "referenceId": "book_919790294221_23_1760982056113"
+}
+2025-10-20 23:10:57 [INFO]: ✅ Text message sent {
+  "service": "sharaspot-bot",
+  "to": "919790294221",
+  "messageId": "wamid.HBgMOTE5NzkwMjk0MjIxFQIAERgSMTQ2QThENEIxNkM0QjE2ODgwAA=="
+}
+2025-10-20 23:10:57 [INFO]: ✅ Booking payment link sent {
+  "service": "sharaspot-bot",
+  "whatsappId": "919790294221",
+  "stationId": 23,
+  "bookingFee": 50
+}
+2025-10-20 23:10:57 [INFO]: ✅ Booking payment link sent successfully {
+  "service": "sharaspot-bot",
+  "whatsappId": "919790294221",
+  "stationId": 23
+}
+2025-10-20 23:10:58 [INFO]: HTTP Request {
+  "service": "sharaspot-bot",
+  "method": "POST",
+  "path": "/webhook",
+  "status": 200,
+  "duration": "1ms",
+  "ip": "::1",
+  "userAgent": "facebookexternalua"
+}
+2025-10-20 23:10:59 [INFO]: HTTP Request {
+  "service": "sharaspot-bot",
+  "method": "POST",
+  "path": "/webhook",
+  "status": 200,
+  "duration": "2ms",
+  "ip": "::1",
+  "userAgent": "facebookexternalua"
+}
+2025-10-20 23:11:23 [WARN]: HTTP Request {
+  "service": "sharaspot-bot",
+  "method": "POST",
+  "path": "/",
+  "status": 404,
+  "duration": "2ms",
+  "ip": "::1",
+  "userAgent": "Razorpay-Webhook/v1"
+}
+2025-10-20 23:11:25 [INFO]: HTTP Request {
+  "service": "sharaspot-bot",
+  "method": "POST",
+  "path": "/webhook",
+  "status": 200,
+  "duration": "1ms",
+  "ip": "::1",
+  "userAgent": "facebookexternalua"
+}
+2025-10-20 23:11:28 [INFO]: 🧹 Starting cleanup process... {
+  "service": "sharaspot-bot"
+}
+2025-10-20 23:11:29 [INFO]: ✅ No expired reservations to cleanup {
+  "service": "sharaspot-bot"
+}
+2025-10-20 23:12:28 [INFO]: 📢 Processing queue notifications... {
+  "service": "sharaspot-bot"
+}
+2025-10-20 23:12:29 [INFO]: 🧹 Starting cleanup process... {
+  "service": "sharaspot-bot"
+}
+2025-10-20 23:12:31 [INFO]: ✅ No expired reservations to cleanup {
+  "service": "sharaspot-bot"
+}
+2025-10-20 23:12:31 [INFO]: ✅ No pending queues for notifications {
+  "service": "sharaspot-bot"
+}
+2025-10-20 23:13:29 [INFO]: 🧹 Starting cleanup process... {
+  "service": "sharaspot-bot"
+}
+2025-10-20 23:13:30 [INFO]: ✅ No expired reservations to cleanup {
+  "service": "sharaspot-bot"
+}
+2025-10-20 23:14:28 [INFO]: 📢 Processing queue notifications... {
+  "service": "sharaspot-bot"
+}
+2025-10-20 23:14:29 [INFO]: 🧹 Starting cleanup process... {
+  "service": "sharaspot-bot"
+}
+2025-10-20 23:14:29 [INFO]: ✅ No expired reservations to cleanup {
+  "service": "sharaspot-bot"
+}
+2025-10-20 23:14:29 [INFO]: ✅ No pending queues for notifications {
+  "service": "sharaspot-bot"
+}
+2025-10-20 23:14:46 [INFO]: 🛑 SIGINT received — starting graceful shutdown {
+  "service": "sharaspot-bot"
+}
+2025-10-20 23:20:07 [INFO]: 🚀 Starting SharaSpot Bot Server {
+  "service": "sharaspot-bot"
+}
+2025-10-20 23:20:07 [INFO]: 🔄 Initializing database connection... {
+  "service": "sharaspot-bot"
+}
+2025-10-20 23:20:08 [INFO]: ✅ Database connection successful {
+  "service": "sharaspot-bot"
+}
+2025-10-20 23:20:08 [INFO]: 🎉 Database initialized successfully {
+  "service": "sharaspot-bot"
+}
+2025-10-20 23:20:08 [INFO]: ✅ Database connected successfully {
+  "service": "sharaspot-bot"
+}
+2025-10-20 23:20:08 [INFO]: 🚀 Starting queue scheduler... {
+  "service": "sharaspot-bot"
+}
+2025-10-20 23:20:08 [INFO]: ✅ Queue scheduler started successfully {
+  "service": "sharaspot-bot"
+}
+2025-10-20 23:20:08 [INFO]: 🤖 Queue scheduler started {
+  "service": "sharaspot-bot"
+}
+2025-10-20 23:20:08 [INFO]: ✅ SharaSpot Bot Server Ready {
+  "service": "sharaspot-bot",
+  "port": 3000,
+  "environment": "development",
+  "whatsappWebhookUrl": "https://your-domain.com/webhook",
+  "paymentCallbackUrl": "https://your-domain.com/api/payment/callback",
+  "razorpayWebhookUrl": "https://your-domain.com/ (POST)",
+  "healthUrl": "https://your-domain.com/health",
+  "pid": 25567,
+  "nodeVersion": "v24.9.0"
+}
+2025-10-20 23:21:08 [INFO]: 🧹 Starting cleanup process... {
+  "service": "sharaspot-bot"
+}
+2025-10-20 23:21:08 [INFO]: ✅ No expired reservations to cleanup {
+  "service": "sharaspot-bot"
+}
+2025-10-20 23:21:35 [INFO]: ✅ Webhook verified successfully {
+  "service": "sharaspot-bot"
+}
+2025-10-20 23:21:35 [INFO]: HTTP Request {
+  "service": "sharaspot-bot",
+  "method": "GET",
+  "path": "/webhook",
+  "status": 200,
+  "duration": "14ms",
+  "ip": "::1",
+  "userAgent": "facebookplatform/1.0 (+http://developers.facebook.com)"
+}
+2025-10-20 23:22:08 [INFO]: 📢 Processing queue notifications... {
+  "service": "sharaspot-bot"
+}
+2025-10-20 23:22:08 [INFO]: 🧹 Starting cleanup process... {
+  "service": "sharaspot-bot"
+}
+2025-10-20 23:22:08 [INFO]: HTTP Request {
+  "service": "sharaspot-bot",
+  "method": "POST",
+  "path": "/webhook",
+  "status": 200,
+  "duration": "3ms",
+  "ip": "::1",
+  "userAgent": "facebookexternalua"
+}
+2025-10-20 23:22:08 [INFO]: ✅ No expired reservations to cleanup {
+  "service": "sharaspot-bot"
+}
+2025-10-20 23:22:08 [INFO]: ✅ No pending queues for notifications {
+  "service": "sharaspot-bot"
+}
+2025-10-20 23:22:08 [INFO]: 📥 Processing user message batch {
+  "service": "sharaspot-bot",
+  "batchId": "batch-1760982728972-jslg9ev",
+  "totalMessages": 1,
+  "firstMessageId": "wamid.HBgMOTE5NzkwMjk0MjIxFQIAEhggQTU0N0E4REM0ODBGNEUyNTQ2RDZFOTYzMjZBMjA4MUQA"
+}
+2025-10-20 23:22:08 [INFO]: ✅ Webhook message batch dispatch completed {
+  "service": "sharaspot-bot",
+  "batchId": "batch-1760982728972-jslg9ev",
+  "processed": 1,
+  "duplicatesSkipped": 0
+}
+2025-10-20 23:22:08 [INFO]: HTTP Request {
+  "service": "sharaspot-bot",
+  "method": "POST",
+  "path": "/webhook",
+  "status": 200,
+  "duration": "3ms",
+  "ip": "::1",
+  "userAgent": "facebookexternalua"
+}
+2025-10-20 23:22:09 [INFO]: 📨 Processing message {
+  "service": "sharaspot-bot",
+  "whatsappId": "919790294221",
+  "type": "text",
+  "messageId": "wamid.HBgMOTE5NzkwMjk0MjIxFQIAEhggQTU0N0E4REM0ODBGNEUyNTQ2RDZFOTYzMjZBMjA4MUQA"
+}
+2025-10-20 23:22:09 [INFO]: 🔍 Looking for user {
+  "service": "sharaspot-bot",
+  "whatsappId": "919790294221"
+}
+2025-10-20 23:22:09 [INFO]: ✅ Found existing user {
+  "service": "sharaspot-bot",
+  "whatsappId": "919790294221",
+  "userId": 16
+}
+2025-10-20 23:22:09 [INFO]: 🔍 Looking for user {
+  "service": "sharaspot-bot",
+  "whatsappId": "919790294221"
+}
+2025-10-20 23:22:09 [INFO]: ✅ Found existing user {
+  "service": "sharaspot-bot",
+  "whatsappId": "919790294221",
+  "userId": 16
+}
+2025-10-20 23:22:09 [ERROR]: ❌ Mark as read failed {
+  "service": "sharaspot-bot",
+  "messageId": "wamid.HBgMOTE5NzkwMjk0MjIxFQIAEhggQTU0N0E4REM0ODBGNEUyNTQ2RDZFOTYzMjZBMjA4MUQA",
+  "error": {
+    "error": {
+      "message": "Unsupported post request. Object with ID '780683511802625' does not exist, cannot be loaded due to missing permissions, or does not support this operation. Please read the Graph API documentation at https://developers.facebook.com/docs/graph-api",
+      "type": "GraphMethodException",
+      "code": 100,
+      "error_subcode": 33,
+      "fbtrace_id": "AcL9g28b1VKEaf2A6vy1aH3"
+    }
+  }
+}
+2025-10-20 23:22:10 [ERROR]: ❌ Button message failed {
+  "service": "sharaspot-bot",
+  "to": "919790294221",
+  "error": {
+    "error": {
+      "message": "Unsupported post request. Object with ID '780683511802625' does not exist, cannot be loaded due to missing permissions, or does not support this operation. Please read the Graph API documentation at https://developers.facebook.com/docs/graph-api",
+      "type": "GraphMethodException",
+      "code": 100,
+      "error_subcode": 33,
+      "fbtrace_id": "AecFaJf9nnRWBMkR-jRjaPh"
+    }
+  }
+}
+2025-10-20 23:23:00 [INFO]: 🛑 SIGINT received — starting graceful shutdown {
+  "service": "sharaspot-bot"
+}
+2025-10-20 23:23:37 [INFO]: 🚀 Starting SharaSpot Bot Server {
+  "service": "sharaspot-bot"
+}
+2025-10-20 23:23:37 [INFO]: 🔄 Initializing database connection... {
+  "service": "sharaspot-bot"
+}
+2025-10-20 23:23:37 [INFO]: ✅ Database connection successful {
+  "service": "sharaspot-bot"
+}
+2025-10-20 23:23:37 [INFO]: 🎉 Database initialized successfully {
+  "service": "sharaspot-bot"
+}
+2025-10-20 23:23:37 [INFO]: ✅ Database connected successfully {
+  "service": "sharaspot-bot"
+}
+2025-10-20 23:23:37 [INFO]: 🚀 Starting queue scheduler... {
+  "service": "sharaspot-bot"
+}
+2025-10-20 23:23:37 [INFO]: ✅ Queue scheduler started successfully {
+  "service": "sharaspot-bot"
+}
+2025-10-20 23:23:37 [INFO]: 🤖 Queue scheduler started {
+  "service": "sharaspot-bot"
+}
+2025-10-20 23:23:37 [INFO]: ✅ SharaSpot Bot Server Ready {
+  "service": "sharaspot-bot",
+  "port": 3000,
+  "environment": "development",
+  "whatsappWebhookUrl": "https://your-domain.com/webhook",
+  "paymentCallbackUrl": "https://your-domain.com/api/payment/callback",
+  "razorpayWebhookUrl": "https://your-domain.com/ (POST)",
+  "healthUrl": "https://your-domain.com/health",
+  "pid": 26582,
+  "nodeVersion": "v24.9.0"
+}
+2025-10-20 23:23:46 [INFO]: 📥 Processing user message batch {
+  "service": "sharaspot-bot",
+  "batchId": "batch-1760982826819-quss186",
+  "totalMessages": 1,
+  "firstMessageId": "wamid.HBgMOTE5NzkwMjk0MjIxFQIAEhggQTUxNjI2QjJDNjkxQ0NDM0YzQzNDMEY0MTY1QTU1QzgA"
+}
+2025-10-20 23:23:46 [INFO]: ✅ Webhook message batch dispatch completed {
+  "service": "sharaspot-bot",
+  "batchId": "batch-1760982826819-quss186",
+  "processed": 1,
+  "duplicatesSkipped": 0
+}
+2025-10-20 23:23:46 [INFO]: HTTP Request {
+  "service": "sharaspot-bot",
+  "method": "POST",
+  "path": "/webhook",
+  "status": 200,
+  "duration": "8ms",
+  "ip": "::1",
+  "userAgent": "facebookexternalua"
+}
+2025-10-20 23:23:46 [INFO]: 📨 Processing message {
+  "service": "sharaspot-bot",
+  "whatsappId": "919790294221",
+  "type": "text",
+  "messageId": "wamid.HBgMOTE5NzkwMjk0MjIxFQIAEhggQTUxNjI2QjJDNjkxQ0NDM0YzQzNDMEY0MTY1QTU1QzgA"
+}
+2025-10-20 23:23:46 [INFO]: 🔍 Looking for user {
+  "service": "sharaspot-bot",
+  "whatsappId": "919790294221"
+}
+2025-10-20 23:23:47 [INFO]: ✅ Found existing user {
+  "service": "sharaspot-bot",
+  "whatsappId": "919790294221",
+  "userId": 16
+}
+2025-10-20 23:23:47 [INFO]: 🔍 Looking for user {
+  "service": "sharaspot-bot",
+  "whatsappId": "919790294221"
+}
+2025-10-20 23:23:47 [INFO]: ✅ Found existing user {
+  "service": "sharaspot-bot",
+  "whatsappId": "919790294221",
+  "userId": 16
+}
+2025-10-20 23:23:48 [INFO]: ✅ Button message sent {
+  "service": "sharaspot-bot",
+  "to": "919790294221",
+  "messageId": "wamid.HBgMOTE5NzkwMjk0MjIxFQIAERgSQTM4OTNDREU3RkQ4M0JBRTVEAA=="
+}
+2025-10-20 23:23:49 [INFO]: HTTP Request {
+  "service": "sharaspot-bot",
+  "method": "POST",
+  "path": "/webhook",
+  "status": 200,
+  "duration": "7ms",
+  "ip": "::1",
+  "userAgent": "facebookexternalua"
+}
+2025-10-20 23:23:50 [INFO]: HTTP Request {
+  "service": "sharaspot-bot",
+  "method": "POST",
+  "path": "/webhook",
+  "status": 200,
+  "duration": "1ms",
+  "ip": "::1",
+  "userAgent": "facebookexternalua"
+}
+2025-10-20 23:23:51 [INFO]: HTTP Request {
+  "service": "sharaspot-bot",
+  "method": "POST",
+  "path": "/webhook",
+  "status": 200,
+  "duration": "2ms",
+  "ip": "::1",
+  "userAgent": "facebookexternalua"
+}
+2025-10-20 23:23:52 [INFO]: 📥 Processing user message batch {
+  "service": "sharaspot-bot",
+  "batchId": "batch-1760982832467-nahn9zc",
+  "totalMessages": 1,
+  "firstMessageId": "wamid.HBgMOTE5NzkwMjk0MjIxFQIAEhggQTU4MUZCRjk0ODJDMjY3QjBEQUE3NEFEMzFEMzk1OTkA"
+}
+2025-10-20 23:23:52 [INFO]: ✅ Webhook message batch dispatch completed {
+  "service": "sharaspot-bot",
+  "batchId": "batch-1760982832467-nahn9zc",
+  "processed": 1,
+  "duplicatesSkipped": 0
+}
+2025-10-20 23:23:52 [INFO]: HTTP Request {
+  "service": "sharaspot-bot",
+  "method": "POST",
+  "path": "/webhook",
+  "status": 200,
+  "duration": "3ms",
+  "ip": "::1",
+  "userAgent": "facebookexternalua"
+}
+2025-10-20 23:23:52 [INFO]: 📨 Processing message {
+  "service": "sharaspot-bot",
+  "whatsappId": "919790294221",
+  "type": "interactive",
+  "messageId": "wamid.HBgMOTE5NzkwMjk0MjIxFQIAEhggQTU4MUZCRjk0ODJDMjY3QjBEQUE3NEFEMzFEMzk1OTkA"
+}
+2025-10-20 23:23:52 [INFO]: 🔍 Looking for user {
+  "service": "sharaspot-bot",
+  "whatsappId": "919790294221"
+}
+2025-10-20 23:23:52 [INFO]: ✅ Found existing user {
+  "service": "sharaspot-bot",
+  "whatsappId": "919790294221",
+  "userId": 16
+}
+2025-10-20 23:23:52 [INFO]: 🔘 Button pressed {
+  "service": "sharaspot-bot",
+  "whatsappId": "919790294221",
+  "buttonId": "quick_book",
+  "title": "⚡ Find Stations"
+}
+2025-10-20 23:23:52 [INFO]: 🎯 Routing button {
+  "service": "sharaspot-bot",
+  "whatsappId": "919790294221",
+  "buttonId": "quick_book",
+  "parsed": {
+    "action": "quick_book",
+    "category": "system",
+    "stationId": 0
+  }
+}
+2025-10-20 23:23:55 [INFO]: ✅ Button message sent {
+  "service": "sharaspot-bot",
+  "to": "919790294221",
+  "messageId": "wamid.HBgMOTE5NzkwMjk0MjIxFQIAERgSMEZDNEQ3NDkxNTRBNEQyODQ2AA=="
+}
+2025-10-20 23:23:55 [INFO]: HTTP Request {
+  "service": "sharaspot-bot",
+  "method": "POST",
+  "path": "/webhook",
+  "status": 200,
+  "duration": "1ms",
+  "ip": "::1",
+  "userAgent": "facebookexternalua"
+}
+2025-10-20 23:23:56 [INFO]: HTTP Request {
+  "service": "sharaspot-bot",
+  "method": "POST",
+  "path": "/webhook",
+  "status": 200,
+  "duration": "2ms",
+  "ip": "::1",
+  "userAgent": "facebookexternalua"
+}
+2025-10-20 23:23:58 [INFO]: 📥 Processing user message batch {
+  "service": "sharaspot-bot",
+  "batchId": "batch-1760982838286-dvx639h",
+  "totalMessages": 1,
+  "firstMessageId": "wamid.HBgMOTE5NzkwMjk0MjIxFQIAEhggQTVFQzVCNzcwQTFENUU2MjY1QUU4MzM5Mzk3NTRENzIA"
+}
+2025-10-20 23:23:58 [INFO]: ✅ Webhook message batch dispatch completed {
+  "service": "sharaspot-bot",
+  "batchId": "batch-1760982838286-dvx639h",
+  "processed": 1,
+  "duplicatesSkipped": 0
+}
+2025-10-20 23:23:58 [INFO]: HTTP Request {
+  "service": "sharaspot-bot",
+  "method": "POST",
+  "path": "/webhook",
+  "status": 200,
+  "duration": "3ms",
+  "ip": "::1",
+  "userAgent": "facebookexternalua"
+}
+2025-10-20 23:23:58 [INFO]: 📨 Processing message {
+  "service": "sharaspot-bot",
+  "whatsappId": "919790294221",
+  "type": "interactive",
+  "messageId": "wamid.HBgMOTE5NzkwMjk0MjIxFQIAEhggQTVFQzVCNzcwQTFENUU2MjY1QUU4MzM5Mzk3NTRENzIA"
+}
+2025-10-20 23:23:58 [INFO]: 🔍 Looking for user {
+  "service": "sharaspot-bot",
+  "whatsappId": "919790294221"
+}
+2025-10-20 23:23:58 [INFO]: ✅ Found existing user {
+  "service": "sharaspot-bot",
+  "whatsappId": "919790294221",
+  "userId": 16
+}
+2025-10-20 23:23:58 [INFO]: 🔘 Button pressed {
+  "service": "sharaspot-bot",
+  "whatsappId": "919790294221",
+  "buttonId": "recent_searches",
+  "title": "🕒 Recent Searches"
+}
+2025-10-20 23:23:58 [INFO]: 🎯 Routing button {
+  "service": "sharaspot-bot",
+  "whatsappId": "919790294221",
+  "buttonId": "recent_searches",
+  "parsed": {
+    "action": "recent_searches",
+    "category": "system",
+    "stationId": 0
+  }
+}
+2025-10-20 23:23:58 [INFO]: Location button pressed {
+  "service": "sharaspot-bot",
+  "whatsappId": "919790294221",
+  "buttonId": "recent_searches",
+  "buttonTitle": ""
+}
+2025-10-20 23:23:58 [WARN]: Could not parse button ID {
+  "service": "sharaspot-bot",
+  "buttonId": "recent_searches"
+}
+2025-10-20 23:23:59 [INFO]: ✅ List message sent {
+  "service": "sharaspot-bot",
+  "to": "919790294221",
+  "messageId": "wamid.HBgMOTE5NzkwMjk0MjIxFQIAERgSNzNCNjc4MzlERTY0NjRCRTA3AA=="
+}
+2025-10-20 23:24:00 [INFO]: HTTP Request {
+  "service": "sharaspot-bot",
+  "method": "POST",
+  "path": "/webhook",
+  "status": 200,
+  "duration": "3ms",
+  "ip": "::1",
+  "userAgent": "facebookexternalua"
+}
+2025-10-20 23:24:01 [INFO]: HTTP Request {
+  "service": "sharaspot-bot",
+  "method": "POST",
+  "path": "/webhook",
+  "status": 200,
+  "duration": "2ms",
+  "ip": "::1",
+  "userAgent": "facebookexternalua"
+}
+2025-10-20 23:24:03 [INFO]: 📥 Processing user message batch {
+  "service": "sharaspot-bot",
+  "batchId": "batch-1760982843642-2eyjb7a",
+  "totalMessages": 1,
+  "firstMessageId": "wamid.HBgMOTE5NzkwMjk0MjIxFQIAEhggQTU3MTg1RTdGQzY1MTY4Rjc4Q0I2MzI3MkZCNjU0MDIA"
+}
+2025-10-20 23:24:03 [INFO]: ✅ Webhook message batch dispatch completed {
+  "service": "sharaspot-bot",
+  "batchId": "batch-1760982843642-2eyjb7a",
+  "processed": 1,
+  "duplicatesSkipped": 0
+}
+2025-10-20 23:24:03 [INFO]: HTTP Request {
+  "service": "sharaspot-bot",
+  "method": "POST",
+  "path": "/webhook",
+  "status": 200,
+  "duration": "3ms",
+  "ip": "::1",
+  "userAgent": "facebookexternalua"
+}
+2025-10-20 23:24:03 [INFO]: 📨 Processing message {
+  "service": "sharaspot-bot",
+  "whatsappId": "919790294221",
+  "type": "interactive",
+  "messageId": "wamid.HBgMOTE5NzkwMjk0MjIxFQIAEhggQTU3MTg1RTdGQzY1MTY4Rjc4Q0I2MzI3MkZCNjU0MDIA"
+}
+2025-10-20 23:24:03 [INFO]: 🔍 Looking for user {
+  "service": "sharaspot-bot",
+  "whatsappId": "919790294221"
+}
+2025-10-20 23:24:04 [INFO]: ✅ Found existing user {
+  "service": "sharaspot-bot",
+  "whatsappId": "919790294221",
+  "userId": 16
+}
+2025-10-20 23:24:04 [INFO]: 📋 List selected {
+  "service": "sharaspot-bot",
+  "whatsappId": "919790294221",
+  "listId": "recent_search_0",
+  "title": "Anna Nagar"
+}
+2025-10-20 23:24:04 [INFO]: Address input received {
+  "service": "sharaspot-bot",
+  "whatsappId": "919790294221",
+  "address": "Anna Nagar"
+}
+2025-10-20 23:24:05 [INFO]: ✅ Text message sent {
+  "service": "sharaspot-bot",
+  "to": "919790294221",
+  "messageId": "wamid.HBgMOTE5NzkwMjk0MjIxFQIAERgSNDQwNTYwNTAyQ0MzOEExMTMwAA=="
+}
+2025-10-20 23:24:06 [INFO]: ✅ Text message sent {
+  "service": "sharaspot-bot",
+  "to": "919790294221",
+  "messageId": "wamid.HBgMOTE5NzkwMjk0MjIxFQIAERgSNDAwRTVBOEU2QTE3ODZGNDdCAA=="
+}
+2025-10-20 23:24:06 [INFO]: 🔍 Starting station search {
+  "service": "sharaspot-bot",
+  "whatsappId": "919790294221",
+  "coordinates": {
+    "latitude": 13.0878,
+    "longitude": 80.2086
+  },
+  "address": "Anna Nagar, Chennai, Tamil Nadu, India"
+}
+2025-10-20 23:24:06 [INFO]: HTTP Request {
+  "service": "sharaspot-bot",
+  "method": "POST",
+  "path": "/webhook",
+  "status": 200,
+  "duration": "1ms",
+  "ip": "::1",
+  "userAgent": "facebookexternalua"
+}
+2025-10-20 23:24:06 [INFO]: User found for search {
+  "service": "sharaspot-bot",
+  "whatsappId": "919790294221",
+  "userId": 16,
+  "hasPrefs": true
+}
+2025-10-20 23:24:06 [INFO]: Search options prepared {
+  "service": "sharaspot-bot",
+  "whatsappId": "919790294221",
+  "searchOptions": {
+    "userWhatsapp": "919790294221",
+    "latitude": 13.0878,
+    "longitude": 80.2086,
+    "radius": 25,
+    "maxResults": 5,
+    "offset": 0,
+    "availableOnly": false,
+    "connectorTypes": [
+      "Proprietary"
+    ],
+    "sortBy": "availability"
+  }
+}
+2025-10-20 23:24:06 [INFO]: Searching stations {
+  "service": "sharaspot-bot",
+  "userWhatsapp": "919790294221",
+  "location": {
+    "lat": 13.0878,
+    "lng": 80.2086
+  },
+  "radius": 25
+}
+2025-10-20 23:24:06 [INFO]: HTTP Request {
+  "service": "sharaspot-bot",
+  "method": "POST",
+  "path": "/webhook",
+  "status": 200,
+  "duration": "4ms",
+  "ip": "::1",
+  "userAgent": "facebookexternalua"
+}
+2025-10-20 23:24:07 [INFO]: Station search service completed {
+  "service": "sharaspot-bot",
+  "whatsappId": "919790294221",
+  "stationsFound": 3,
+  "totalCount": 3,
+  "hasMore": false
+}
+2025-10-20 23:24:07 [INFO]: ✅ Search results stored in context {
+  "service": "sharaspot-bot",
+  "whatsappId": "919790294221"
+}
+2025-10-20 23:24:07 [INFO]: HTTP Request {
+  "service": "sharaspot-bot",
+  "method": "POST",
+  "path": "/webhook",
+  "status": 200,
+  "duration": "2ms",
+  "ip": "::1",
+  "userAgent": "facebookexternalua"
+}
+2025-10-20 23:24:07 [INFO]: HTTP Request {
+  "service": "sharaspot-bot",
+  "method": "POST",
+  "path": "/webhook",
+  "status": 200,
+  "duration": "1ms",
+  "ip": "::1",
+  "userAgent": "facebookexternalua"
+}
+2025-10-20 23:24:07 [INFO]: ✅ Text message sent {
+  "service": "sharaspot-bot",
+  "to": "919790294221",
+  "messageId": "wamid.HBgMOTE5NzkwMjk0MjIxFQIAERgSNzM0MTFENTM5NUQ0OTBEMjcxAA=="
+}
+2025-10-20 23:24:08 [INFO]: ✅ Button message sent {
+  "service": "sharaspot-bot",
+  "to": "919790294221",
+  "messageId": "wamid.HBgMOTE5NzkwMjk0MjIxFQIAERgSMTFGODJGRTczRDMyRTlDQzVDAA=="
+}
+2025-10-20 23:24:08 [INFO]: ✅ Station results displayed successfully {
+  "service": "sharaspot-bot",
+  "whatsappId": "919790294221",
+  "stationsShown": 3
+}
+2025-10-20 23:24:08 [INFO]: HTTP Request {
+  "service": "sharaspot-bot",
+  "method": "POST",
+  "path": "/webhook",
+  "status": 200,
+  "duration": "2ms",
+  "ip": "::1",
+  "userAgent": "facebookexternalua"
+}
+2025-10-20 23:24:09 [INFO]: HTTP Request {
+  "service": "sharaspot-bot",
+  "method": "POST",
+  "path": "/webhook",
+  "status": 200,
+  "duration": "1ms",
+  "ip": "::1",
+  "userAgent": "facebookexternalua"
+}
+2025-10-20 23:24:09 [INFO]: HTTP Request {
+  "service": "sharaspot-bot",
+  "method": "POST",
+  "path": "/webhook",
+  "status": 200,
+  "duration": "1ms",
+  "ip": "::1",
+  "userAgent": "facebookexternalua"
+}
+2025-10-20 23:24:10 [INFO]: HTTP Request {
+  "service": "sharaspot-bot",
+  "method": "POST",
+  "path": "/webhook",
+  "status": 200,
+  "duration": "2ms",
+  "ip": "::1",
+  "userAgent": "facebookexternalua"
+}
+2025-10-20 23:24:10 [INFO]: ✅ Button message sent {
+  "service": "sharaspot-bot",
+  "to": "919790294221",
+  "messageId": "wamid.HBgMOTE5NzkwMjk0MjIxFQIAERgSQTBFQTUwOEFCM0IzMUM5MjU3AA=="
+}
+2025-10-20 23:24:11 [INFO]: HTTP Request {
+  "service": "sharaspot-bot",
+  "method": "POST",
+  "path": "/webhook",
+  "status": 200,
+  "duration": "2ms",
+  "ip": "::1",
+  "userAgent": "facebookexternalua"
+}
+2025-10-20 23:24:11 [INFO]: HTTP Request {
+  "service": "sharaspot-bot",
+  "method": "POST",
+  "path": "/webhook",
+  "status": 200,
+  "duration": "2ms",
+  "ip": "::1",
+  "userAgent": "facebookexternalua"
+}
+2025-10-20 23:24:13 [INFO]: 📥 Processing user message batch {
+  "service": "sharaspot-bot",
+  "batchId": "batch-1760982853918-dmnlci1",
+  "totalMessages": 1,
+  "firstMessageId": "wamid.HBgMOTE5NzkwMjk0MjIxFQIAEhggQTVBRTNGNkQwQzY3MUE3NUM1Qjg5RUUyQTUxNUEwMDgA"
+}
+2025-10-20 23:24:13 [INFO]: ✅ Webhook message batch dispatch completed {
+  "service": "sharaspot-bot",
+  "batchId": "batch-1760982853918-dmnlci1",
+  "processed": 1,
+  "duplicatesSkipped": 0
+}
+2025-10-20 23:24:13 [INFO]: HTTP Request {
+  "service": "sharaspot-bot",
+  "method": "POST",
+  "path": "/webhook",
+  "status": 200,
+  "duration": "2ms",
+  "ip": "::1",
+  "userAgent": "facebookexternalua"
+}
+2025-10-20 23:24:13 [INFO]: 📨 Processing message {
+  "service": "sharaspot-bot",
+  "whatsappId": "919790294221",
+  "type": "interactive",
+  "messageId": "wamid.HBgMOTE5NzkwMjk0MjIxFQIAEhggQTVBRTNGNkQwQzY3MUE3NUM1Qjg5RUUyQTUxNUEwMDgA"
+}
+2025-10-20 23:24:13 [INFO]: 🔍 Looking for user {
+  "service": "sharaspot-bot",
+  "whatsappId": "919790294221"
+}
+2025-10-20 23:24:14 [INFO]: ✅ Found existing user {
+  "service": "sharaspot-bot",
+  "whatsappId": "919790294221",
+  "userId": 16
+}
+2025-10-20 23:24:14 [INFO]: 🔘 Button pressed {
+  "service": "sharaspot-bot",
+  "whatsappId": "919790294221",
+  "buttonId": "book_station_23",
+  "title": "⚡ Book Now"
+}
+2025-10-20 23:24:14 [INFO]: 🎯 Routing button {
+  "service": "sharaspot-bot",
+  "whatsappId": "919790294221",
+  "buttonId": "book_station_23",
+  "parsed": {
+    "action": "book",
+    "category": "station",
+    "stationId": 23
+  }
+}
+2025-10-20 23:24:14 [INFO]: Location button pressed {
+  "service": "sharaspot-bot",
+  "whatsappId": "919790294221",
+  "buttonId": "book_station_23",
+  "buttonTitle": ""
+}
+2025-10-20 23:24:14 [INFO]: Processing booking request from location {
+  "service": "sharaspot-bot",
+  "whatsappId": "919790294221",
+  "stationId": 23
+}
+2025-10-20 23:24:14 [INFO]: 🎫 Initiating booking payment {
+  "service": "sharaspot-bot",
+  "whatsappId": "919790294221",
+  "stationId": 23,
+  "stationName": "OMR IT Corridor Station"
+}
+2025-10-20 23:24:15 [INFO]: ✅ Booking payment link created {
+  "service": "sharaspot-bot",
+  "userWhatsappId": "919790294221",
+  "stationId": 23,
+  "amount": 50,
+  "paymentLinkId": "plink_RVohvF2LqEZTQE",
+  "referenceId": "book_919790294221_23_1760982854738"
+}
+2025-10-20 23:24:16 [INFO]: ✅ Text message sent {
+  "service": "sharaspot-bot",
+  "to": "919790294221",
+  "messageId": "wamid.HBgMOTE5NzkwMjk0MjIxFQIAERgSQjU5Q0ZCQ0JDMDM3ODA0RDc2AA=="
+}
+2025-10-20 23:24:16 [INFO]: ✅ Booking payment link sent {
+  "service": "sharaspot-bot",
+  "whatsappId": "919790294221",
+  "stationId": 23,
+  "bookingFee": 50
+}
+2025-10-20 23:24:16 [INFO]: ✅ Booking payment link sent successfully {
+  "service": "sharaspot-bot",
+  "whatsappId": "919790294221",
+  "stationId": 23
+}
+2025-10-20 23:24:17 [INFO]: HTTP Request {
+  "service": "sharaspot-bot",
+  "method": "POST",
+  "path": "/webhook",
+  "status": 200,
+  "duration": "2ms",
+  "ip": "::1",
+  "userAgent": "facebookexternalua"
+}
+2025-10-20 23:24:17 [INFO]: HTTP Request {
+  "service": "sharaspot-bot",
+  "method": "POST",
+  "path": "/webhook",
+  "status": 200,
+  "duration": "1ms",
+  "ip": "::1",
+  "userAgent": "facebookexternalua"
+}
+2025-10-20 23:24:37 [INFO]: 🧹 Starting cleanup process... {
+  "service": "sharaspot-bot"
+}
+2025-10-20 23:24:38 [INFO]: ✅ No expired reservations to cleanup {
+  "service": "sharaspot-bot"
+}
+2025-10-20 23:25:37 [INFO]: 📢 Processing queue notifications... {
+  "service": "sharaspot-bot"
+}
+2025-10-20 23:25:37 [INFO]: 🧹 Starting cleanup process... {
+  "service": "sharaspot-bot"
+}
+2025-10-20 23:25:38 [INFO]: ✅ No expired reservations to cleanup {
+  "service": "sharaspot-bot"
+}
+2025-10-20 23:25:39 [INFO]: ✅ No pending queues for notifications {
+  "service": "sharaspot-bot"
+}
+2025-10-20 23:26:37 [INFO]: 🧹 Starting cleanup process... {
+  "service": "sharaspot-bot"
+}
+2025-10-20 23:26:38 [INFO]: ✅ No expired reservations to cleanup {
+  "service": "sharaspot-bot"
+}
+2025-10-20 23:27:37 [INFO]: 📢 Processing queue notifications... {
+  "service": "sharaspot-bot"
+}
+2025-10-20 23:27:37 [INFO]: 🧹 Starting cleanup process... {
+  "service": "sharaspot-bot"
+}
+2025-10-20 23:27:38 [INFO]: ✅ No pending queues for notifications {
+  "service": "sharaspot-bot"
+}
+2025-10-20 23:27:38 [INFO]: ✅ No expired reservations to cleanup {
+  "service": "sharaspot-bot"
+}
+2025-10-20 23:28:20 [INFO]: HTTP Request {
+  "service": "sharaspot-bot",
+  "method": "POST",
+  "path": "/webhook",
+  "status": 200,
+  "duration": "2ms",
+  "ip": "::1",
+  "userAgent": "facebookexternalua"
+}
+2025-10-20 23:28:37 [INFO]: 🧹 Starting cleanup process... {
+  "service": "sharaspot-bot"
+}
+2025-10-20 23:28:38 [INFO]: ✅ No expired reservations to cleanup {
+  "service": "sharaspot-bot"
+}
+2025-10-20 23:29:35 [INFO]: 🧹 Message cache cleanup complete {
+  "service": "sharaspot-bot",
+  "removed": 5,
+  "remaining": 0
+}
+2025-10-20 23:29:37 [INFO]: 📢 Processing queue notifications... {
+  "service": "sharaspot-bot"
+}
+2025-10-20 23:29:37 [INFO]: 🧹 Starting cleanup process... {
+  "service": "sharaspot-bot"
+}
+2025-10-20 23:29:43 [INFO]: ✅ No pending queues for notifications {
+  "service": "sharaspot-bot"
+}
+2025-10-20 23:29:43 [INFO]: ✅ No expired reservations to cleanup {
+  "service": "sharaspot-bot"
+}
+2025-10-20 23:29:53 [INFO]: 🛑 SIGINT received — starting graceful shutdown {
+  "service": "sharaspot-bot"
+}
+2025-10-20 23:29:58 [INFO]: 🚀 Starting SharaSpot Bot Server {
+  "service": "sharaspot-bot"
+}
+2025-10-20 23:29:58 [INFO]: 🔄 Initializing database connection... {
+  "service": "sharaspot-bot"
+}
+2025-10-20 23:29:58 [INFO]: ✅ Database connection successful {
+  "service": "sharaspot-bot"
+}
+2025-10-20 23:29:58 [INFO]: 🎉 Database initialized successfully {
+  "service": "sharaspot-bot"
+}
+2025-10-20 23:29:58 [INFO]: ✅ Database connected successfully {
+  "service": "sharaspot-bot"
+}
+2025-10-20 23:29:58 [INFO]: 🚀 Starting queue scheduler... {
+  "service": "sharaspot-bot"
+}
+2025-10-20 23:29:58 [INFO]: ✅ Queue scheduler started successfully {
+  "service": "sharaspot-bot"
+}
+2025-10-20 23:29:58 [INFO]: 🤖 Queue scheduler started {
+  "service": "sharaspot-bot"
+}
+2025-10-20 23:29:58 [INFO]: ✅ SharaSpot Bot Server Ready {
+  "service": "sharaspot-bot",
+  "port": 3000,
+  "environment": "development",
+  "whatsappWebhookUrl": "https://your-domain.com/webhook",
+  "paymentCallbackUrl": "https://your-domain.com/api/payment/callback",
+  "razorpayWebhookUrl": "https://your-domain.com/ (POST)",
+  "healthUrl": "https://your-domain.com/health",
+  "pid": 28242,
+  "nodeVersion": "v24.9.0"
+}
+2025-10-20 23:30:14 [INFO]: 📥 Processing user message batch {
+  "service": "sharaspot-bot",
+  "batchId": "batch-1760983214337-40oi1bd",
+  "totalMessages": 1,
+  "firstMessageId": "wamid.HBgMOTE5NzkwMjk0MjIxFQIAEhggQTU4MDZGMDhBQzM5RDIzMEI5Mzg2QUQyNzEwOUY1NTUA"
+}
+2025-10-20 23:30:14 [INFO]: ✅ Webhook message batch dispatch completed {
+  "service": "sharaspot-bot",
+  "batchId": "batch-1760983214337-40oi1bd",
+  "processed": 1,
+  "duplicatesSkipped": 0
+}
+2025-10-20 23:30:14 [INFO]: HTTP Request {
+  "service": "sharaspot-bot",
+  "method": "POST",
+  "path": "/webhook",
+  "status": 200,
+  "duration": "7ms",
+  "ip": "::1",
+  "userAgent": "facebookexternalua"
+}
+2025-10-20 23:30:14 [INFO]: 📨 Processing message {
+  "service": "sharaspot-bot",
+  "whatsappId": "919790294221",
+  "type": "text",
+  "messageId": "wamid.HBgMOTE5NzkwMjk0MjIxFQIAEhggQTU4MDZGMDhBQzM5RDIzMEI5Mzg2QUQyNzEwOUY1NTUA"
+}
+2025-10-20 23:30:14 [INFO]: 🔍 Looking for user {
+  "service": "sharaspot-bot",
+  "whatsappId": "919790294221"
+}
+2025-10-20 23:30:14 [INFO]: ✅ Found existing user {
+  "service": "sharaspot-bot",
+  "whatsappId": "919790294221",
+  "userId": 16
+}
+2025-10-20 23:30:15 [INFO]: ✅ Button message sent {
+  "service": "sharaspot-bot",
+  "to": "919790294221",
+  "messageId": "wamid.HBgMOTE5NzkwMjk0MjIxFQIAERgSQzIwMDVDNTk4MUJBQTRFMTEyAA=="
+}
+2025-10-20 23:30:16 [INFO]: HTTP Request {
+  "service": "sharaspot-bot",
+  "method": "POST",
+  "path": "/webhook",
+  "status": 200,
+  "duration": "6ms",
+  "ip": "::1",
+  "userAgent": "facebookexternalua"
+}
+2025-10-20 23:30:17 [INFO]: HTTP Request {
+  "service": "sharaspot-bot",
+  "method": "POST",
+  "path": "/webhook",
+  "status": 200,
+  "duration": "2ms",
+  "ip": "::1",
+  "userAgent": "facebookexternalua"
+}
+2025-10-20 23:30:20 [INFO]: 📥 Processing user message batch {
+  "service": "sharaspot-bot",
+  "batchId": "batch-1760983220141-ruwnywt",
+  "totalMessages": 1,
+  "firstMessageId": "wamid.HBgMOTE5NzkwMjk0MjIxFQIAEhggQTUwM0QzMTVFQ0ZBNTBDNDhBQUJFNUY0RjM4RjM3NUYA"
+}
+2025-10-20 23:30:20 [INFO]: ✅ Webhook message batch dispatch completed {
+  "service": "sharaspot-bot",
+  "batchId": "batch-1760983220141-ruwnywt",
+  "processed": 1,
+  "duplicatesSkipped": 0
+}
+2025-10-20 23:30:20 [INFO]: HTTP Request {
+  "service": "sharaspot-bot",
+  "method": "POST",
+  "path": "/webhook",
+  "status": 200,
+  "duration": "4ms",
+  "ip": "::1",
+  "userAgent": "facebookexternalua"
+}
+2025-10-20 23:30:20 [INFO]: 📨 Processing message {
+  "service": "sharaspot-bot",
+  "whatsappId": "919790294221",
+  "type": "interactive",
+  "messageId": "wamid.HBgMOTE5NzkwMjk0MjIxFQIAEhggQTUwM0QzMTVFQ0ZBNTBDNDhBQUJFNUY0RjM4RjM3NUYA"
+}
+2025-10-20 23:30:20 [INFO]: 🔍 Looking for user {
+  "service": "sharaspot-bot",
+  "whatsappId": "919790294221"
+}
+2025-10-20 23:30:20 [INFO]: ✅ Found existing user {
+  "service": "sharaspot-bot",
+  "whatsappId": "919790294221",
+  "userId": 16
+}
+2025-10-20 23:30:20 [INFO]: 🔘 Button pressed {
+  "service": "sharaspot-bot",
+  "whatsappId": "919790294221",
+  "buttonId": "type_address",
+  "title": "📝 Type Address"
+}
+2025-10-20 23:30:20 [INFO]: 🎯 Routing button {
+  "service": "sharaspot-bot",
+  "whatsappId": "919790294221",
+  "buttonId": "type_address",
+  "parsed": {
+    "action": "type_address",
+    "category": "system",
+    "stationId": 0
+  }
+}
+2025-10-20 23:30:20 [INFO]: Location button pressed {
+  "service": "sharaspot-bot",
+  "whatsappId": "919790294221",
+  "buttonId": "type_address",
+  "buttonTitle": ""
+}
+2025-10-20 23:30:20 [WARN]: Could not parse button ID {
+  "service": "sharaspot-bot",
+  "buttonId": "type_address"
+}
+2025-10-20 23:30:21 [INFO]: ✅ Text message sent {
+  "service": "sharaspot-bot",
+  "to": "919790294221",
+  "messageId": "wamid.HBgMOTE5NzkwMjk0MjIxFQIAERgSMzc5MkVDOTM4OEI0NEUxQzVEAA=="
+}
+2025-10-20 23:30:22 [INFO]: HTTP Request {
+  "service": "sharaspot-bot",
+  "method": "POST",
+  "path": "/webhook",
+  "status": 200,
+  "duration": "3ms",
+  "ip": "::1",
+  "userAgent": "facebookexternalua"
+}
+2025-10-20 23:30:22 [INFO]: HTTP Request {
+  "service": "sharaspot-bot",
+  "method": "POST",
+  "path": "/webhook",
+  "status": 200,
+  "duration": "1ms",
+  "ip": "::1",
+  "userAgent": "facebookexternalua"
+}
+2025-10-20 23:30:23 [INFO]: HTTP Request {
+  "service": "sharaspot-bot",
+  "method": "POST",
+  "path": "/webhook",
+  "status": 200,
+  "duration": "2ms",
+  "ip": "::1",
+  "userAgent": "facebookexternalua"
+}
+2025-10-20 23:30:26 [INFO]: 📥 Processing user message batch {
+  "service": "sharaspot-bot",
+  "batchId": "batch-1760983226670-b3t9j5e",
+  "totalMessages": 1,
+  "firstMessageId": "wamid.HBgMOTE5NzkwMjk0MjIxFQIAEhggQTUxNUMzMjdCNDgyRTVFOTAzNzNFNDY4QkQ4QzU2MDYA"
+}
+2025-10-20 23:30:26 [INFO]: ✅ Webhook message batch dispatch completed {
+  "service": "sharaspot-bot",
+  "batchId": "batch-1760983226670-b3t9j5e",
+  "processed": 1,
+  "duplicatesSkipped": 0
+}
+2025-10-20 23:30:26 [INFO]: HTTP Request {
+  "service": "sharaspot-bot",
+  "method": "POST",
+  "path": "/webhook",
+  "status": 200,
+  "duration": "3ms",
+  "ip": "::1",
+  "userAgent": "facebookexternalua"
+}
+2025-10-20 23:30:26 [INFO]: 📨 Processing message {
+  "service": "sharaspot-bot",
+  "whatsappId": "919790294221",
+  "type": "text",
+  "messageId": "wamid.HBgMOTE5NzkwMjk0MjIxFQIAEhggQTUxNUMzMjdCNDgyRTVFOTAzNzNFNDY4QkQ4QzU2MDYA"
+}
+2025-10-20 23:30:26 [INFO]: 🔍 Looking for user {
+  "service": "sharaspot-bot",
+  "whatsappId": "919790294221"
+}
+2025-10-20 23:30:26 [INFO]: ✅ Found existing user {
+  "service": "sharaspot-bot",
+  "whatsappId": "919790294221",
+  "userId": 16
+}
+2025-10-20 23:30:26 [INFO]: Address input received {
+  "service": "sharaspot-bot",
+  "whatsappId": "919790294221",
+  "address": "Anna Nagar"
+}
+2025-10-20 23:30:27 [INFO]: ✅ Text message sent {
+  "service": "sharaspot-bot",
+  "to": "919790294221",
+  "messageId": "wamid.HBgMOTE5NzkwMjk0MjIxFQIAERgSQjI1MTE4M0U0RTcwODlFQTAyAA=="
+}
+2025-10-20 23:30:28 [INFO]: HTTP Request {
+  "service": "sharaspot-bot",
+  "method": "POST",
+  "path": "/webhook",
+  "status": 200,
+  "duration": "1ms",
+  "ip": "::1",
+  "userAgent": "facebookexternalua"
+}
+2025-10-20 23:30:28 [INFO]: ✅ Text message sent {
+  "service": "sharaspot-bot",
+  "to": "919790294221",
+  "messageId": "wamid.HBgMOTE5NzkwMjk0MjIxFQIAERgSQTJERDg5OUUyRDEzQzU0MzMxAA=="
+}
+2025-10-20 23:30:28 [INFO]: 🔍 Starting station search {
+  "service": "sharaspot-bot",
+  "whatsappId": "919790294221",
+  "coordinates": {
+    "latitude": 13.0878,
+    "longitude": 80.2086
+  },
+  "address": "Anna Nagar, Chennai, Tamil Nadu, India"
+}
+2025-10-20 23:30:28 [INFO]: User found for search {
+  "service": "sharaspot-bot",
+  "whatsappId": "919790294221",
+  "userId": 16,
+  "hasPrefs": true
+}
+2025-10-20 23:30:29 [INFO]: Search options prepared {
+  "service": "sharaspot-bot",
+  "whatsappId": "919790294221",
+  "searchOptions": {
+    "userWhatsapp": "919790294221",
+    "latitude": 13.0878,
+    "longitude": 80.2086,
+    "radius": 25,
+    "maxResults": 5,
+    "offset": 0,
+    "availableOnly": false,
+    "connectorTypes": [
+      "Proprietary"
+    ],
+    "sortBy": "availability"
+  }
+}
+2025-10-20 23:30:29 [INFO]: Searching stations {
+  "service": "sharaspot-bot",
+  "userWhatsapp": "919790294221",
+  "location": {
+    "lat": 13.0878,
+    "lng": 80.2086
+  },
+  "radius": 25
+}
+2025-10-20 23:30:29 [INFO]: HTTP Request {
+  "service": "sharaspot-bot",
+  "method": "POST",
+  "path": "/webhook",
+  "status": 200,
+  "duration": "2ms",
+  "ip": "::1",
+  "userAgent": "facebookexternalua"
+}
+2025-10-20 23:30:29 [INFO]: Station search service completed {
+  "service": "sharaspot-bot",
+  "whatsappId": "919790294221",
+  "stationsFound": 3,
+  "totalCount": 3,
+  "hasMore": false
+}
+2025-10-20 23:30:29 [INFO]: ✅ Search results stored in context {
+  "service": "sharaspot-bot",
+  "whatsappId": "919790294221"
+}
+2025-10-20 23:30:29 [INFO]: HTTP Request {
+  "service": "sharaspot-bot",
+  "method": "POST",
+  "path": "/webhook",
+  "status": 200,
+  "duration": "2ms",
+  "ip": "::1",
+  "userAgent": "facebookexternalua"
+}
+2025-10-20 23:30:30 [INFO]: ✅ Text message sent {
+  "service": "sharaspot-bot",
+  "to": "919790294221",
+  "messageId": "wamid.HBgMOTE5NzkwMjk0MjIxFQIAERgSRDk5REEyQjUyRDU0NkRGMTFDAA=="
+}
+2025-10-20 23:30:30 [INFO]: HTTP Request {
+  "service": "sharaspot-bot",
+  "method": "POST",
+  "path": "/webhook",
+  "status": 200,
+  "duration": "2ms",
+  "ip": "::1",
+  "userAgent": "facebookexternalua"
+}
+2025-10-20 23:30:31 [INFO]: ✅ Button message sent {
+  "service": "sharaspot-bot",
+  "to": "919790294221",
+  "messageId": "wamid.HBgMOTE5NzkwMjk0MjIxFQIAERgSMTM2QTA4NDE5MTg3RDk4NDY5AA=="
+}
+2025-10-20 23:30:31 [INFO]: ✅ Station results displayed successfully {
+  "service": "sharaspot-bot",
+  "whatsappId": "919790294221",
+  "stationsShown": 3
+}
+2025-10-20 23:30:31 [INFO]: HTTP Request {
+  "service": "sharaspot-bot",
+  "method": "POST",
+  "path": "/webhook",
+  "status": 200,
+  "duration": "2ms",
+  "ip": "::1",
+  "userAgent": "facebookexternalua"
+}
+2025-10-20 23:30:31 [INFO]: HTTP Request {
+  "service": "sharaspot-bot",
+  "method": "POST",
+  "path": "/webhook",
+  "status": 200,
+  "duration": "2ms",
+  "ip": "::1",
+  "userAgent": "facebookexternalua"
+}
+2025-10-20 23:30:31 [INFO]: HTTP Request {
+  "service": "sharaspot-bot",
+  "method": "POST",
+  "path": "/webhook",
+  "status": 200,
+  "duration": "3ms",
+  "ip": "::1",
+  "userAgent": "facebookexternalua"
+}
+2025-10-20 23:30:32 [INFO]: HTTP Request {
+  "service": "sharaspot-bot",
+  "method": "POST",
+  "path": "/webhook",
+  "status": 200,
+  "duration": "1ms",
+  "ip": "::1",
+  "userAgent": "facebookexternalua"
+}
+2025-10-20 23:30:32 [INFO]: HTTP Request {
+  "service": "sharaspot-bot",
+  "method": "POST",
+  "path": "/webhook",
+  "status": 200,
+  "duration": "1ms",
+  "ip": "::1",
+  "userAgent": "facebookexternalua"
+}
+2025-10-20 23:30:32 [INFO]: ✅ Button message sent {
+  "service": "sharaspot-bot",
+  "to": "919790294221",
+  "messageId": "wamid.HBgMOTE5NzkwMjk0MjIxFQIAERgSNjg0REU1OEJGRUM5RUMyRUREAA=="
+}
+2025-10-20 23:30:32 [INFO]: HTTP Request {
+  "service": "sharaspot-bot",
+  "method": "POST",
+  "path": "/webhook",
+  "status": 200,
+  "duration": "2ms",
+  "ip": "::1",
+  "userAgent": "facebookexternalua"
+}
+2025-10-20 23:30:33 [INFO]: HTTP Request {
+  "service": "sharaspot-bot",
+  "method": "POST",
+  "path": "/webhook",
+  "status": 200,
+  "duration": "3ms",
+  "ip": "::1",
+  "userAgent": "facebookexternalua"
+}
+2025-10-20 23:30:34 [INFO]: HTTP Request {
+  "service": "sharaspot-bot",
+  "method": "POST",
+  "path": "/webhook",
+  "status": 200,
+  "duration": "2ms",
+  "ip": "::1",
+  "userAgent": "facebookexternalua"
+}
+2025-10-20 23:30:35 [INFO]: 📥 Processing user message batch {
+  "service": "sharaspot-bot",
+  "batchId": "batch-1760983235359-slbftgp",
+  "totalMessages": 1,
+  "firstMessageId": "wamid.HBgMOTE5NzkwMjk0MjIxFQIAEhggQTUxNjc3MEEwNDU2RUNDMkM0NjI5RDY4NTY5NkJBNzUA"
+}
+2025-10-20 23:30:35 [INFO]: ✅ Webhook message batch dispatch completed {
+  "service": "sharaspot-bot",
+  "batchId": "batch-1760983235359-slbftgp",
+  "processed": 1,
+  "duplicatesSkipped": 0
+}
+2025-10-20 23:30:35 [INFO]: HTTP Request {
+  "service": "sharaspot-bot",
+  "method": "POST",
+  "path": "/webhook",
+  "status": 200,
+  "duration": "4ms",
+  "ip": "::1",
+  "userAgent": "facebookexternalua"
+}
+2025-10-20 23:30:35 [INFO]: 📨 Processing message {
+  "service": "sharaspot-bot",
+  "whatsappId": "919790294221",
+  "type": "interactive",
+  "messageId": "wamid.HBgMOTE5NzkwMjk0MjIxFQIAEhggQTUxNjc3MEEwNDU2RUNDMkM0NjI5RDY4NTY5NkJBNzUA"
+}
+2025-10-20 23:30:35 [INFO]: 🔍 Looking for user {
+  "service": "sharaspot-bot",
+  "whatsappId": "919790294221"
+}
+2025-10-20 23:30:35 [INFO]: ✅ Found existing user {
+  "service": "sharaspot-bot",
+  "whatsappId": "919790294221",
+  "userId": 16
+}
+2025-10-20 23:30:35 [INFO]: 🔘 Button pressed {
+  "service": "sharaspot-bot",
+  "whatsappId": "919790294221",
+  "buttonId": "book_station_23",
+  "title": "⚡ Book Now"
+}
+2025-10-20 23:30:35 [INFO]: 🎯 Routing button {
+  "service": "sharaspot-bot",
+  "whatsappId": "919790294221",
+  "buttonId": "book_station_23",
+  "parsed": {
+    "action": "book",
+    "category": "station",
+    "stationId": 23
+  }
+}
+2025-10-20 23:30:35 [INFO]: Location button pressed {
+  "service": "sharaspot-bot",
+  "whatsappId": "919790294221",
+  "buttonId": "book_station_23",
+  "buttonTitle": ""
+}
+2025-10-20 23:30:35 [INFO]: Processing booking request from location {
+  "service": "sharaspot-bot",
+  "whatsappId": "919790294221",
+  "stationId": 23
+}
+2025-10-20 23:30:36 [INFO]: 🎫 Initiating booking payment {
+  "service": "sharaspot-bot",
+  "whatsappId": "919790294221",
+  "stationId": 23,
+  "stationName": "OMR IT Corridor Station"
+}
+2025-10-20 23:30:36 [INFO]: ✅ Booking payment link created {
+  "service": "sharaspot-bot",
+  "userWhatsappId": "919790294221",
+  "stationId": 23,
+  "amount": 50,
+  "paymentLinkId": "plink_RVoodOvTEOkOFk",
+  "referenceId": "book_919790294221_23_1760983236190"
+}
+2025-10-20 23:30:37 [INFO]: ✅ Text message sent {
+  "service": "sharaspot-bot",
+  "to": "919790294221",
+  "messageId": "wamid.HBgMOTE5NzkwMjk0MjIxFQIAERgSNkZEQTg4NDFGOEIyNzhEODVEAA=="
+}
+2025-10-20 23:30:37 [INFO]: ✅ Booking payment link sent {
+  "service": "sharaspot-bot",
+  "whatsappId": "919790294221",
+  "stationId": 23,
+  "bookingFee": 50
+}
+2025-10-20 23:30:37 [INFO]: ✅ Booking payment link sent successfully {
+  "service": "sharaspot-bot",
+  "whatsappId": "919790294221",
+  "stationId": 23
+}
+2025-10-20 23:30:38 [INFO]: HTTP Request {
+  "service": "sharaspot-bot",
+  "method": "POST",
+  "path": "/webhook",
+  "status": 200,
+  "duration": "6ms",
+  "ip": "::1",
+  "userAgent": "facebookexternalua"
+}
+2025-10-20 23:30:39 [INFO]: HTTP Request {
+  "service": "sharaspot-bot",
+  "method": "POST",
+  "path": "/webhook",
+  "status": 200,
+  "duration": "1ms",
+  "ip": "::1",
+  "userAgent": "facebookexternalua"
+}
+2025-10-20 23:30:58 [INFO]: 📥 Razorpay webhook received at root {
+  "service": "sharaspot-bot",
+  "event": "payment_link.paid",
+  "paymentLinkId": "plink_RVoodOvTEOkOFk"
+}
+2025-10-20 23:30:58 [INFO]: ✅ Payment link paid event {
+  "service": "sharaspot-bot",
+  "referenceId": "book_919790294221_23_1760983236190",
+  "event": "payment_link.paid"
+}
+2025-10-20 23:30:58 [INFO]: 🎫 Confirming booking after payment {
+  "service": "sharaspot-bot",
+  "whatsappId": "919790294221",
+  "stationId": 23,
+  "referenceId": "book_919790294221_23_1760983236190"
+}
+2025-10-20 23:30:58 [INFO]: HTTP Request {
+  "service": "sharaspot-bot",
+  "method": "POST",
+  "path": "/",
+  "status": 200,
+  "duration": "27ms",
+  "ip": "::1",
+  "userAgent": "Razorpay-Webhook/v1"
+}
+2025-10-20 23:30:58 [INFO]: Attempting to join queue - constraint-safe version {
+  "service": "sharaspot-bot",
+  "userWhatsapp": "919790294221",
+  "stationId": 23
+}
+2025-10-20 23:30:58 [INFO]: 🧹 Starting cleanup process... {
+  "service": "sharaspot-bot"
+}
+2025-10-20 23:30:59 [INFO]: ✅ No expired reservations to cleanup {
+  "service": "sharaspot-bot"
+}
+2025-10-20 23:30:59 [INFO]: Updated existing queue entry successfully {
+  "service": "sharaspot-bot",
+  "queueId": 4,
+  "userWhatsapp": "919790294221",
+  "stationId": 23,
+  "position": 1
+}
+2025-10-20 23:31:00 [INFO]: ✅ Text message sent {
+  "service": "sharaspot-bot",
+  "to": "919790294221",
+  "messageId": "wamid.HBgMOTE5NzkwMjk0MjIxFQIAERgSQjUzMzQ5NDkwMzlDRkU1NzEyAA=="
+}
+2025-10-20 23:31:00 [INFO]: ✅ Text message sent {
+  "service": "sharaspot-bot",
+  "to": "919790294221",
+  "messageId": "wamid.HBgMOTE5NzkwMjk0MjIxFQIAERgSRUYxMzY5MjNCRjNENUI5NjRDAA=="
+}
+2025-10-20 23:31:01 [INFO]: ✅ Text message sent {
+  "service": "sharaspot-bot",
+  "to": "919790294221",
+  "messageId": "wamid.HBgMOTE5NzkwMjk0MjIxFQIAERgSMTdDMjk3NEMwODgyNjUwOTU0AA=="
+}
+2025-10-20 23:31:01 [INFO]: ✅ Booking confirmed successfully after payment {
+  "service": "sharaspot-bot",
+  "whatsappId": "919790294221",
+  "stationId": 23
+}
+2025-10-20 23:31:01 [ERROR]: ❌ Text message failed {
+  "service": "sharaspot-bot",
+  "to": "919876543211",
+  "error": {
+    "error": {
+      "message": "(#131030) Recipient phone number not in allowed list",
+      "type": "OAuthException",
+      "code": 131030,
+      "error_data": {
+        "messaging_product": "whatsapp",
+        "details": "Recipient phone number not in allowed list: Add recipient phone number to recipient list and try again."
+      },
+      "fbtrace_id": "AwGHfBORp5F_URPStKJ4WrH"
+    }
+  }
+}
+2025-10-20 23:31:01 [INFO]: Station owner notified {
+  "service": "sharaspot-bot",
+  "stationId": 23,
+  "ownerWhatsapp": "919876543211",
+  "eventType": "queue_joined"
+}
+2025-10-20 23:31:01 [INFO]: HTTP Request {
+  "service": "sharaspot-bot",
+  "method": "POST",
+  "path": "/webhook",
+  "status": 200,
+  "duration": "4ms",
+  "ip": "::1",
+  "userAgent": "facebookexternalua"
+}
+2025-10-20 23:31:01 [INFO]: HTTP Request {
+  "service": "sharaspot-bot",
+  "method": "POST",
+  "path": "/webhook",
+  "status": 200,
+  "duration": "2ms",
+  "ip": "::1",
+  "userAgent": "facebookexternalua"
+}
+2025-10-20 23:31:02 [INFO]: HTTP Request {
+  "service": "sharaspot-bot",
+  "method": "POST",
+  "path": "/webhook",
+  "status": 200,
+  "duration": "1ms",
+  "ip": "::1",
+  "userAgent": "facebookexternalua"
+}
+2025-10-20 23:31:02 [INFO]: HTTP Request {
+  "service": "sharaspot-bot",
+  "method": "POST",
+  "path": "/webhook",
+  "status": 200,
+  "duration": "1ms",
+  "ip": "::1",
+  "userAgent": "facebookexternalua"
+}
+2025-10-20 23:31:02 [INFO]: HTTP Request {
+  "service": "sharaspot-bot",
+  "method": "POST",
+  "path": "/webhook",
+  "status": 200,
+  "duration": "3ms",
+  "ip": "::1",
+  "userAgent": "facebookexternalua"
+}
+2025-10-20 23:31:03 [INFO]: HTTP Request {
+  "service": "sharaspot-bot",
+  "method": "POST",
+  "path": "/webhook",
+  "status": 200,
+  "duration": "1ms",
+  "ip": "::1",
+  "userAgent": "facebookexternalua"
+}
+2025-10-20 23:31:03 [INFO]: ✅ Button message sent {
+  "service": "sharaspot-bot",
+  "to": "919790294221",
+  "messageId": "wamid.HBgMOTE5NzkwMjk0MjIxFQIAERgSRjNDMDdFRkI3NkZFQzFGREM2AA=="
+}
+2025-10-20 23:31:03 [INFO]: ✅ List message sent {
+  "service": "sharaspot-bot",
+  "to": "919790294221",
+  "messageId": "wamid.HBgMOTE5NzkwMjk0MjIxFQIAERgSNEY2M0EyQTcxOTBCOTA4MDVGAA=="
+}
+2025-10-20 23:31:04 [INFO]: HTTP Request {
+  "service": "sharaspot-bot",
+  "method": "POST",
+  "path": "/webhook",
+  "status": 200,
+  "duration": "2ms",
+  "ip": "::1",
+  "userAgent": "facebookexternalua"
+}
+2025-10-20 23:31:04 [INFO]: HTTP Request {
+  "service": "sharaspot-bot",
+  "method": "POST",
+  "path": "/webhook",
+  "status": 200,
+  "duration": "2ms",
+  "ip": "::1",
+  "userAgent": "facebookexternalua"
+}
+2025-10-20 23:31:05 [INFO]: HTTP Request {
+  "service": "sharaspot-bot",
+  "method": "POST",
+  "path": "/webhook",
+  "status": 200,
+  "duration": "1ms",
+  "ip": "::1",
+  "userAgent": "facebookexternalua"
+}
+2025-10-20 23:31:05 [INFO]: HTTP Request {
+  "service": "sharaspot-bot",
+  "method": "POST",
+  "path": "/webhook",
+  "status": 200,
+  "duration": "2ms",
+  "ip": "::1",
+  "userAgent": "facebookexternalua"
+}
+2025-10-20 23:31:07 [INFO]: HTTP Request {
+  "service": "sharaspot-bot",
+  "method": "POST",
+  "path": "/webhook",
+  "status": 200,
+  "duration": "5ms",
+  "ip": "::1",
+  "userAgent": "facebookexternalua"
+}
+2025-10-20 23:31:07 [INFO]: HTTP Request {
+  "service": "sharaspot-bot",
+  "method": "POST",
+  "path": "/webhook",
+  "status": 200,
+  "duration": "1ms",
+  "ip": "::1",
+  "userAgent": "facebookexternalua"
+}
+2025-10-20 23:31:07 [INFO]: HTTP Request {
+  "service": "sharaspot-bot",
+  "method": "POST",
+  "path": "/webhook",
+  "status": 200,
+  "duration": "2ms",
+  "ip": "::1",
+  "userAgent": "facebookexternalua"
+}
+2025-10-20 23:31:07 [INFO]: HTTP Request {
+  "service": "sharaspot-bot",
+  "method": "POST",
+  "path": "/webhook",
+  "status": 200,
+  "duration": "1ms",
+  "ip": "::1",
+  "userAgent": "facebookexternalua"
+}
+2025-10-20 23:31:07 [INFO]: HTTP Request {
+  "service": "sharaspot-bot",
+  "method": "POST",
+  "path": "/webhook",
+  "status": 200,
+  "duration": "2ms",
+  "ip": "::1",
+  "userAgent": "facebookexternalua"
+}
+2025-10-20 23:31:58 [INFO]: 📢 Processing queue notifications... {
+  "service": "sharaspot-bot"
+}
+2025-10-20 23:31:58 [INFO]: 🧹 Starting cleanup process... {
+  "service": "sharaspot-bot"
+}
+2025-10-20 23:31:59 [INFO]: ✅ No expired reservations to cleanup {
+  "service": "sharaspot-bot"
+}
+2025-10-20 23:31:59 [INFO]: 📊 Found queues for notification processing {
+  "service": "sharaspot-bot",
+  "count": 1
+}
+2025-10-20 23:32:14 [INFO]: HTTP Request {
+  "service": "sharaspot-bot",
+  "method": "POST",
+  "path": "/webhook",
+  "status": 200,
+  "duration": "2ms",
+  "ip": "::1",
+  "userAgent": "facebookexternalua"
+}
+2025-10-20 23:32:30 [INFO]: 📥 Processing user message batch {
+  "service": "sharaspot-bot",
+  "batchId": "batch-1760983350563-cxk6osu",
+  "totalMessages": 1,
+  "firstMessageId": "wamid.HBgMOTE5NzkwMjk0MjIxFQIAEhggQTU4NjVGNEZEQjkwRjdCQTY0OUFBMTFBMUY0OEIwMTQA"
+}
+2025-10-20 23:32:30 [INFO]: ✅ Webhook message batch dispatch completed {
+  "service": "sharaspot-bot",
+  "batchId": "batch-1760983350563-cxk6osu",
+  "processed": 1,
+  "duplicatesSkipped": 0
+}
+2025-10-20 23:32:30 [INFO]: HTTP Request {
+  "service": "sharaspot-bot",
+  "method": "POST",
+  "path": "/webhook",
+  "status": 200,
+  "duration": "4ms",
+  "ip": "::1",
+  "userAgent": "facebookexternalua"
+}
+2025-10-20 23:32:30 [INFO]: 📨 Processing message {
+  "service": "sharaspot-bot",
+  "whatsappId": "919790294221",
+  "type": "interactive",
+  "messageId": "wamid.HBgMOTE5NzkwMjk0MjIxFQIAEhggQTU4NjVGNEZEQjkwRjdCQTY0OUFBMTFBMUY0OEIwMTQA"
+}
+2025-10-20 23:32:30 [INFO]: 🔍 Looking for user {
+  "service": "sharaspot-bot",
+  "whatsappId": "919790294221"
+}
+2025-10-20 23:32:30 [INFO]: ✅ Found existing user {
+  "service": "sharaspot-bot",
+  "whatsappId": "919790294221",
+  "userId": 16
+}
+2025-10-20 23:32:30 [INFO]: 🔘 Button pressed {
+  "service": "sharaspot-bot",
+  "whatsappId": "919790294221",
+  "buttonId": "queue_status_23",
+  "title": "📊 Refresh Status"
+}
+2025-10-20 23:32:30 [INFO]: 🎯 Routing button {
+  "service": "sharaspot-bot",
+  "whatsappId": "919790294221",
+  "buttonId": "queue_status_23",
+  "parsed": {
+    "action": "status",
+    "category": "queue",
+    "stationId": 23
+  }
+}
+2025-10-20 23:32:30 [INFO]: Processing queue button {
+  "service": "sharaspot-bot",
+  "whatsappId": "919790294221",
+  "buttonId": "queue_status_23",
+  "buttonTitle": "📊 Refresh Status"
+}
+2025-10-20 23:32:31 [INFO]: ✅ Text message sent {
+  "service": "sharaspot-bot",
+  "to": "919790294221",
+  "messageId": "wamid.HBgMOTE5NzkwMjk0MjIxFQIAERgSMkE4ODQ4RkY2QjNBMzFDNTNEAA=="
+}
+2025-10-20 23:32:32 [INFO]: HTTP Request {
+  "service": "sharaspot-bot",
+  "method": "POST",
+  "path": "/webhook",
+  "status": 200,
+  "duration": "2ms",
+  "ip": "::1",
+  "userAgent": "facebookexternalua"
+}
+2025-10-20 23:32:33 [INFO]: HTTP Request {
+  "service": "sharaspot-bot",
+  "method": "POST",
+  "path": "/webhook",
+  "status": 200,
+  "duration": "1ms",
+  "ip": "::1",
+  "userAgent": "facebookexternalua"
+}
+2025-10-20 23:32:34 [INFO]: ✅ Button message sent {
+  "service": "sharaspot-bot",
+  "to": "919790294221",
+  "messageId": "wamid.HBgMOTE5NzkwMjk0MjIxFQIAERgSQTVBRjc0NUZFRTMxNDMyRkQ4AA=="
+}
+2025-10-20 23:32:35 [INFO]: HTTP Request {
+  "service": "sharaspot-bot",
+  "method": "POST",
+  "path": "/webhook",
+  "status": 200,
+  "duration": "2ms",
+  "ip": "::1",
+  "userAgent": "facebookexternalua"
+}
+2025-10-20 23:32:36 [INFO]: HTTP Request {
+  "service": "sharaspot-bot",
+  "method": "POST",
+  "path": "/webhook",
+  "status": 200,
+  "duration": "1ms",
+  "ip": "::1",
+  "userAgent": "facebookexternalua"
+}
+2025-10-20 23:32:58 [INFO]: 🧹 Starting cleanup process... {
+  "service": "sharaspot-bot"
+}
+2025-10-20 23:32:59 [INFO]: ✅ No expired reservations to cleanup {
+  "service": "sharaspot-bot"
+}
+2025-10-20 23:33:58 [INFO]: 📢 Processing queue notifications... {
+  "service": "sharaspot-bot"
+}
+2025-10-20 23:33:58 [INFO]: 🧹 Starting cleanup process... {
+  "service": "sharaspot-bot"
+}
+2025-10-20 23:33:59 [INFO]: ✅ No expired reservations to cleanup {
+  "service": "sharaspot-bot"
+}
+2025-10-20 23:33:59 [INFO]: 📊 Found queues for notification processing {
+  "service": "sharaspot-bot",
+  "count": 1
+}
+2025-10-20 23:34:58 [INFO]: 🧹 Starting cleanup process... {
+  "service": "sharaspot-bot"
+}
+2025-10-20 23:34:59 [INFO]: ✅ No expired reservations to cleanup {
+  "service": "sharaspot-bot"
+}
+2025-10-20 23:35:57 [INFO]: 🧹 Message cache cleanup complete {
+  "service": "sharaspot-bot",
+  "removed": 4,
+  "remaining": 1
+}
+2025-10-20 23:35:58 [INFO]: 📢 Processing queue notifications... {
+  "service": "sharaspot-bot"
+}
+2025-10-20 23:35:58 [INFO]: 🧹 Starting cleanup process... {
+  "service": "sharaspot-bot"
+}
+2025-10-20 23:35:59 [INFO]: 📊 Found queues for notification processing {
+  "service": "sharaspot-bot",
+  "count": 1
+}
+2025-10-20 23:35:59 [INFO]: ✅ No expired reservations to cleanup {
+  "service": "sharaspot-bot"
+}
+2025-10-20 23:36:15 [INFO]: 📥 Processing user message batch {
+  "service": "sharaspot-bot",
+  "batchId": "batch-1760983575127-lmvi4h0",
+  "totalMessages": 1,
+  "firstMessageId": "wamid.HBgMOTE5NzkwMjk0MjIxFQIAEhggQTVCN0VFM0ZBNzlEQjM5M0Q3QzdGMjYxQkNFQzMzMEIA"
+}
+2025-10-20 23:36:15 [INFO]: ✅ Webhook message batch dispatch completed {
+  "service": "sharaspot-bot",
+  "batchId": "batch-1760983575127-lmvi4h0",
+  "processed": 1,
+  "duplicatesSkipped": 0
+}
+2025-10-20 23:36:15 [INFO]: HTTP Request {
+  "service": "sharaspot-bot",
+  "method": "POST",
+  "path": "/webhook",
+  "status": 200,
+  "duration": "3ms",
+  "ip": "::1",
+  "userAgent": "facebookexternalua"
+}
+2025-10-20 23:36:15 [INFO]: 📨 Processing message {
+  "service": "sharaspot-bot",
+  "whatsappId": "919790294221",
+  "type": "text",
+  "messageId": "wamid.HBgMOTE5NzkwMjk0MjIxFQIAEhggQTVCN0VFM0ZBNzlEQjM5M0Q3QzdGMjYxQkNFQzMzMEIA"
+}
+2025-10-20 23:36:15 [INFO]: 🔍 Looking for user {
+  "service": "sharaspot-bot",
+  "whatsappId": "919790294221"
+}
+2025-10-20 23:36:15 [INFO]: ✅ Found existing user {
+  "service": "sharaspot-bot",
+  "whatsappId": "919790294221",
+  "userId": 16
+}
+2025-10-20 23:36:15 [INFO]: 🔍 Looking for user {
+  "service": "sharaspot-bot",
+  "whatsappId": "919790294221"
+}
+2025-10-20 23:36:15 [INFO]: HTTP Request {
+  "service": "sharaspot-bot",
+  "method": "POST",
+  "path": "/webhook",
+  "status": 200,
+  "duration": "1ms",
+  "ip": "::1",
+  "userAgent": "facebookexternalua"
+}
+2025-10-20 23:36:16 [INFO]: ✅ Found existing user {
+  "service": "sharaspot-bot",
+  "whatsappId": "919790294221",
+  "userId": 16
+}
+2025-10-20 23:36:16 [INFO]: ✅ Button message sent {
+  "service": "sharaspot-bot",
+  "to": "919790294221",
+  "messageId": "wamid.HBgMOTE5NzkwMjk0MjIxFQIAERgSMkQwMjQ2NUZENzJEOUUzNTNDAA=="
+}
+2025-10-20 23:36:16 [INFO]: HTTP Request {
+  "service": "sharaspot-bot",
+  "method": "POST",
+  "path": "/webhook",
+  "status": 200,
+  "duration": "2ms",
+  "ip": "::1",
+  "userAgent": "facebookexternalua"
+}
+2025-10-20 23:36:17 [INFO]: HTTP Request {
+  "service": "sharaspot-bot",
+  "method": "POST",
+  "path": "/webhook",
+  "status": 200,
+  "duration": "1ms",
+  "ip": "::1",
+  "userAgent": "facebookexternalua"
+}
+2025-10-20 23:36:18 [INFO]: HTTP Request {
+  "service": "sharaspot-bot",
+  "method": "POST",
+  "path": "/webhook",
+  "status": 200,
+  "duration": "1ms",
+  "ip": "::1",
+  "userAgent": "facebookexternalua"
+}
+2025-10-20 23:36:27 [INFO]: 🛑 SIGINT received — starting graceful shutdown {
+  "service": "sharaspot-bot"
+}
+2025-10-23 15:14:29 [INFO]: 🚀 Starting SharaSpot Bot Server {
+  "service": "sharaspot-bot"
+}
+2025-10-23 15:14:29 [INFO]: 🔄 Initializing database connection... {
+  "service": "sharaspot-bot"
+}
+2025-10-23 15:14:32 [INFO]: ✅ Database connection successful {
+  "service": "sharaspot-bot"
+}
+2025-10-23 15:14:32 [INFO]: 🎉 Database initialized successfully {
+  "service": "sharaspot-bot"
+}
+2025-10-23 15:14:32 [INFO]: ✅ Database connected successfully {
+  "service": "sharaspot-bot"
+}
+2025-10-23 15:14:32 [INFO]: 🚀 Starting queue scheduler... {
+  "service": "sharaspot-bot"
+}
+2025-10-23 15:14:32 [INFO]: ✅ Queue scheduler started successfully {
+  "service": "sharaspot-bot"
+}
+2025-10-23 15:14:32 [INFO]: 🤖 Queue scheduler started {
+  "service": "sharaspot-bot"
+}
+2025-10-23 15:14:32 [INFO]: ✅ SharaSpot Bot Server Ready {
+  "service": "sharaspot-bot",
+  "port": 3000,
+  "environment": "development",
+  "whatsappWebhookUrl": "https://your-domain.com/webhook",
+  "paymentCallbackUrl": "https://your-domain.com/api/payment/callback",
+  "razorpayWebhookUrl": "https://your-domain.com/ (POST)",
+  "healthUrl": "https://your-domain.com/health",
+  "pid": 23037,
+  "nodeVersion": "v24.9.0"
+}
+2025-10-23 15:15:32 [INFO]: 🧹 Starting cleanup process... {
+  "service": "sharaspot-bot"
+}
+2025-10-23 15:15:33 [INFO]: ✅ No expired reservations to cleanup {
+  "service": "sharaspot-bot"
+}
+2025-10-23 15:15:55 [INFO]: ✅ Webhook verified successfully {
+  "service": "sharaspot-bot"
+}
+2025-10-23 15:15:55 [INFO]: HTTP Request {
+  "service": "sharaspot-bot",
+  "method": "GET",
+  "path": "/webhook",
+  "status": 200,
+  "duration": "8ms",
+  "ip": "::1",
+  "userAgent": "facebookplatform/1.0 (+http://developers.facebook.com)"
+}
+2025-10-23 15:16:32 [INFO]: 📢 Processing queue notifications... {
+  "service": "sharaspot-bot"
+}
+2025-10-23 15:16:32 [INFO]: 🧹 Starting cleanup process... {
+  "service": "sharaspot-bot"
+}
+2025-10-23 15:16:32 [INFO]: 📊 Found queues for notification processing {
+  "service": "sharaspot-bot",
+  "count": 1
+}
+2025-10-23 15:16:33 [INFO]: ✅ No expired reservations to cleanup {
+  "service": "sharaspot-bot"
+}
+2025-10-23 15:16:44 [INFO]: HTTP Request {
+  "service": "sharaspot-bot",
+  "method": "POST",
+  "path": "/webhook",
+  "status": 200,
+  "duration": "4ms",
+  "ip": "::1",
+  "userAgent": "facebookexternalua"
+}
+2025-10-23 15:16:51 [INFO]: 📥 Processing user message batch {
+  "service": "sharaspot-bot",
+  "batchId": "batch-1761212811521-5riorts",
+  "totalMessages": 1,
+  "firstMessageId": "wamid.HBgMOTE5NzkwMjk0MjIxFQIAEhgWM0VCMDgzNUMxMTU3NkVDMURDMTAyNAA="
+}
+2025-10-23 15:16:51 [INFO]: ✅ Webhook message batch dispatch completed {
+  "service": "sharaspot-bot",
+  "batchId": "batch-1761212811521-5riorts",
+  "processed": 1,
+  "duplicatesSkipped": 0
+}
+2025-10-23 15:16:51 [INFO]: HTTP Request {
+  "service": "sharaspot-bot",
+  "method": "POST",
+  "path": "/webhook",
+  "status": 200,
+  "duration": "4ms",
+  "ip": "::1",
+  "userAgent": "facebookexternalua"
+}
+2025-10-23 15:16:51 [INFO]: 📨 Processing message {
+  "service": "sharaspot-bot",
+  "whatsappId": "919790294221",
+  "type": "text",
+  "messageId": "wamid.HBgMOTE5NzkwMjk0MjIxFQIAEhgWM0VCMDgzNUMxMTU3NkVDMURDMTAyNAA="
+}
+2025-10-23 15:16:51 [INFO]: 🔍 Looking for user {
+  "service": "sharaspot-bot",
+  "whatsappId": "919790294221"
+}
+2025-10-23 15:16:51 [INFO]: ✅ Found existing user {
+  "service": "sharaspot-bot",
+  "whatsappId": "919790294221",
+  "userId": 16
+}
+2025-10-23 15:16:51 [INFO]: 🔍 Looking for user {
+  "service": "sharaspot-bot",
+  "whatsappId": "919790294221"
+}
+2025-10-23 15:16:52 [INFO]: ✅ Found existing user {
+  "service": "sharaspot-bot",
+  "whatsappId": "919790294221",
+  "userId": 16
+}
+2025-10-23 15:16:53 [INFO]: ✅ Button message sent {
+  "service": "sharaspot-bot",
+  "to": "919790294221",
+  "messageId": "wamid.HBgMOTE5NzkwMjk0MjIxFQIAERgSMTc3RkY3MDJFMDRGMzAxQjVEAA=="
+}
+2025-10-23 15:16:54 [INFO]: HTTP Request {
+  "service": "sharaspot-bot",
+  "method": "POST",
+  "path": "/webhook",
+  "status": 200,
+  "duration": "1ms",
+  "ip": "::1",
+  "userAgent": "facebookexternalua"
+}
+2025-10-23 15:16:54 [INFO]: HTTP Request {
+  "service": "sharaspot-bot",
+  "method": "POST",
+  "path": "/webhook",
+  "status": 200,
+  "duration": "2ms",
+  "ip": "::1",
+  "userAgent": "facebookexternalua"
+}
+2025-10-23 15:16:55 [INFO]: HTTP Request {
+  "service": "sharaspot-bot",
+  "method": "POST",
+  "path": "/webhook",
+  "status": 200,
+  "duration": "2ms",
+  "ip": "::1",
+  "userAgent": "facebookexternalua"
+}
+2025-10-23 15:16:55 [INFO]: HTTP Request {
+  "service": "sharaspot-bot",
+  "method": "POST",
+  "path": "/webhook",
+  "status": 200,
+  "duration": "1ms",
+  "ip": "::1",
+  "userAgent": "facebookexternalua"
+}
+2025-10-23 15:16:57 [INFO]: 📥 Processing user message batch {
+  "service": "sharaspot-bot",
+  "batchId": "batch-1761212817466-xgd5wd8",
+  "totalMessages": 1,
+  "firstMessageId": "wamid.HBgMOTE5NzkwMjk0MjIxFQIAEhgWM0VCMEI3RUY0OTREODAyQjg3NkRGMQA="
+}
+2025-10-23 15:16:57 [INFO]: ✅ Webhook message batch dispatch completed {
+  "service": "sharaspot-bot",
+  "batchId": "batch-1761212817466-xgd5wd8",
+  "processed": 1,
+  "duplicatesSkipped": 0
+}
+2025-10-23 15:16:57 [INFO]: HTTP Request {
+  "service": "sharaspot-bot",
+  "method": "POST",
+  "path": "/webhook",
+  "status": 200,
+  "duration": "3ms",
+  "ip": "::1",
+  "userAgent": "facebookexternalua"
+}
+2025-10-23 15:16:57 [INFO]: 📨 Processing message {
+  "service": "sharaspot-bot",
+  "whatsappId": "919790294221",
+  "type": "interactive",
+  "messageId": "wamid.HBgMOTE5NzkwMjk0MjIxFQIAEhgWM0VCMEI3RUY0OTREODAyQjg3NkRGMQA="
+}
+2025-10-23 15:16:57 [INFO]: 🔍 Looking for user {
+  "service": "sharaspot-bot",
+  "whatsappId": "919790294221"
+}
+2025-10-23 15:16:57 [INFO]: ✅ Found existing user {
+  "service": "sharaspot-bot",
+  "whatsappId": "919790294221",
+  "userId": 16
+}
+2025-10-23 15:16:57 [INFO]: 🔘 Button pressed {
+  "service": "sharaspot-bot",
+  "whatsappId": "919790294221",
+  "buttonId": "quick_book",
+  "title": "⚡ Find Stations"
+}
+2025-10-23 15:16:57 [INFO]: 🎯 Routing button {
+  "service": "sharaspot-bot",
+  "whatsappId": "919790294221",
+  "buttonId": "quick_book",
+  "parsed": {
+    "action": "quick_book",
+    "category": "system",
+    "stationId": 0
+  }
+}
+2025-10-23 15:16:59 [INFO]: ✅ Button message sent {
+  "service": "sharaspot-bot",
+  "to": "919790294221",
+  "messageId": "wamid.HBgMOTE5NzkwMjk0MjIxFQIAERgSNDc2RTQyNUQzNTY3OTZCQjYyAA=="
+}
+2025-10-23 15:17:00 [INFO]: HTTP Request {
+  "service": "sharaspot-bot",
+  "method": "POST",
+  "path": "/webhook",
+  "status": 200,
+  "duration": "1ms",
+  "ip": "::1",
+  "userAgent": "facebookexternalua"
+}
+2025-10-23 15:17:00 [INFO]: HTTP Request {
+  "service": "sharaspot-bot",
+  "method": "POST",
+  "path": "/webhook",
+  "status": 200,
+  "duration": "1ms",
+  "ip": "::1",
+  "userAgent": "facebookexternalua"
+}
+2025-10-23 15:17:00 [INFO]: HTTP Request {
+  "service": "sharaspot-bot",
+  "method": "POST",
+  "path": "/webhook",
+  "status": 200,
+  "duration": "0ms",
+  "ip": "::1",
+  "userAgent": "facebookexternalua"
+}
+2025-10-23 15:17:00 [INFO]: HTTP Request {
+  "service": "sharaspot-bot",
+  "method": "POST",
+  "path": "/webhook",
+  "status": 200,
+  "duration": "1ms",
+  "ip": "::1",
+  "userAgent": "facebookexternalua"
+}
+2025-10-23 15:17:06 [INFO]: 📥 Processing user message batch {
+  "service": "sharaspot-bot",
+  "batchId": "batch-1761212826710-05z5yxs",
+  "totalMessages": 1,
+  "firstMessageId": "wamid.HBgMOTE5NzkwMjk0MjIxFQIAEhgWM0VCMDJDQzcwOEZFRDI3NjQ1NzZBQgA="
+}
+2025-10-23 15:17:06 [INFO]: ✅ Webhook message batch dispatch completed {
+  "service": "sharaspot-bot",
+  "batchId": "batch-1761212826710-05z5yxs",
+  "processed": 1,
+  "duplicatesSkipped": 0
+}
+2025-10-23 15:17:06 [INFO]: HTTP Request {
+  "service": "sharaspot-bot",
+  "method": "POST",
+  "path": "/webhook",
+  "status": 200,
+  "duration": "1ms",
+  "ip": "::1",
+  "userAgent": "facebookexternalua"
+}
+2025-10-23 15:17:06 [INFO]: 📨 Processing message {
+  "service": "sharaspot-bot",
+  "whatsappId": "919790294221",
+  "type": "interactive",
+  "messageId": "wamid.HBgMOTE5NzkwMjk0MjIxFQIAEhgWM0VCMDJDQzcwOEZFRDI3NjQ1NzZBQgA="
+}
+2025-10-23 15:17:06 [INFO]: 🔍 Looking for user {
+  "service": "sharaspot-bot",
+  "whatsappId": "919790294221"
+}
+2025-10-23 15:17:07 [INFO]: ✅ Found existing user {
+  "service": "sharaspot-bot",
+  "whatsappId": "919790294221",
+  "userId": 16
+}
+2025-10-23 15:17:07 [INFO]: 🔘 Button pressed {
+  "service": "sharaspot-bot",
+  "whatsappId": "919790294221",
+  "buttonId": "type_address",
+  "title": "📝 Type Address"
+}
+2025-10-23 15:17:07 [INFO]: 🎯 Routing button {
+  "service": "sharaspot-bot",
+  "whatsappId": "919790294221",
+  "buttonId": "type_address",
+  "parsed": {
+    "action": "type_address",
+    "category": "system",
+    "stationId": 0
+  }
+}
+2025-10-23 15:17:07 [INFO]: Location button pressed {
+  "service": "sharaspot-bot",
+  "whatsappId": "919790294221",
+  "buttonId": "type_address",
+  "buttonTitle": ""
+}
+2025-10-23 15:17:07 [WARN]: Could not parse button ID {
+  "service": "sharaspot-bot",
+  "buttonId": "type_address"
+}
+2025-10-23 15:17:07 [INFO]: ✅ Text message sent {
+  "service": "sharaspot-bot",
+  "to": "919790294221",
+  "messageId": "wamid.HBgMOTE5NzkwMjk0MjIxFQIAERgSNDhFRjgzN0YwMTU1MjZDREEzAA=="
+}
+2025-10-23 15:17:08 [INFO]: HTTP Request {
+  "service": "sharaspot-bot",
+  "method": "POST",
+  "path": "/webhook",
+  "status": 200,
+  "duration": "1ms",
+  "ip": "::1",
+  "userAgent": "facebookexternalua"
+}
+2025-10-23 15:17:09 [INFO]: HTTP Request {
+  "service": "sharaspot-bot",
+  "method": "POST",
+  "path": "/webhook",
+  "status": 200,
+  "duration": "2ms",
+  "ip": "::1",
+  "userAgent": "facebookexternalua"
+}
+2025-10-23 15:17:09 [INFO]: HTTP Request {
+  "service": "sharaspot-bot",
+  "method": "POST",
+  "path": "/webhook",
+  "status": 200,
+  "duration": "1ms",
+  "ip": "::1",
+  "userAgent": "facebookexternalua"
+}
+2025-10-23 15:17:09 [INFO]: HTTP Request {
+  "service": "sharaspot-bot",
+  "method": "POST",
+  "path": "/webhook",
+  "status": 200,
+  "duration": "1ms",
+  "ip": "::1",
+  "userAgent": "facebookexternalua"
+}
+2025-10-23 15:17:12 [INFO]: 📥 Processing user message batch {
+  "service": "sharaspot-bot",
+  "batchId": "batch-1761212832718-0gi63du",
+  "totalMessages": 1,
+  "firstMessageId": "wamid.HBgMOTE5NzkwMjk0MjIxFQIAEhgWM0VCMDk1MkExRTA5OTE1NzZDMjVEQgA="
+}
+2025-10-23 15:17:12 [INFO]: ✅ Webhook message batch dispatch completed {
+  "service": "sharaspot-bot",
+  "batchId": "batch-1761212832718-0gi63du",
+  "processed": 1,
+  "duplicatesSkipped": 0
+}
+2025-10-23 15:17:12 [INFO]: HTTP Request {
+  "service": "sharaspot-bot",
+  "method": "POST",
+  "path": "/webhook",
+  "status": 200,
+  "duration": "2ms",
+  "ip": "::1",
+  "userAgent": "facebookexternalua"
+}
+2025-10-23 15:17:12 [INFO]: 📨 Processing message {
+  "service": "sharaspot-bot",
+  "whatsappId": "919790294221",
+  "type": "text",
+  "messageId": "wamid.HBgMOTE5NzkwMjk0MjIxFQIAEhgWM0VCMDk1MkExRTA5OTE1NzZDMjVEQgA="
+}
+2025-10-23 15:17:12 [INFO]: 🔍 Looking for user {
+  "service": "sharaspot-bot",
+  "whatsappId": "919790294221"
+}
+2025-10-23 15:17:12 [INFO]: ✅ Found existing user {
+  "service": "sharaspot-bot",
+  "whatsappId": "919790294221",
+  "userId": 16
+}
+2025-10-23 15:17:12 [INFO]: Address input received {
+  "service": "sharaspot-bot",
+  "whatsappId": "919790294221",
+  "address": "Anna Nagar"
+}
+2025-10-23 15:17:13 [INFO]: ✅ Text message sent {
+  "service": "sharaspot-bot",
+  "to": "919790294221",
+  "messageId": "wamid.HBgMOTE5NzkwMjk0MjIxFQIAERgSRDhFMDg0MTFEMjBDQzcwNERCAA=="
+}
+2025-10-23 15:17:14 [INFO]: HTTP Request {
+  "service": "sharaspot-bot",
+  "method": "POST",
+  "path": "/webhook",
+  "status": 200,
+  "duration": "1ms",
+  "ip": "::1",
+  "userAgent": "facebookexternalua"
+}
+2025-10-23 15:17:15 [INFO]: ✅ Text message sent {
+  "service": "sharaspot-bot",
+  "to": "919790294221",
+  "messageId": "wamid.HBgMOTE5NzkwMjk0MjIxFQIAERgSRDg2RkU1ODQ1NDc4QUYyNTk5AA=="
+}
+2025-10-23 15:17:15 [INFO]: 🔍 Starting station search {
+  "service": "sharaspot-bot",
+  "whatsappId": "919790294221",
+  "coordinates": {
+    "latitude": 13.0878,
+    "longitude": 80.2086
+  },
+  "address": "Anna Nagar, Chennai, Tamil Nadu, India"
+}
+2025-10-23 15:17:15 [INFO]: User found for search {
+  "service": "sharaspot-bot",
+  "whatsappId": "919790294221",
+  "userId": 16,
+  "hasPrefs": true
+}
+2025-10-23 15:17:15 [INFO]: Search options prepared {
+  "service": "sharaspot-bot",
+  "whatsappId": "919790294221",
+  "searchOptions": {
+    "userWhatsapp": "919790294221",
+    "latitude": 13.0878,
+    "longitude": 80.2086,
+    "radius": 25,
+    "maxResults": 5,
+    "offset": 0,
+    "availableOnly": false,
+    "connectorTypes": [
+      "Proprietary"
+    ],
+    "sortBy": "availability"
+  }
+}
+2025-10-23 15:17:15 [INFO]: Searching stations {
+  "service": "sharaspot-bot",
+  "userWhatsapp": "919790294221",
+  "location": {
+    "lat": 13.0878,
+    "lng": 80.2086
+  },
+  "radius": 25
+}
+2025-10-23 15:17:15 [INFO]: HTTP Request {
+  "service": "sharaspot-bot",
+  "method": "POST",
+  "path": "/webhook",
+  "status": 200,
+  "duration": "2ms",
+  "ip": "::1",
+  "userAgent": "facebookexternalua"
+}
+2025-10-23 15:17:15 [INFO]: Station search service completed {
+  "service": "sharaspot-bot",
+  "whatsappId": "919790294221",
+  "stationsFound": 3,
+  "totalCount": 3,
+  "hasMore": false
+}
+2025-10-23 15:17:15 [INFO]: ✅ Search results stored in context {
+  "service": "sharaspot-bot",
+  "whatsappId": "919790294221"
+}
+2025-10-23 15:17:15 [INFO]: HTTP Request {
+  "service": "sharaspot-bot",
+  "method": "POST",
+  "path": "/webhook",
+  "status": 200,
+  "duration": "1ms",
+  "ip": "::1",
+  "userAgent": "facebookexternalua"
+}
+2025-10-23 15:17:16 [INFO]: HTTP Request {
+  "service": "sharaspot-bot",
+  "method": "POST",
+  "path": "/webhook",
+  "status": 200,
+  "duration": "1ms",
+  "ip": "::1",
+  "userAgent": "facebookexternalua"
+}
+2025-10-23 15:17:16 [INFO]: HTTP Request {
+  "service": "sharaspot-bot",
+  "method": "POST",
+  "path": "/webhook",
+  "status": 200,
+  "duration": "1ms",
+  "ip": "::1",
+  "userAgent": "facebookexternalua"
+}
+2025-10-23 15:17:16 [INFO]: ✅ Text message sent {
+  "service": "sharaspot-bot",
+  "to": "919790294221",
+  "messageId": "wamid.HBgMOTE5NzkwMjk0MjIxFQIAERgSM0REMDlCMzU2Q0VBNzM1NTQ5AA=="
+}
+2025-10-23 15:17:16 [INFO]: HTTP Request {
+  "service": "sharaspot-bot",
+  "method": "POST",
+  "path": "/webhook",
+  "status": 200,
+  "duration": "1ms",
+  "ip": "::1",
+  "userAgent": "facebookexternalua"
+}
+2025-10-23 15:17:16 [INFO]: HTTP Request {
+  "service": "sharaspot-bot",
+  "method": "POST",
+  "path": "/webhook",
+  "status": 200,
+  "duration": "1ms",
+  "ip": "::1",
+  "userAgent": "facebookexternalua"
+}
+2025-10-23 15:17:17 [INFO]: HTTP Request {
+  "service": "sharaspot-bot",
+  "method": "POST",
+  "path": "/webhook",
+  "status": 200,
+  "duration": "1ms",
+  "ip": "::1",
+  "userAgent": "facebookexternalua"
+}
+2025-10-23 15:17:17 [INFO]: ✅ Button message sent {
+  "service": "sharaspot-bot",
+  "to": "919790294221",
+  "messageId": "wamid.HBgMOTE5NzkwMjk0MjIxFQIAERgSODgyN0RDQkVDOERBRjA0QUJEAA=="
+}
+2025-10-23 15:17:17 [INFO]: ✅ Station results displayed successfully {
+  "service": "sharaspot-bot",
+  "whatsappId": "919790294221",
+  "stationsShown": 3
+}
+2025-10-23 15:17:17 [INFO]: HTTP Request {
+  "service": "sharaspot-bot",
+  "method": "POST",
+  "path": "/webhook",
+  "status": 200,
+  "duration": "1ms",
+  "ip": "::1",
+  "userAgent": "facebookexternalua"
+}
+2025-10-23 15:17:18 [INFO]: HTTP Request {
+  "service": "sharaspot-bot",
+  "method": "POST",
+  "path": "/webhook",
+  "status": 200,
+  "duration": "1ms",
+  "ip": "::1",
+  "userAgent": "facebookexternalua"
+}
+2025-10-23 15:17:18 [INFO]: HTTP Request {
+  "service": "sharaspot-bot",
+  "method": "POST",
+  "path": "/webhook",
+  "status": 200,
+  "duration": "1ms",
+  "ip": "::1",
+  "userAgent": "facebookexternalua"
+}
+2025-10-23 15:17:18 [INFO]: HTTP Request {
+  "service": "sharaspot-bot",
+  "method": "POST",
+  "path": "/webhook",
+  "status": 200,
+  "duration": "2ms",
+  "ip": "::1",
+  "userAgent": "facebookexternalua"
+}
+2025-10-23 15:17:18 [INFO]: HTTP Request {
+  "service": "sharaspot-bot",
+  "method": "POST",
+  "path": "/webhook",
+  "status": 200,
+  "duration": "0ms",
+  "ip": "::1",
+  "userAgent": "facebookexternalua"
+}
+2025-10-23 15:17:18 [INFO]: HTTP Request {
+  "service": "sharaspot-bot",
+  "method": "POST",
+  "path": "/webhook",
+  "status": 200,
+  "duration": "2ms",
+  "ip": "::1",
+  "userAgent": "facebookexternalua"
+}
+2025-10-23 15:17:18 [INFO]: HTTP Request {
+  "service": "sharaspot-bot",
+  "method": "POST",
+  "path": "/webhook",
+  "status": 200,
+  "duration": "1ms",
+  "ip": "::1",
+  "userAgent": "facebookexternalua"
+}
+2025-10-23 15:17:18 [INFO]: HTTP Request {
+  "service": "sharaspot-bot",
+  "method": "POST",
+  "path": "/webhook",
+  "status": 200,
+  "duration": "2ms",
+  "ip": "::1",
+  "userAgent": "facebookexternalua"
+}
+2025-10-23 15:17:18 [INFO]: ✅ Button message sent {
+  "service": "sharaspot-bot",
+  "to": "919790294221",
+  "messageId": "wamid.HBgMOTE5NzkwMjk0MjIxFQIAERgSMzNFQTU0NjUwREU2RkZERTJEAA=="
+}
+2025-10-23 15:17:19 [INFO]: HTTP Request {
+  "service": "sharaspot-bot",
+  "method": "POST",
+  "path": "/webhook",
+  "status": 200,
+  "duration": "1ms",
+  "ip": "::1",
+  "userAgent": "facebookexternalua"
+}
+2025-10-23 15:17:20 [INFO]: HTTP Request {
+  "service": "sharaspot-bot",
+  "method": "POST",
+  "path": "/webhook",
+  "status": 200,
+  "duration": "1ms",
+  "ip": "::1",
+  "userAgent": "facebookexternalua"
+}
+2025-10-23 15:17:20 [INFO]: HTTP Request {
+  "service": "sharaspot-bot",
+  "method": "POST",
+  "path": "/webhook",
+  "status": 200,
+  "duration": "1ms",
+  "ip": "::1",
+  "userAgent": "facebookexternalua"
+}
+2025-10-23 15:17:20 [INFO]: HTTP Request {
+  "service": "sharaspot-bot",
+  "method": "POST",
+  "path": "/webhook",
+  "status": 200,
+  "duration": "2ms",
+  "ip": "::1",
+  "userAgent": "facebookexternalua"
+}
+2025-10-23 15:17:23 [INFO]: 📥 Processing user message batch {
+  "service": "sharaspot-bot",
+  "batchId": "batch-1761212843216-h6p0mly",
+  "totalMessages": 1,
+  "firstMessageId": "wamid.HBgMOTE5NzkwMjk0MjIxFQIAEhgWM0VCMDRFMzYwRTg3REU4NEY1NUEzMgA="
+}
+2025-10-23 15:17:23 [INFO]: ✅ Webhook message batch dispatch completed {
+  "service": "sharaspot-bot",
+  "batchId": "batch-1761212843216-h6p0mly",
+  "processed": 1,
+  "duplicatesSkipped": 0
+}
+2025-10-23 15:17:23 [INFO]: HTTP Request {
+  "service": "sharaspot-bot",
+  "method": "POST",
+  "path": "/webhook",
+  "status": 200,
+  "duration": "2ms",
+  "ip": "::1",
+  "userAgent": "facebookexternalua"
+}
+2025-10-23 15:17:23 [INFO]: 📨 Processing message {
+  "service": "sharaspot-bot",
+  "whatsappId": "919790294221",
+  "type": "interactive",
+  "messageId": "wamid.HBgMOTE5NzkwMjk0MjIxFQIAEhgWM0VCMDRFMzYwRTg3REU4NEY1NUEzMgA="
+}
+2025-10-23 15:17:23 [INFO]: 🔍 Looking for user {
+  "service": "sharaspot-bot",
+  "whatsappId": "919790294221"
+}
+2025-10-23 15:17:23 [INFO]: ✅ Found existing user {
+  "service": "sharaspot-bot",
+  "whatsappId": "919790294221",
+  "userId": 16
+}
+2025-10-23 15:17:23 [INFO]: 🔘 Button pressed {
+  "service": "sharaspot-bot",
+  "whatsappId": "919790294221",
+  "buttonId": "book_station_23",
+  "title": "⚡ Book Now"
+}
+2025-10-23 15:17:23 [INFO]: 🎯 Routing button {
+  "service": "sharaspot-bot",
+  "whatsappId": "919790294221",
+  "buttonId": "book_station_23",
+  "parsed": {
+    "action": "book",
+    "category": "station",
+    "stationId": 23
+  }
+}
+2025-10-23 15:17:23 [INFO]: Location button pressed {
+  "service": "sharaspot-bot",
+  "whatsappId": "919790294221",
+  "buttonId": "book_station_23",
+  "buttonTitle": ""
+}
+2025-10-23 15:17:23 [INFO]: Processing booking request from location {
+  "service": "sharaspot-bot",
+  "whatsappId": "919790294221",
+  "stationId": 23
+}
+2025-10-23 15:17:24 [INFO]: HTTP Request {
+  "service": "sharaspot-bot",
+  "method": "POST",
+  "path": "/webhook",
+  "status": 200,
+  "duration": "1ms",
+  "ip": "::1",
+  "userAgent": "facebookexternalua"
+}
+2025-10-23 15:17:24 [INFO]: ✅ Text message sent {
+  "service": "sharaspot-bot",
+  "to": "919790294221",
+  "messageId": "wamid.HBgMOTE5NzkwMjk0MjIxFQIAERgSNDA2QkY1RkNENERFRUZENjA2AA=="
+}
+2025-10-23 15:17:25 [INFO]: HTTP Request {
+  "service": "sharaspot-bot",
+  "method": "POST",
+  "path": "/webhook",
+  "status": 200,
+  "duration": "2ms",
+  "ip": "::1",
+  "userAgent": "facebookexternalua"
+}
+2025-10-23 15:17:26 [INFO]: HTTP Request {
+  "service": "sharaspot-bot",
+  "method": "POST",
+  "path": "/webhook",
+  "status": 200,
+  "duration": "2ms",
+  "ip": "::1",
+  "userAgent": "facebookexternalua"
+}
+2025-10-23 15:17:26 [INFO]: HTTP Request {
+  "service": "sharaspot-bot",
+  "method": "POST",
+  "path": "/webhook",
+  "status": 200,
+  "duration": "0ms",
+  "ip": "::1",
+  "userAgent": "facebookexternalua"
+}
+2025-10-23 15:17:27 [INFO]: ✅ Button message sent {
+  "service": "sharaspot-bot",
+  "to": "919790294221",
+  "messageId": "wamid.HBgMOTE5NzkwMjk0MjIxFQIAERgSQ0VGODkxMERCODVGMzAzQUZDAA=="
+}
+2025-10-23 15:17:28 [INFO]: HTTP Request {
+  "service": "sharaspot-bot",
+  "method": "POST",
+  "path": "/webhook",
+  "status": 200,
+  "duration": "1ms",
+  "ip": "::1",
+  "userAgent": "facebookexternalua"
+}
+2025-10-23 15:17:29 [INFO]: HTTP Request {
+  "service": "sharaspot-bot",
+  "method": "POST",
+  "path": "/webhook",
+  "status": 200,
+  "duration": "2ms",
+  "ip": "::1",
+  "userAgent": "facebookexternalua"
+}
+2025-10-23 15:17:29 [INFO]: HTTP Request {
+  "service": "sharaspot-bot",
+  "method": "POST",
+  "path": "/webhook",
+  "status": 200,
+  "duration": "1ms",
+  "ip": "::1",
+  "userAgent": "facebookexternalua"
+}
+2025-10-23 15:17:29 [INFO]: HTTP Request {
+  "service": "sharaspot-bot",
+  "method": "POST",
+  "path": "/webhook",
+  "status": 200,
+  "duration": "1ms",
+  "ip": "::1",
+  "userAgent": "facebookexternalua"
+}
+2025-10-23 15:17:30 [INFO]: 📥 Processing user message batch {
+  "service": "sharaspot-bot",
+  "batchId": "batch-1761212850667-b21ez8p",
+  "totalMessages": 1,
+  "firstMessageId": "wamid.HBgMOTE5NzkwMjk0MjIxFQIAEhgWM0VCMDMzNUFBRjEwNjA5RDkzNDdCMAA="
+}
+2025-10-23 15:17:30 [INFO]: ✅ Webhook message batch dispatch completed {
+  "service": "sharaspot-bot",
+  "batchId": "batch-1761212850667-b21ez8p",
+  "processed": 1,
+  "duplicatesSkipped": 0
+}
+2025-10-23 15:17:30 [INFO]: HTTP Request {
+  "service": "sharaspot-bot",
+  "method": "POST",
+  "path": "/webhook",
+  "status": 200,
+  "duration": "2ms",
+  "ip": "::1",
+  "userAgent": "facebookexternalua"
+}
+2025-10-23 15:17:30 [INFO]: 📨 Processing message {
+  "service": "sharaspot-bot",
+  "whatsappId": "919790294221",
+  "type": "interactive",
+  "messageId": "wamid.HBgMOTE5NzkwMjk0MjIxFQIAEhgWM0VCMDMzNUFBRjEwNjA5RDkzNDdCMAA="
+}
+2025-10-23 15:17:30 [INFO]: 🔍 Looking for user {
+  "service": "sharaspot-bot",
+  "whatsappId": "919790294221"
+}
+2025-10-23 15:17:31 [INFO]: ✅ Found existing user {
+  "service": "sharaspot-bot",
+  "whatsappId": "919790294221",
+  "userId": 16
+}
+2025-10-23 15:17:31 [INFO]: 🔘 Button pressed {
+  "service": "sharaspot-bot",
+  "whatsappId": "919790294221",
+  "buttonId": "cancel_queue_23",
+  "title": "❌ Cancel"
+}
+2025-10-23 15:17:31 [INFO]: 🎯 Routing button {
+  "service": "sharaspot-bot",
+  "whatsappId": "919790294221",
+  "buttonId": "cancel_queue_23",
+  "parsed": {
+    "action": "cancel",
+    "category": "queue",
+    "stationId": 23
+  }
+}
+2025-10-23 15:17:31 [INFO]: Processing queue button {
+  "service": "sharaspot-bot",
+  "whatsappId": "919790294221",
+  "buttonId": "cancel_queue_23",
+  "buttonTitle": "❌ Cancel"
+}
+2025-10-23 15:17:31 [INFO]: ✅ Button message sent {
+  "service": "sharaspot-bot",
+  "to": "919790294221",
+  "messageId": "wamid.HBgMOTE5NzkwMjk0MjIxFQIAERgSQjBEQTMxRDJEOTAyMDlDNUZCAA=="
+}
+2025-10-23 15:17:32 [INFO]: 🧹 Starting cleanup process... {
+  "service": "sharaspot-bot"
+}
+2025-10-23 15:17:32 [INFO]: ✅ No expired reservations to cleanup {
+  "service": "sharaspot-bot"
+}
+2025-10-23 15:17:32 [INFO]: HTTP Request {
+  "service": "sharaspot-bot",
+  "method": "POST",
+  "path": "/webhook",
+  "status": 200,
+  "duration": "1ms",
+  "ip": "::1",
+  "userAgent": "facebookexternalua"
+}
+2025-10-23 15:17:33 [INFO]: HTTP Request {
+  "service": "sharaspot-bot",
+  "method": "POST",
+  "path": "/webhook",
+  "status": 200,
+  "duration": "1ms",
+  "ip": "::1",
+  "userAgent": "facebookexternalua"
+}
+2025-10-23 15:17:33 [INFO]: HTTP Request {
+  "service": "sharaspot-bot",
+  "method": "POST",
+  "path": "/webhook",
+  "status": 200,
+  "duration": "2ms",
+  "ip": "::1",
+  "userAgent": "facebookexternalua"
+}
+2025-10-23 15:17:33 [INFO]: HTTP Request {
+  "service": "sharaspot-bot",
+  "method": "POST",
+  "path": "/webhook",
+  "status": 200,
+  "duration": "0ms",
+  "ip": "::1",
+  "userAgent": "facebookexternalua"
+}
+2025-10-23 15:17:36 [INFO]: 📥 Processing user message batch {
+  "service": "sharaspot-bot",
+  "batchId": "batch-1761212856990-sdskjqu",
+  "totalMessages": 1,
+  "firstMessageId": "wamid.HBgMOTE5NzkwMjk0MjIxFQIAEhgWM0VCMDE0QTlGNzY1RDBEQkUyMjc3MgA="
+}
+2025-10-23 15:17:36 [INFO]: ✅ Webhook message batch dispatch completed {
+  "service": "sharaspot-bot",
+  "batchId": "batch-1761212856990-sdskjqu",
+  "processed": 1,
+  "duplicatesSkipped": 0
+}
+2025-10-23 15:17:36 [INFO]: HTTP Request {
+  "service": "sharaspot-bot",
+  "method": "POST",
+  "path": "/webhook",
+  "status": 200,
+  "duration": "2ms",
+  "ip": "::1",
+  "userAgent": "facebookexternalua"
+}
+2025-10-23 15:17:37 [INFO]: 📨 Processing message {
+  "service": "sharaspot-bot",
+  "whatsappId": "919790294221",
+  "type": "interactive",
+  "messageId": "wamid.HBgMOTE5NzkwMjk0MjIxFQIAEhgWM0VCMDE0QTlGNzY1RDBEQkUyMjc3MgA="
+}
+2025-10-23 15:17:37 [INFO]: 🔍 Looking for user {
+  "service": "sharaspot-bot",
+  "whatsappId": "919790294221"
+}
+2025-10-23 15:17:37 [INFO]: ✅ Found existing user {
+  "service": "sharaspot-bot",
+  "whatsappId": "919790294221",
+  "userId": 16
+}
+2025-10-23 15:17:37 [INFO]: 🔘 Button pressed {
+  "service": "sharaspot-bot",
+  "whatsappId": "919790294221",
+  "buttonId": "confirm_cancel_23",
+  "title": "✅ Yes, Cancel"
+}
+2025-10-23 15:17:37 [INFO]: 🎯 Routing button {
+  "service": "sharaspot-bot",
+  "whatsappId": "919790294221",
+  "buttonId": "confirm_cancel_23",
+  "parsed": {
+    "action": "confirm_cancel",
+    "category": "queue",
+    "stationId": 23
+  }
+}
+2025-10-23 15:17:37 [INFO]: Processing queue button {
+  "service": "sharaspot-bot",
+  "whatsappId": "919790294221",
+  "buttonId": "confirm_cancel_23",
+  "buttonTitle": "✅ Yes, Cancel"
+}
+2025-10-23 15:17:38 [INFO]: User left queue {
+  "service": "sharaspot-bot",
+  "userWhatsapp": "919790294221",
+  "stationId": 23,
+  "reason": "user_cancelled",
+  "oldPosition": 1
+}
+2025-10-23 15:17:39 [INFO]: ✅ Text message sent {
+  "service": "sharaspot-bot",
+  "to": "919790294221",
+  "messageId": "wamid.HBgMOTE5NzkwMjk0MjIxFQIAERgSMTY1OEI3NjIxMUZFQTM0MkMyAA=="
+}
+2025-10-23 15:17:40 [INFO]: HTTP Request {
+  "service": "sharaspot-bot",
+  "method": "POST",
+  "path": "/webhook",
+  "status": 200,
+  "duration": "1ms",
+  "ip": "::1",
+  "userAgent": "facebookexternalua"
+}
+2025-10-23 15:17:40 [INFO]: HTTP Request {
+  "service": "sharaspot-bot",
+  "method": "POST",
+  "path": "/webhook",
+  "status": 200,
+  "duration": "1ms",
+  "ip": "::1",
+  "userAgent": "facebookexternalua"
+}
+2025-10-23 15:17:40 [INFO]: HTTP Request {
+  "service": "sharaspot-bot",
+  "method": "POST",
+  "path": "/webhook",
+  "status": 200,
+  "duration": "1ms",
+  "ip": "::1",
+  "userAgent": "facebookexternalua"
+}
+2025-10-23 15:17:40 [INFO]: HTTP Request {
+  "service": "sharaspot-bot",
+  "method": "POST",
+  "path": "/webhook",
+  "status": 200,
+  "duration": "2ms",
+  "ip": "::1",
+  "userAgent": "facebookexternalua"
+}
+2025-10-23 15:17:41 [INFO]: ✅ Button message sent {
+  "service": "sharaspot-bot",
+  "to": "919790294221",
+  "messageId": "wamid.HBgMOTE5NzkwMjk0MjIxFQIAERgSODMxM0E4RTU1REFCRkNGRURDAA=="
+}
+2025-10-23 15:17:42 [INFO]: 📥 Processing user message batch {
+  "service": "sharaspot-bot",
+  "batchId": "batch-1761212862458-2fon89v",
+  "totalMessages": 1,
+  "firstMessageId": "wamid.HBgMOTE5NzkwMjk0MjIxFQIAEhgWM0VCMDA1NzQwMUFBNzFGQTM1OUI4NwA="
+}
+2025-10-23 15:17:42 [INFO]: ✅ Webhook message batch dispatch completed {
+  "service": "sharaspot-bot",
+  "batchId": "batch-1761212862458-2fon89v",
+  "processed": 1,
+  "duplicatesSkipped": 0
+}
+2025-10-23 15:17:42 [INFO]: HTTP Request {
+  "service": "sharaspot-bot",
+  "method": "POST",
+  "path": "/webhook",
+  "status": 200,
+  "duration": "1ms",
+  "ip": "::1",
+  "userAgent": "facebookexternalua"
+}
+2025-10-23 15:17:42 [INFO]: 📨 Processing message {
+  "service": "sharaspot-bot",
+  "whatsappId": "919790294221",
+  "type": "text",
+  "messageId": "wamid.HBgMOTE5NzkwMjk0MjIxFQIAEhgWM0VCMDA1NzQwMUFBNzFGQTM1OUI4NwA="
+}
+2025-10-23 15:17:42 [INFO]: 🔍 Looking for user {
+  "service": "sharaspot-bot",
+  "whatsappId": "919790294221"
+}
+2025-10-23 15:17:42 [INFO]: ✅ Found existing user {
+  "service": "sharaspot-bot",
+  "whatsappId": "919790294221",
+  "userId": 16
+}
+2025-10-23 15:17:42 [INFO]: HTTP Request {
+  "service": "sharaspot-bot",
+  "method": "POST",
+  "path": "/webhook",
+  "status": 200,
+  "duration": "1ms",
+  "ip": "::1",
+  "userAgent": "facebookexternalua"
+}
+2025-10-23 15:17:43 [INFO]: HTTP Request {
+  "service": "sharaspot-bot",
+  "method": "POST",
+  "path": "/webhook",
+  "status": 200,
+  "duration": "1ms",
+  "ip": "::1",
+  "userAgent": "facebookexternalua"
+}
+2025-10-23 15:17:43 [INFO]: HTTP Request {
+  "service": "sharaspot-bot",
+  "method": "POST",
+  "path": "/webhook",
+  "status": 200,
+  "duration": "1ms",
+  "ip": "::1",
+  "userAgent": "facebookexternalua"
+}
+2025-10-23 15:17:43 [INFO]: HTTP Request {
+  "service": "sharaspot-bot",
+  "method": "POST",
+  "path": "/webhook",
+  "status": 200,
+  "duration": "2ms",
+  "ip": "::1",
+  "userAgent": "facebookexternalua"
+}
+2025-10-23 15:17:43 [INFO]: ✅ Button message sent {
+  "service": "sharaspot-bot",
+  "to": "919790294221",
+  "messageId": "wamid.HBgMOTE5NzkwMjk0MjIxFQIAERgSQzU1NDhFMEM5OTBDOTVFMjU2AA=="
+}
+2025-10-23 15:17:44 [INFO]: HTTP Request {
+  "service": "sharaspot-bot",
+  "method": "POST",
+  "path": "/webhook",
+  "status": 200,
+  "duration": "2ms",
+  "ip": "::1",
+  "userAgent": "facebookexternalua"
+}
+2025-10-23 15:17:45 [INFO]: HTTP Request {
+  "service": "sharaspot-bot",
+  "method": "POST",
+  "path": "/webhook",
+  "status": 200,
+  "duration": "1ms",
+  "ip": "::1",
+  "userAgent": "facebookexternalua"
+}
+2025-10-23 15:17:45 [INFO]: HTTP Request {
+  "service": "sharaspot-bot",
+  "method": "POST",
+  "path": "/webhook",
+  "status": 200,
+  "duration": "1ms",
+  "ip": "::1",
+  "userAgent": "facebookexternalua"
+}
+2025-10-23 15:17:45 [INFO]: HTTP Request {
+  "service": "sharaspot-bot",
+  "method": "POST",
+  "path": "/webhook",
+  "status": 200,
+  "duration": "1ms",
+  "ip": "::1",
+  "userAgent": "facebookexternalua"
+}
+2025-10-23 15:17:47 [INFO]: 📥 Processing user message batch {
+  "service": "sharaspot-bot",
+  "batchId": "batch-1761212867871-nwehrdj",
+  "totalMessages": 1,
+  "firstMessageId": "wamid.HBgMOTE5NzkwMjk0MjIxFQIAEhgWM0VCMDRBOEYwOUU3OUFBMTNDMThGOQA="
+}
+2025-10-23 15:17:47 [INFO]: ✅ Webhook message batch dispatch completed {
+  "service": "sharaspot-bot",
+  "batchId": "batch-1761212867871-nwehrdj",
+  "processed": 1,
+  "duplicatesSkipped": 0
+}
+2025-10-23 15:17:47 [INFO]: HTTP Request {
+  "service": "sharaspot-bot",
+  "method": "POST",
+  "path": "/webhook",
+  "status": 200,
+  "duration": "2ms",
+  "ip": "::1",
+  "userAgent": "facebookexternalua"
+}
+2025-10-23 15:17:47 [INFO]: 📨 Processing message {
+  "service": "sharaspot-bot",
+  "whatsappId": "919790294221",
+  "type": "interactive",
+  "messageId": "wamid.HBgMOTE5NzkwMjk0MjIxFQIAEhgWM0VCMDRBOEYwOUU3OUFBMTNDMThGOQA="
+}
+2025-10-23 15:17:47 [INFO]: 🔍 Looking for user {
+  "service": "sharaspot-bot",
+  "whatsappId": "919790294221"
+}
+2025-10-23 15:17:48 [INFO]: ✅ Found existing user {
+  "service": "sharaspot-bot",
+  "whatsappId": "919790294221",
+  "userId": 16
+}
+2025-10-23 15:17:48 [INFO]: 🔘 Button pressed {
+  "service": "sharaspot-bot",
+  "whatsappId": "919790294221",
+  "buttonId": "recent_searches",
+  "title": "🕒 Recent Searches"
+}
+2025-10-23 15:17:48 [INFO]: 🎯 Routing button {
+  "service": "sharaspot-bot",
+  "whatsappId": "919790294221",
+  "buttonId": "recent_searches",
+  "parsed": {
+    "action": "recent_searches",
+    "category": "system",
+    "stationId": 0
+  }
+}
+2025-10-23 15:17:48 [INFO]: Location button pressed {
+  "service": "sharaspot-bot",
+  "whatsappId": "919790294221",
+  "buttonId": "recent_searches",
+  "buttonTitle": ""
+}
+2025-10-23 15:17:48 [WARN]: Could not parse button ID {
+  "service": "sharaspot-bot",
+  "buttonId": "recent_searches"
+}
+2025-10-23 15:17:49 [INFO]: ✅ List message sent {
+  "service": "sharaspot-bot",
+  "to": "919790294221",
+  "messageId": "wamid.HBgMOTE5NzkwMjk0MjIxFQIAERgSMzlGNDc4M0UxRjI2RDQ4MTNCAA=="
+}
+2025-10-23 15:17:50 [INFO]: HTTP Request {
+  "service": "sharaspot-bot",
+  "method": "POST",
+  "path": "/webhook",
+  "status": 200,
+  "duration": "1ms",
+  "ip": "::1",
+  "userAgent": "facebookexternalua"
+}
+2025-10-23 15:17:50 [INFO]: HTTP Request {
+  "service": "sharaspot-bot",
+  "method": "POST",
+  "path": "/webhook",
+  "status": 200,
+  "duration": "1ms",
+  "ip": "::1",
+  "userAgent": "facebookexternalua"
+}
+2025-10-23 15:17:51 [INFO]: HTTP Request {
+  "service": "sharaspot-bot",
+  "method": "POST",
+  "path": "/webhook",
+  "status": 200,
+  "duration": "1ms",
+  "ip": "::1",
+  "userAgent": "facebookexternalua"
+}
+2025-10-23 15:17:51 [INFO]: HTTP Request {
+  "service": "sharaspot-bot",
+  "method": "POST",
+  "path": "/webhook",
+  "status": 200,
+  "duration": "1ms",
+  "ip": "::1",
+  "userAgent": "facebookexternalua"
+}
+2025-10-23 15:17:55 [INFO]: 📥 Processing user message batch {
+  "service": "sharaspot-bot",
+  "batchId": "batch-1761212875717-j98ee5a",
+  "totalMessages": 1,
+  "firstMessageId": "wamid.HBgMOTE5NzkwMjk0MjIxFQIAEhgWM0VCMDQyODQ5NUJBNjQwQzlGOEIyQQA="
+}
+2025-10-23 15:17:55 [INFO]: ✅ Webhook message batch dispatch completed {
+  "service": "sharaspot-bot",
+  "batchId": "batch-1761212875717-j98ee5a",
+  "processed": 1,
+  "duplicatesSkipped": 0
+}
+2025-10-23 15:17:55 [INFO]: HTTP Request {
+  "service": "sharaspot-bot",
+  "method": "POST",
+  "path": "/webhook",
+  "status": 200,
+  "duration": "3ms",
+  "ip": "::1",
+  "userAgent": "facebookexternalua"
+}
+2025-10-23 15:17:55 [INFO]: 📨 Processing message {
+  "service": "sharaspot-bot",
+  "whatsappId": "919790294221",
+  "type": "interactive",
+  "messageId": "wamid.HBgMOTE5NzkwMjk0MjIxFQIAEhgWM0VCMDQyODQ5NUJBNjQwQzlGOEIyQQA="
+}
+2025-10-23 15:17:55 [INFO]: 🔍 Looking for user {
+  "service": "sharaspot-bot",
+  "whatsappId": "919790294221"
+}
+2025-10-23 15:17:56 [INFO]: ✅ Found existing user {
+  "service": "sharaspot-bot",
+  "whatsappId": "919790294221",
+  "userId": 16
+}
+2025-10-23 15:17:56 [INFO]: 📋 List selected {
+  "service": "sharaspot-bot",
+  "whatsappId": "919790294221",
+  "listId": "recent_search_0",
+  "title": "Anna Nagar"
+}
+2025-10-23 15:17:56 [INFO]: Address input received {
+  "service": "sharaspot-bot",
+  "whatsappId": "919790294221",
+  "address": "Anna Nagar"
+}
+2025-10-23 15:17:57 [INFO]: ✅ Text message sent {
+  "service": "sharaspot-bot",
+  "to": "919790294221",
+  "messageId": "wamid.HBgMOTE5NzkwMjk0MjIxFQIAERgSOTRGQzQxMTczNEJERUZDMTdGAA=="
+}
+2025-10-23 15:17:58 [INFO]: ✅ Text message sent {
+  "service": "sharaspot-bot",
+  "to": "919790294221",
+  "messageId": "wamid.HBgMOTE5NzkwMjk0MjIxFQIAERgSMjM4ODE5OUNCMDQwQkE1OEExAA=="
+}
+2025-10-23 15:17:58 [INFO]: 🔍 Starting station search {
+  "service": "sharaspot-bot",
+  "whatsappId": "919790294221",
+  "coordinates": {
+    "latitude": 13.0878,
+    "longitude": 80.2086
+  },
+  "address": "Anna Nagar, Chennai, Tamil Nadu, India"
+}
+2025-10-23 15:17:58 [INFO]: User found for search {
+  "service": "sharaspot-bot",
+  "whatsappId": "919790294221",
+  "userId": 16,
+  "hasPrefs": true
+}
+2025-10-23 15:17:58 [INFO]: Search options prepared {
+  "service": "sharaspot-bot",
+  "whatsappId": "919790294221",
+  "searchOptions": {
+    "userWhatsapp": "919790294221",
+    "latitude": 13.0878,
+    "longitude": 80.2086,
+    "radius": 25,
+    "maxResults": 5,
+    "offset": 0,
+    "availableOnly": false,
+    "connectorTypes": [
+      "Proprietary"
+    ],
+    "sortBy": "availability"
+  }
+}
+2025-10-23 15:17:58 [INFO]: Searching stations {
+  "service": "sharaspot-bot",
+  "userWhatsapp": "919790294221",
+  "location": {
+    "lat": 13.0878,
+    "lng": 80.2086
+  },
+  "radius": 25
+}
+2025-10-23 15:17:58 [INFO]: HTTP Request {
+  "service": "sharaspot-bot",
+  "method": "POST",
+  "path": "/webhook",
+  "status": 200,
+  "duration": "1ms",
+  "ip": "::1",
+  "userAgent": "facebookexternalua"
+}
+2025-10-23 15:17:58 [INFO]: Station search service completed {
+  "service": "sharaspot-bot",
+  "whatsappId": "919790294221",
+  "stationsFound": 3,
+  "totalCount": 3,
+  "hasMore": false
+}
+2025-10-23 15:17:58 [INFO]: ✅ Search results stored in context {
+  "service": "sharaspot-bot",
+  "whatsappId": "919790294221"
+}
+2025-10-23 15:17:59 [INFO]: HTTP Request {
+  "service": "sharaspot-bot",
+  "method": "POST",
+  "path": "/webhook",
+  "status": 200,
+  "duration": "1ms",
+  "ip": "::1",
+  "userAgent": "facebookexternalua"
+}
+2025-10-23 15:17:59 [INFO]: HTTP Request {
+  "service": "sharaspot-bot",
+  "method": "POST",
+  "path": "/webhook",
+  "status": 200,
+  "duration": "1ms",
+  "ip": "::1",
+  "userAgent": "facebookexternalua"
+}
+2025-10-23 15:17:59 [INFO]: HTTP Request {
+  "service": "sharaspot-bot",
+  "method": "POST",
+  "path": "/webhook",
+  "status": 200,
+  "duration": "1ms",
+  "ip": "::1",
+  "userAgent": "facebookexternalua"
+}
+2025-10-23 15:17:59 [INFO]: HTTP Request {
+  "service": "sharaspot-bot",
+  "method": "POST",
+  "path": "/webhook",
+  "status": 200,
+  "duration": "1ms",
+  "ip": "::1",
+  "userAgent": "facebookexternalua"
+}
+2025-10-23 15:17:59 [INFO]: ✅ Text message sent {
+  "service": "sharaspot-bot",
+  "to": "919790294221",
+  "messageId": "wamid.HBgMOTE5NzkwMjk0MjIxFQIAERgSMTQ5N0UwRjg1MDEzOUQzQzk0AA=="
+}
+2025-10-23 15:17:59 [INFO]: HTTP Request {
+  "service": "sharaspot-bot",
+  "method": "POST",
+  "path": "/webhook",
+  "status": 200,
+  "duration": "2ms",
+  "ip": "::1",
+  "userAgent": "facebookexternalua"
+}
+2025-10-23 15:17:59 [INFO]: HTTP Request {
+  "service": "sharaspot-bot",
+  "method": "POST",
+  "path": "/webhook",
+  "status": 200,
+  "duration": "1ms",
+  "ip": "::1",
+  "userAgent": "facebookexternalua"
+}
+2025-10-23 15:17:59 [INFO]: HTTP Request {
+  "service": "sharaspot-bot",
+  "method": "POST",
+  "path": "/webhook",
+  "status": 200,
+  "duration": "1ms",
+  "ip": "::1",
+  "userAgent": "facebookexternalua"
+}
+2025-10-23 15:18:00 [INFO]: ✅ Button message sent {
+  "service": "sharaspot-bot",
+  "to": "919790294221",
+  "messageId": "wamid.HBgMOTE5NzkwMjk0MjIxFQIAERgSNjAyM0Q0QTlFOTRCMTY2RkI0AA=="
+}
+2025-10-23 15:18:00 [INFO]: ✅ Station results displayed successfully {
+  "service": "sharaspot-bot",
+  "whatsappId": "919790294221",
+  "stationsShown": 3
+}
+2025-10-23 15:18:00 [INFO]: HTTP Request {
+  "service": "sharaspot-bot",
+  "method": "POST",
+  "path": "/webhook",
+  "status": 200,
+  "duration": "1ms",
+  "ip": "::1",
+  "userAgent": "facebookexternalua"
+}
+2025-10-23 15:18:01 [INFO]: HTTP Request {
+  "service": "sharaspot-bot",
+  "method": "POST",
+  "path": "/webhook",
+  "status": 200,
+  "duration": "2ms",
+  "ip": "::1",
+  "userAgent": "facebookexternalua"
+}
+2025-10-23 15:18:01 [INFO]: HTTP Request {
+  "service": "sharaspot-bot",
+  "method": "POST",
+  "path": "/webhook",
+  "status": 200,
+  "duration": "1ms",
+  "ip": "::1",
+  "userAgent": "facebookexternalua"
+}
+2025-10-23 15:18:01 [INFO]: HTTP Request {
+  "service": "sharaspot-bot",
+  "method": "POST",
+  "path": "/webhook",
+  "status": 200,
+  "duration": "2ms",
+  "ip": "::1",
+  "userAgent": "facebookexternalua"
+}
+2025-10-23 15:18:01 [INFO]: HTTP Request {
+  "service": "sharaspot-bot",
+  "method": "POST",
+  "path": "/webhook",
+  "status": 200,
+  "duration": "1ms",
+  "ip": "::1",
+  "userAgent": "facebookexternalua"
+}
+2025-10-23 15:18:01 [INFO]: HTTP Request {
+  "service": "sharaspot-bot",
+  "method": "POST",
+  "path": "/webhook",
+  "status": 200,
+  "duration": "1ms",
+  "ip": "::1",
+  "userAgent": "facebookexternalua"
+}
+2025-10-23 15:18:02 [INFO]: HTTP Request {
+  "service": "sharaspot-bot",
+  "method": "POST",
+  "path": "/webhook",
+  "status": 200,
+  "duration": "1ms",
+  "ip": "::1",
+  "userAgent": "facebookexternalua"
+}
+2025-10-23 15:18:02 [INFO]: HTTP Request {
+  "service": "sharaspot-bot",
+  "method": "POST",
+  "path": "/webhook",
+  "status": 200,
+  "duration": "1ms",
+  "ip": "::1",
+  "userAgent": "facebookexternalua"
+}
+2025-10-23 15:18:02 [INFO]: ✅ Button message sent {
+  "service": "sharaspot-bot",
+  "to": "919790294221",
+  "messageId": "wamid.HBgMOTE5NzkwMjk0MjIxFQIAERgSRUFFNTVCNjZEOTFBMjNDRjlFAA=="
+}
+2025-10-23 15:18:03 [INFO]: HTTP Request {
+  "service": "sharaspot-bot",
+  "method": "POST",
+  "path": "/webhook",
+  "status": 200,
+  "duration": "1ms",
+  "ip": "::1",
+  "userAgent": "facebookexternalua"
+}
+2025-10-23 15:18:04 [INFO]: HTTP Request {
+  "service": "sharaspot-bot",
+  "method": "POST",
+  "path": "/webhook",
+  "status": 200,
+  "duration": "2ms",
+  "ip": "::1",
+  "userAgent": "facebookexternalua"
+}
+2025-10-23 15:18:04 [INFO]: HTTP Request {
+  "service": "sharaspot-bot",
+  "method": "POST",
+  "path": "/webhook",
+  "status": 200,
+  "duration": "1ms",
+  "ip": "::1",
+  "userAgent": "facebookexternalua"
+}
+2025-10-23 15:18:04 [INFO]: HTTP Request {
+  "service": "sharaspot-bot",
+  "method": "POST",
+  "path": "/webhook",
+  "status": 200,
+  "duration": "1ms",
+  "ip": "::1",
+  "userAgent": "facebookexternalua"
+}
+2025-10-23 15:18:06 [INFO]: 📥 Processing user message batch {
+  "service": "sharaspot-bot",
+  "batchId": "batch-1761212886033-gyzq2b4",
+  "totalMessages": 1,
+  "firstMessageId": "wamid.HBgMOTE5NzkwMjk0MjIxFQIAEhgWM0VCMDI3NTQ0NDQxRjAzN0QxRjJBOAA="
+}
+2025-10-23 15:18:06 [INFO]: ✅ Webhook message batch dispatch completed {
+  "service": "sharaspot-bot",
+  "batchId": "batch-1761212886033-gyzq2b4",
+  "processed": 1,
+  "duplicatesSkipped": 0
+}
+2025-10-23 15:18:06 [INFO]: HTTP Request {
+  "service": "sharaspot-bot",
+  "method": "POST",
+  "path": "/webhook",
+  "status": 200,
+  "duration": "1ms",
+  "ip": "::1",
+  "userAgent": "facebookexternalua"
+}
+2025-10-23 15:18:06 [INFO]: 📨 Processing message {
+  "service": "sharaspot-bot",
+  "whatsappId": "919790294221",
+  "type": "interactive",
+  "messageId": "wamid.HBgMOTE5NzkwMjk0MjIxFQIAEhgWM0VCMDI3NTQ0NDQxRjAzN0QxRjJBOAA="
+}
+2025-10-23 15:18:06 [INFO]: 🔍 Looking for user {
+  "service": "sharaspot-bot",
+  "whatsappId": "919790294221"
+}
+2025-10-23 15:18:06 [INFO]: ✅ Found existing user {
+  "service": "sharaspot-bot",
+  "whatsappId": "919790294221",
+  "userId": 16
+}
+2025-10-23 15:18:06 [INFO]: 🔘 Button pressed {
+  "service": "sharaspot-bot",
+  "whatsappId": "919790294221",
+  "buttonId": "book_station_23",
+  "title": "⚡ Book Now"
+}
+2025-10-23 15:18:06 [INFO]: 🎯 Routing button {
+  "service": "sharaspot-bot",
+  "whatsappId": "919790294221",
+  "buttonId": "book_station_23",
+  "parsed": {
+    "action": "book",
+    "category": "station",
+    "stationId": 23
+  }
+}
+2025-10-23 15:18:06 [INFO]: Location button pressed {
+  "service": "sharaspot-bot",
+  "whatsappId": "919790294221",
+  "buttonId": "book_station_23",
+  "buttonTitle": ""
+}
+2025-10-23 15:18:06 [INFO]: Processing booking request from location {
+  "service": "sharaspot-bot",
+  "whatsappId": "919790294221",
+  "stationId": 23
+}
+2025-10-23 15:18:06 [INFO]: 🎫 Initiating booking payment {
+  "service": "sharaspot-bot",
+  "whatsappId": "919790294221",
+  "stationId": 23,
+  "stationName": "OMR IT Corridor Station"
+}
+2025-10-23 15:18:08 [INFO]: ✅ Booking payment link created {
+  "service": "sharaspot-bot",
+  "userWhatsappId": "919790294221",
+  "stationId": 23,
+  "amount": 50,
+  "paymentLinkId": "plink_RWs1lSLa0mEixJ",
+  "referenceId": "book_919790294221_23_1761212886925"
+}
+2025-10-23 15:18:09 [INFO]: ✅ Text message sent {
+  "service": "sharaspot-bot",
+  "to": "919790294221",
+  "messageId": "wamid.HBgMOTE5NzkwMjk0MjIxFQIAERgSMkRERTZCODgxMzBFN0QzM0QzAA=="
+}
+2025-10-23 15:18:09 [INFO]: ✅ Booking payment link sent {
+  "service": "sharaspot-bot",
+  "whatsappId": "919790294221",
+  "stationId": 23,
+  "bookingFee": 50
+}
+2025-10-23 15:18:09 [INFO]:  Booking payment link sent successfully {
+  "service": "sharaspot-bot",
+  "whatsappId": "919790294221",
+  "stationId": 23
+}
+2025-10-23 15:18:09 [INFO]: HTTP Request {
+  "service": "sharaspot-bot",
+  "method": "POST",
+  "path": "/webhook",
+  "status": 200,
+  "duration": "1ms",
+  "ip": "::1",
+  "userAgent": "facebookexternalua"
+}
+2025-10-23 15:18:10 [INFO]: HTTP Request {
+  "service": "sharaspot-bot",
+  "method": "POST",
+  "path": "/webhook",
+  "status": 200,
+  "duration": "2ms",
+  "ip": "::1",
+  "userAgent": "facebookexternalua"
+}
+2025-10-23 15:18:10 [INFO]: HTTP Request {
+  "service": "sharaspot-bot",
+  "method": "POST",
+  "path": "/webhook",
+  "status": 200,
+  "duration": "2ms",
+  "ip": "::1",
+  "userAgent": "facebookexternalua"
+}
+2025-10-23 15:18:10 [INFO]: HTTP Request {
+  "service": "sharaspot-bot",
+  "method": "POST",
+  "path": "/webhook",
+  "status": 200,
+  "duration": "1ms",
+  "ip": "::1",
+  "userAgent": "facebookexternalua"
+}
+2025-10-23 15:18:32 [INFO]: 📢 Processing queue notifications... {
+  "service": "sharaspot-bot"
+}
+2025-10-23 15:18:32 [INFO]: 🧹 Starting cleanup process... {
+  "service": "sharaspot-bot"
+}
+2025-10-23 15:18:32 [INFO]: ✅ No expired reservations to cleanup {
+  "service": "sharaspot-bot"
+}
+2025-10-23 15:18:32 [INFO]: ✅ No pending queues for notifications {
+  "service": "sharaspot-bot"
+}
+2025-10-23 15:18:40 [INFO]: 📥 Razorpay webhook received at root {
+  "service": "sharaspot-bot",
+  "event": "payment_link.paid",
+  "paymentLinkId": "plink_RWs1lSLa0mEixJ"
+}
+2025-10-23 15:18:40 [INFO]: ✅ Payment link paid event {
+  "service": "sharaspot-bot",
+  "referenceId": "book_919790294221_23_1761212886925",
+  "event": "payment_link.paid"
+}
+2025-10-23 15:18:40 [INFO]: 🎫 Confirming booking after payment {
+  "service": "sharaspot-bot",
+  "whatsappId": "919790294221",
+  "stationId": 23,
+  "referenceId": "book_919790294221_23_1761212886925"
+}
+2025-10-23 15:18:40 [INFO]: HTTP Request {
+  "service": "sharaspot-bot",
+  "method": "POST",
+  "path": "/",
+  "status": 200,
+  "duration": "6ms",
+  "ip": "::1",
+  "userAgent": "Razorpay-Webhook/v1"
+}
+2025-10-23 15:18:41 [INFO]: Attempting to join queue - constraint-safe version {
+  "service": "sharaspot-bot",
+  "userWhatsapp": "919790294221",
+  "stationId": 23
+}
+2025-10-23 15:18:42 [INFO]: Updated existing queue entry successfully {
+  "service": "sharaspot-bot",
+  "queueId": 4,
+  "userWhatsapp": "919790294221",
+  "stationId": 23,
+  "position": 1
+}
+2025-10-23 15:18:43 [INFO]: ✅ Text message sent {
+  "service": "sharaspot-bot",
+  "to": "919790294221",
+  "messageId": "wamid.HBgMOTE5NzkwMjk0MjIxFQIAERgSRjQyMjM3OEUwNDhCOTdBRjE1AA=="
+}
+2025-10-23 15:18:43 [INFO]: ✅ Text message sent {
+  "service": "sharaspot-bot",
+  "to": "919790294221",
+  "messageId": "wamid.HBgMOTE5NzkwMjk0MjIxFQIAERgSQzEwMEM1OUNEN0IwNjIzQjQ1AA=="
+}
+2025-10-23 15:18:44 [ERROR]: ❌ Text message failed {
+  "service": "sharaspot-bot",
+  "to": "919876543211",
+  "error": {
+    "error": {
+      "message": "(#131030) Recipient phone number not in allowed list",
+      "type": "OAuthException",
+      "code": 131030,
+      "error_data": {
+        "messaging_product": "whatsapp",
+        "details": "Recipient phone number not in allowed list: Add recipient phone number to recipient list and try again."
+      },
+      "fbtrace_id": "An6f_xOokbQxXX4b0yVG-mt"
+    }
+  }
+}
+2025-10-23 15:18:44 [INFO]: Station owner notified {
+  "service": "sharaspot-bot",
+  "stationId": 23,
+  "ownerWhatsapp": "919876543211",
+  "eventType": "queue_joined"
+}
+2025-10-23 15:18:44 [INFO]: ✅ Text message sent {
+  "service": "sharaspot-bot",
+  "to": "919790294221",
+  "messageId": "wamid.HBgMOTE5NzkwMjk0MjIxFQIAERgSOEEyMzlDRTY4RUE4QjVGNjVCAA=="
+}
+2025-10-23 15:18:44 [INFO]: ✅ Booking confirmed successfully after payment {
+  "service": "sharaspot-bot",
+  "whatsappId": "919790294221",
+  "stationId": 23
+}
+2025-10-23 15:18:44 [INFO]: HTTP Request {
+  "service": "sharaspot-bot",
+  "method": "POST",
+  "path": "/webhook",
+  "status": 200,
+  "duration": "1ms",
+  "ip": "::1",
+  "userAgent": "facebookexternalua"
+}
+2025-10-23 15:18:45 [INFO]: HTTP Request {
+  "service": "sharaspot-bot",
+  "method": "POST",
+  "path": "/webhook",
+  "status": 200,
+  "duration": "1ms",
+  "ip": "::1",
+  "userAgent": "facebookexternalua"
+}
+2025-10-23 15:18:45 [INFO]: HTTP Request {
+  "service": "sharaspot-bot",
+  "method": "POST",
+  "path": "/webhook",
+  "status": 200,
+  "duration": "2ms",
+  "ip": "::1",
+  "userAgent": "facebookexternalua"
+}
+2025-10-23 15:18:45 [INFO]: HTTP Request {
+  "service": "sharaspot-bot",
+  "method": "POST",
+  "path": "/webhook",
+  "status": 200,
+  "duration": "2ms",
+  "ip": "::1",
+  "userAgent": "facebookexternalua"
+}
+2025-10-23 15:18:45 [INFO]: HTTP Request {
+  "service": "sharaspot-bot",
+  "method": "POST",
+  "path": "/webhook",
+  "status": 200,
+  "duration": "1ms",
+  "ip": "::1",
+  "userAgent": "facebookexternalua"
+}
+2025-10-23 15:18:45 [INFO]: HTTP Request {
+  "service": "sharaspot-bot",
+  "method": "POST",
+  "path": "/webhook",
+  "status": 200,
+  "duration": "1ms",
+  "ip": "::1",
+  "userAgent": "facebookexternalua"
+}
+2025-10-23 15:18:45 [INFO]: HTTP Request {
+  "service": "sharaspot-bot",
+  "method": "POST",
+  "path": "/webhook",
+  "status": 200,
+  "duration": "2ms",
+  "ip": "::1",
+  "userAgent": "facebookexternalua"
+}
+2025-10-23 15:18:46 [INFO]: HTTP Request {
+  "service": "sharaspot-bot",
+  "method": "POST",
+  "path": "/webhook",
+  "status": 200,
+  "duration": "1ms",
+  "ip": "::1",
+  "userAgent": "facebookexternalua"
+}
+2025-10-23 15:18:46 [INFO]: HTTP Request {
+  "service": "sharaspot-bot",
+  "method": "POST",
+  "path": "/webhook",
+  "status": 200,
+  "duration": "1ms",
+  "ip": "::1",
+  "userAgent": "facebookexternalua"
+}
+2025-10-23 15:18:46 [INFO]: ✅ Button message sent {
+  "service": "sharaspot-bot",
+  "to": "919790294221",
+  "messageId": "wamid.HBgMOTE5NzkwMjk0MjIxFQIAERgSM0YzNjU1MjEwQUMxNkMwRDQ0AA=="
+}
+2025-10-23 15:18:46 [INFO]: ✅ List message sent {
+  "service": "sharaspot-bot",
+  "to": "919790294221",
+  "messageId": "wamid.HBgMOTE5NzkwMjk0MjIxFQIAERgSMkRENTg1QURFMUE1NEE4MDY5AA=="
+}
+2025-10-23 15:18:47 [INFO]: HTTP Request {
+  "service": "sharaspot-bot",
+  "method": "POST",
+  "path": "/webhook",
+  "status": 200,
+  "duration": "1ms",
+  "ip": "::1",
+  "userAgent": "facebookexternalua"
+}
+2025-10-23 15:18:48 [INFO]: HTTP Request {
+  "service": "sharaspot-bot",
+  "method": "POST",
+  "path": "/webhook",
+  "status": 200,
+  "duration": "1ms",
+  "ip": "::1",
+  "userAgent": "facebookexternalua"
+}
+2025-10-23 15:18:48 [INFO]: HTTP Request {
+  "service": "sharaspot-bot",
+  "method": "POST",
+  "path": "/webhook",
+  "status": 200,
+  "duration": "1ms",
+  "ip": "::1",
+  "userAgent": "facebookexternalua"
+}
+2025-10-23 15:18:48 [INFO]: HTTP Request {
+  "service": "sharaspot-bot",
+  "method": "POST",
+  "path": "/webhook",
+  "status": 200,
+  "duration": "3ms",
+  "ip": "::1",
+  "userAgent": "facebookexternalua"
+}
+2025-10-23 15:18:48 [INFO]: HTTP Request {
+  "service": "sharaspot-bot",
+  "method": "POST",
+  "path": "/webhook",
+  "status": 200,
+  "duration": "2ms",
+  "ip": "::1",
+  "userAgent": "facebookexternalua"
+}
+2025-10-23 15:18:48 [INFO]: HTTP Request {
+  "service": "sharaspot-bot",
+  "method": "POST",
+  "path": "/webhook",
+  "status": 200,
+  "duration": "1ms",
+  "ip": "::1",
+  "userAgent": "facebookexternalua"
+}
+2025-10-23 15:19:00 [INFO]: HTTP Request {
+  "service": "sharaspot-bot",
+  "method": "POST",
+  "path": "/webhook",
+  "status": 200,
+  "duration": "2ms",
+  "ip": "::1",
+  "userAgent": "facebookexternalua"
+}
+2025-10-23 15:19:00 [INFO]: HTTP Request {
+  "service": "sharaspot-bot",
+  "method": "POST",
+  "path": "/webhook",
+  "status": 200,
+  "duration": "1ms",
+  "ip": "::1",
+  "userAgent": "facebookexternalua"
+}
+2025-10-23 15:19:00 [INFO]: HTTP Request {
+  "service": "sharaspot-bot",
+  "method": "POST",
+  "path": "/webhook",
+  "status": 200,
+  "duration": "1ms",
+  "ip": "::1",
+  "userAgent": "facebookexternalua"
+}
+2025-10-23 15:19:00 [INFO]: HTTP Request {
+  "service": "sharaspot-bot",
+  "method": "POST",
+  "path": "/webhook",
+  "status": 200,
+  "duration": "2ms",
+  "ip": "::1",
+  "userAgent": "facebookexternalua"
+}
+2025-10-23 15:19:00 [INFO]: HTTP Request {
+  "service": "sharaspot-bot",
+  "method": "POST",
+  "path": "/webhook",
+  "status": 200,
+  "duration": "2ms",
+  "ip": "::1",
+  "userAgent": "facebookexternalua"
+}
+2025-10-23 15:19:07 [INFO]: 📥 Processing user message batch {
+  "service": "sharaspot-bot",
+  "batchId": "batch-1761212947099-zv9cnpv",
+  "totalMessages": 1,
+  "firstMessageId": "wamid.HBgMOTE5NzkwMjk0MjIxFQIAEhgWM0VCMDNEQzJGNDI1NzA3QjJFQTBDQQA="
+}
+2025-10-23 15:19:07 [INFO]: ✅ Webhook message batch dispatch completed {
+  "service": "sharaspot-bot",
+  "batchId": "batch-1761212947099-zv9cnpv",
+  "processed": 1,
+  "duplicatesSkipped": 0
+}
+2025-10-23 15:19:07 [INFO]: HTTP Request {
+  "service": "sharaspot-bot",
+  "method": "POST",
+  "path": "/webhook",
+  "status": 200,
+  "duration": "2ms",
+  "ip": "::1",
+  "userAgent": "facebookexternalua"
+}
+2025-10-23 15:19:07 [INFO]: 📨 Processing message {
+  "service": "sharaspot-bot",
+  "whatsappId": "919790294221",
+  "type": "interactive",
+  "messageId": "wamid.HBgMOTE5NzkwMjk0MjIxFQIAEhgWM0VCMDNEQzJGNDI1NzA3QjJFQTBDQQA="
+}
+2025-10-23 15:19:07 [INFO]: 🔍 Looking for user {
+  "service": "sharaspot-bot",
+  "whatsappId": "919790294221"
+}
+2025-10-23 15:19:07 [INFO]: ✅ Found existing user {
+  "service": "sharaspot-bot",
+  "whatsappId": "919790294221",
+  "userId": 16
+}
+2025-10-23 15:19:07 [INFO]: 🔘 Button pressed {
+  "service": "sharaspot-bot",
+  "whatsappId": "919790294221",
+  "buttonId": "queue_status_23",
+  "title": "📊 Refresh Status"
+}
+2025-10-23 15:19:07 [INFO]: 🎯 Routing button {
+  "service": "sharaspot-bot",
+  "whatsappId": "919790294221",
+  "buttonId": "queue_status_23",
+  "parsed": {
+    "action": "status",
+    "category": "queue",
+    "stationId": 23
+  }
+}
+2025-10-23 15:19:07 [INFO]: Processing queue button {
+  "service": "sharaspot-bot",
+  "whatsappId": "919790294221",
+  "buttonId": "queue_status_23",
+  "buttonTitle": "📊 Refresh Status"
+}
+2025-10-23 15:19:08 [ERROR]: Queue webhook queue status failed {
+  "service": "sharaspot-bot",
+  "whatsappId": "919790294221",
+  "stationId": 23,
+  "error": "queueData.createdAt.toLocaleTimeString is not a function"
+}
+2025-10-23 15:19:09 [INFO]: ✅ Text message sent {
+  "service": "sharaspot-bot",
+  "to": "919790294221",
+  "messageId": "wamid.HBgMOTE5NzkwMjk0MjIxFQIAERgSQTNBMTRBMURGOTdFREY2QjQ1AA=="
+}
+2025-10-23 15:19:10 [INFO]: HTTP Request {
+  "service": "sharaspot-bot",
+  "method": "POST",
+  "path": "/webhook",
+  "status": 200,
+  "duration": "2ms",
+  "ip": "::1",
+  "userAgent": "facebookexternalua"
+}
+2025-10-23 15:19:10 [INFO]: HTTP Request {
+  "service": "sharaspot-bot",
+  "method": "POST",
+  "path": "/webhook",
+  "status": 200,
+  "duration": "1ms",
+  "ip": "::1",
+  "userAgent": "facebookexternalua"
+}
+2025-10-23 15:19:10 [INFO]: HTTP Request {
+  "service": "sharaspot-bot",
+  "method": "POST",
+  "path": "/webhook",
+  "status": 200,
+  "duration": "2ms",
+  "ip": "::1",
+  "userAgent": "facebookexternalua"
+}
+2025-10-23 15:19:10 [INFO]: HTTP Request {
+  "service": "sharaspot-bot",
+  "method": "POST",
+  "path": "/webhook",
+  "status": 200,
+  "duration": "1ms",
+  "ip": "::1",
+  "userAgent": "facebookexternalua"
+}
+2025-10-23 15:19:32 [INFO]: 🧹 Starting cleanup process... {
+  "service": "sharaspot-bot"
+}
+2025-10-23 15:19:33 [INFO]: ✅ No expired reservations to cleanup {
+  "service": "sharaspot-bot"
+}
+2025-10-23 15:19:37 [INFO]: 📥 Processing user message batch {
+  "service": "sharaspot-bot",
+  "batchId": "batch-1761212977148-ngtvv3q",
+  "totalMessages": 1,
+  "firstMessageId": "wamid.HBgMOTE5NzkwMjk0MjIxFQIAEhgWM0VCMEM2NjY2NDYxNzlBQjUxQjFDNAA="
+}
+2025-10-23 15:19:37 [INFO]: ✅ Webhook message batch dispatch completed {
+  "service": "sharaspot-bot",
+  "batchId": "batch-1761212977148-ngtvv3q",
+  "processed": 1,
+  "duplicatesSkipped": 0
+}
+2025-10-23 15:19:37 [INFO]: HTTP Request {
+  "service": "sharaspot-bot",
+  "method": "POST",
+  "path": "/webhook",
+  "status": 200,
+  "duration": "2ms",
+  "ip": "::1",
+  "userAgent": "facebookexternalua"
+}
+2025-10-23 15:19:37 [INFO]: 📨 Processing message {
+  "service": "sharaspot-bot",
+  "whatsappId": "919790294221",
+  "type": "interactive",
+  "messageId": "wamid.HBgMOTE5NzkwMjk0MjIxFQIAEhgWM0VCMEM2NjY2NDYxNzlBQjUxQjFDNAA="
+}
+2025-10-23 15:19:37 [INFO]: 🔍 Looking for user {
+  "service": "sharaspot-bot",
+  "whatsappId": "919790294221"
+}
+2025-10-23 15:19:37 [INFO]: ✅ Found existing user {
+  "service": "sharaspot-bot",
+  "whatsappId": "919790294221",
+  "userId": 16
+}
+2025-10-23 15:19:37 [INFO]: 📋 List selected {
+  "service": "sharaspot-bot",
+  "whatsappId": "919790294221",
+  "listId": "queue_status_23",
+  "title": "📍 My Position"
+}
+2025-10-23 15:19:37 [INFO]: Processing queue list {
+  "service": "sharaspot-bot",
+  "whatsappId": "919790294221",
+  "listId": "queue_status_23",
+  "listTitle": "📍 My Position"
+}
+2025-10-23 15:19:37 [ERROR]: Queue webhook queue status failed {
+  "service": "sharaspot-bot",
+  "whatsappId": "919790294221",
+  "stationId": 23,
+  "error": "queueData.createdAt.toLocaleTimeString is not a function"
+}
+2025-10-23 15:19:38 [INFO]: ✅ Text message sent {
+  "service": "sharaspot-bot",
+  "to": "919790294221",
+  "messageId": "wamid.HBgMOTE5NzkwMjk0MjIxFQIAERgSM0ZGMDQ4NDBBRDQ1RThCOTc2AA=="
+}
+2025-10-23 15:19:39 [INFO]: HTTP Request {
+  "service": "sharaspot-bot",
+  "method": "POST",
+  "path": "/webhook",
+  "status": 200,
+  "duration": "1ms",
+  "ip": "::1",
+  "userAgent": "facebookexternalua"
+}
+2025-10-23 15:19:39 [INFO]: HTTP Request {
+  "service": "sharaspot-bot",
+  "method": "POST",
+  "path": "/webhook",
+  "status": 200,
+  "duration": "2ms",
+  "ip": "::1",
+  "userAgent": "facebookexternalua"
+}
+2025-10-23 15:19:40 [INFO]: HTTP Request {
+  "service": "sharaspot-bot",
+  "method": "POST",
+  "path": "/webhook",
+  "status": 200,
+  "duration": "1ms",
+  "ip": "::1",
+  "userAgent": "facebookexternalua"
+}
+2025-10-23 15:19:40 [INFO]: HTTP Request {
+  "service": "sharaspot-bot",
+  "method": "POST",
+  "path": "/webhook",
+  "status": 200,
+  "duration": "1ms",
+  "ip": "::1",
+  "userAgent": "facebookexternalua"
+}
+2025-10-23 15:19:40 [INFO]: HTTP Request {
+  "service": "sharaspot-bot",
+  "method": "POST",
+  "path": "/webhook",
+  "status": 200,
+  "duration": "1ms",
+  "ip": "::1",
+  "userAgent": "facebookexternalua"
+}
+2025-10-23 15:20:32 [INFO]: 📢 Processing queue notifications... {
+  "service": "sharaspot-bot"
+}
+2025-10-23 15:20:32 [INFO]: 🧹 Starting cleanup process... {
+  "service": "sharaspot-bot"
+}
+2025-10-23 15:20:32 [INFO]: 📥 Processing user message batch {
+  "service": "sharaspot-bot",
+  "batchId": "batch-1761213032704-gpphbex",
+  "totalMessages": 1,
+  "firstMessageId": "wamid.HBgMOTE5NzkwMjk0MjIxFQIAEhgWM0VCMEJFNUQ1N0NFNTk4Q0JBRTgxQQA="
+}
+2025-10-23 15:20:32 [INFO]: ✅ Webhook message batch dispatch completed {
+  "service": "sharaspot-bot",
+  "batchId": "batch-1761213032704-gpphbex",
+  "processed": 1,
+  "duplicatesSkipped": 0
+}
+2025-10-23 15:20:32 [INFO]: HTTP Request {
+  "service": "sharaspot-bot",
+  "method": "POST",
+  "path": "/webhook",
+  "status": 200,
+  "duration": "2ms",
+  "ip": "::1",
+  "userAgent": "facebookexternalua"
+}
+2025-10-23 15:20:32 [INFO]: ✅ No expired reservations to cleanup {
+  "service": "sharaspot-bot"
+}
+2025-10-23 15:20:32 [INFO]: 📨 Processing message {
+  "service": "sharaspot-bot",
+  "whatsappId": "919790294221",
+  "type": "interactive",
+  "messageId": "wamid.HBgMOTE5NzkwMjk0MjIxFQIAEhgWM0VCMEJFNUQ1N0NFNTk4Q0JBRTgxQQA="
+}
+2025-10-23 15:20:32 [INFO]: 🔍 Looking for user {
+  "service": "sharaspot-bot",
+  "whatsappId": "919790294221"
+}
+2025-10-23 15:20:32 [INFO]: ✅ Found existing user {
+  "service": "sharaspot-bot",
+  "whatsappId": "919790294221",
+  "userId": 16
+}
+2025-10-23 15:20:32 [INFO]: 🔘 Button pressed {
+  "service": "sharaspot-bot",
+  "whatsappId": "919790294221",
+  "buttonId": "cancel_queue_23",
+  "title": "❌ Cancel"
+}
+2025-10-23 15:20:32 [INFO]: 🎯 Routing button {
+  "service": "sharaspot-bot",
+  "whatsappId": "919790294221",
+  "buttonId": "cancel_queue_23",
+  "parsed": {
+    "action": "cancel",
+    "category": "queue",
+    "stationId": 23
+  }
+}
+2025-10-23 15:20:32 [INFO]: Processing queue button {
+  "service": "sharaspot-bot",
+  "whatsappId": "919790294221",
+  "buttonId": "cancel_queue_23",
+  "buttonTitle": "❌ Cancel"
+}
+2025-10-23 15:20:32 [INFO]: 📊 Found queues for notification processing {
+  "service": "sharaspot-bot",
+  "count": 1
+}
+2025-10-23 15:20:39 [INFO]: ✅ Button message sent {
+  "service": "sharaspot-bot",
+  "to": "919790294221",
+  "messageId": "wamid.HBgMOTE5NzkwMjk0MjIxFQIAERgSQjM5Nzk2MjVGMEQ0MEQyNjQzAA=="
+}
+2025-10-23 15:20:41 [INFO]: HTTP Request {
+  "service": "sharaspot-bot",
+  "method": "POST",
+  "path": "/webhook",
+  "status": 200,
+  "duration": "2ms",
+  "ip": "::1",
+  "userAgent": "facebookexternalua"
+}
+2025-10-23 15:20:41 [INFO]: HTTP Request {
+  "service": "sharaspot-bot",
+  "method": "POST",
+  "path": "/webhook",
+  "status": 200,
+  "duration": "0ms",
+  "ip": "::1",
+  "userAgent": "facebookexternalua"
+}
+2025-10-23 15:21:20 [INFO]: 🛑 SIGTERM received — starting graceful shutdown {
+  "service": "sharaspot-bot"
+}
+2025-10-23 15:21:22 [INFO]: 🚀 Starting SharaSpot Bot Server {
+  "service": "sharaspot-bot"
+}
+2025-10-23 15:21:22 [INFO]: 🔄 Initializing database connection... {
+  "service": "sharaspot-bot"
+}
+2025-10-23 15:21:22 [INFO]: ✅ Database connection successful {
+  "service": "sharaspot-bot"
+}
+2025-10-23 15:21:22 [INFO]: 🎉 Database initialized successfully {
+  "service": "sharaspot-bot"
+}
+2025-10-23 15:21:22 [INFO]: ✅ Database connected successfully {
+  "service": "sharaspot-bot"
+}
+2025-10-23 15:21:22 [INFO]: 🚀 Starting queue scheduler... {
+  "service": "sharaspot-bot"
+}
+2025-10-23 15:21:22 [INFO]: ✅ Queue scheduler started successfully {
+  "service": "sharaspot-bot"
+}
+2025-10-23 15:21:22 [INFO]: 🤖 Queue scheduler started {
+  "service": "sharaspot-bot"
+}
+2025-10-23 15:21:22 [INFO]: ✅ SharaSpot Bot Server Ready {
+  "service": "sharaspot-bot",
+  "port": 3000,
+  "environment": "development",
+  "whatsappWebhookUrl": "https://your-domain.com/webhook",
+  "paymentCallbackUrl": "https://your-domain.com/api/payment/callback",
+  "razorpayWebhookUrl": "https://your-domain.com/ (POST)",
+  "healthUrl": "https://your-domain.com/health",
+  "pid": 25465,
+  "nodeVersion": "v24.9.0"
+}
+2025-10-23 15:21:38 [INFO]: 🛑 SIGTERM received — starting graceful shutdown {
+  "service": "sharaspot-bot"
+}
+2025-10-23 15:21:40 [INFO]: 🚀 Starting SharaSpot Bot Server {
+  "service": "sharaspot-bot"
+}
+2025-10-23 15:21:40 [INFO]: 🔄 Initializing database connection... {
+  "service": "sharaspot-bot"
+}
+2025-10-23 15:21:40 [INFO]: ✅ Database connection successful {
+  "service": "sharaspot-bot"
+}
+2025-10-23 15:21:40 [INFO]: 🎉 Database initialized successfully {
+  "service": "sharaspot-bot"
+}
+2025-10-23 15:21:40 [INFO]: ✅ Database connected successfully {
+  "service": "sharaspot-bot"
+}
+2025-10-23 15:21:40 [INFO]: 🚀 Starting queue scheduler... {
+  "service": "sharaspot-bot"
+}
+2025-10-23 15:21:40 [INFO]: ✅ Queue scheduler started successfully {
+  "service": "sharaspot-bot"
+}
+2025-10-23 15:21:40 [INFO]: 🤖 Queue scheduler started {
+  "service": "sharaspot-bot"
+}
+2025-10-23 15:21:40 [INFO]: ✅ SharaSpot Bot Server Ready {
+  "service": "sharaspot-bot",
+  "port": 3000,
+  "environment": "development",
+  "whatsappWebhookUrl": "https://your-domain.com/webhook",
+  "paymentCallbackUrl": "https://your-domain.com/api/payment/callback",
+  "razorpayWebhookUrl": "https://your-domain.com/ (POST)",
+  "healthUrl": "https://your-domain.com/health",
+  "pid": 25616,
+  "nodeVersion": "v24.9.0"
+}
+2025-10-23 15:22:11 [INFO]: 🛑 SIGTERM received — starting graceful shutdown {
+  "service": "sharaspot-bot"
+}
+2025-10-23 15:22:12 [INFO]: 🚀 Starting SharaSpot Bot Server {
+  "service": "sharaspot-bot"
+}
+2025-10-23 15:22:12 [INFO]: 🔄 Initializing database connection... {
+  "service": "sharaspot-bot"
+}
+2025-10-23 15:22:12 [INFO]: ✅ Database connection successful {
+  "service": "sharaspot-bot"
+}
+2025-10-23 15:22:12 [INFO]: 🎉 Database initialized successfully {
+  "service": "sharaspot-bot"
+}
+2025-10-23 15:22:12 [INFO]: ✅ Database connected successfully {
+  "service": "sharaspot-bot"
+}
+2025-10-23 15:22:12 [INFO]: 🚀 Starting queue scheduler... {
+  "service": "sharaspot-bot"
+}
+2025-10-23 15:22:12 [INFO]: ✅ Queue scheduler started successfully {
+  "service": "sharaspot-bot"
+}
+2025-10-23 15:22:12 [INFO]: 🤖 Queue scheduler started {
+  "service": "sharaspot-bot"
+}
+2025-10-23 15:22:12 [INFO]: ✅ SharaSpot Bot Server Ready {
+  "service": "sharaspot-bot",
+  "port": 3000,
+  "environment": "development",
+  "whatsappWebhookUrl": "https://your-domain.com/webhook",
+  "paymentCallbackUrl": "https://your-domain.com/api/payment/callback",
+  "razorpayWebhookUrl": "https://your-domain.com/ (POST)",
+  "healthUrl": "https://your-domain.com/health",
+  "pid": 25803,
+  "nodeVersion": "v24.9.0"
+}
+2025-10-23 15:23:03 [INFO]: HTTP Request {
+  "service": "sharaspot-bot",
+  "method": "POST",
+  "path": "/webhook",
+  "status": 200,
+  "duration": "6ms",
+  "ip": "::1",
+  "userAgent": "facebookexternalua"
+}
+2025-10-23 15:23:06 [INFO]: 📥 Processing user message batch {
+  "service": "sharaspot-bot",
+  "batchId": "batch-1761213186004-m7j2jfr",
+  "totalMessages": 1,
+  "firstMessageId": "wamid.HBgMOTE5NzkwMjk0MjIxFQIAEhgWM0VCMEU2QUM2OTNGNjk2NUY0NTU5RAA="
+}
+2025-10-23 15:23:06 [INFO]: ✅ Webhook message batch dispatch completed {
+  "service": "sharaspot-bot",
+  "batchId": "batch-1761213186004-m7j2jfr",
+  "processed": 1,
+  "duplicatesSkipped": 0
+}
+2025-10-23 15:23:06 [INFO]: HTTP Request {
+  "service": "sharaspot-bot",
+  "method": "POST",
+  "path": "/webhook",
+  "status": 200,
+  "duration": "4ms",
+  "ip": "::1",
+  "userAgent": "facebookexternalua"
+}
+2025-10-23 15:23:06 [INFO]: 📨 Processing message {
+  "service": "sharaspot-bot",
+  "whatsappId": "919790294221",
+  "type": "interactive",
+  "messageId": "wamid.HBgMOTE5NzkwMjk0MjIxFQIAEhgWM0VCMEU2QUM2OTNGNjk2NUY0NTU5RAA="
+}
+2025-10-23 15:23:06 [INFO]: 🔍 Looking for user {
+  "service": "sharaspot-bot",
+  "whatsappId": "919790294221"
+}
+2025-10-23 15:23:06 [INFO]: ✅ Found existing user {
+  "service": "sharaspot-bot",
+  "whatsappId": "919790294221",
+  "userId": 16
+}
+2025-10-23 15:23:06 [INFO]: 🔘 Button pressed {
+  "service": "sharaspot-bot",
+  "whatsappId": "919790294221",
+  "buttonId": "confirm_cancel_23",
+  "title": "✅ Yes, Cancel"
+}
+2025-10-23 15:23:06 [INFO]: 🎯 Routing button {
+  "service": "sharaspot-bot",
+  "whatsappId": "919790294221",
+  "buttonId": "confirm_cancel_23",
+  "parsed": {
+    "action": "confirm_cancel",
+    "category": "queue",
+    "stationId": 23
+  }
+}
+2025-10-23 15:23:06 [INFO]: 🎯 Processing queue button {
+  "service": "sharaspot-bot",
+  "whatsappId": "919790294221",
+  "buttonId": "confirm_cancel_23",
+  "buttonTitle": "✅ Yes, Cancel"
+}
+2025-10-23 15:23:06 [INFO]: 📋 Button parsed {
+  "service": "sharaspot-bot",
+  "whatsappId": "919790294221",
+  "buttonId": "confirm_cancel_23",
+  "parsed": {
+    "action": "confirm_cancel",
+    "category": "queue",
+    "stationId": 23
+  }
+}
+2025-10-23 15:23:08 [INFO]: User left queue {
+  "service": "sharaspot-bot",
+  "userWhatsapp": "919790294221",
+  "stationId": 23,
+  "reason": "user_cancelled",
+  "oldPosition": 1
+}
+2025-10-23 15:23:08 [INFO]: ✅ Text message sent {
+  "service": "sharaspot-bot",
+  "to": "919790294221",
+  "messageId": "wamid.HBgMOTE5NzkwMjk0MjIxFQIAERgSQjQ1ODc5ODE1MDQxODRBMTQxAA=="
+}
+2025-10-23 15:23:09 [INFO]: HTTP Request {
+  "service": "sharaspot-bot",
+  "method": "POST",
+  "path": "/webhook",
+  "status": 200,
+  "duration": "1ms",
+  "ip": "::1",
+  "userAgent": "facebookexternalua"
+}
+2025-10-23 15:23:10 [INFO]: HTTP Request {
+  "service": "sharaspot-bot",
+  "method": "POST",
+  "path": "/webhook",
+  "status": 200,
+  "duration": "1ms",
+  "ip": "::1",
+  "userAgent": "facebookexternalua"
+}
+2025-10-23 15:23:10 [INFO]: HTTP Request {
+  "service": "sharaspot-bot",
+  "method": "POST",
+  "path": "/webhook",
+  "status": 200,
+  "duration": "2ms",
+  "ip": "::1",
+  "userAgent": "facebookexternalua"
+}
+2025-10-23 15:23:11 [INFO]: ✅ Button message sent {
+  "service": "sharaspot-bot",
+  "to": "919790294221",
+  "messageId": "wamid.HBgMOTE5NzkwMjk0MjIxFQIAERgSNjZBMEE5NTUxRURFQTJBNzZCAA=="
+}
+2025-10-23 15:23:12 [INFO]: HTTP Request {
+  "service": "sharaspot-bot",
+  "method": "POST",
+  "path": "/webhook",
+  "status": 200,
+  "duration": "2ms",
+  "ip": "::1",
+  "userAgent": "facebookexternalua"
+}
+2025-10-23 15:23:12 [INFO]: 🧹 Starting cleanup process... {
+  "service": "sharaspot-bot"
+}
+2025-10-23 15:23:13 [INFO]: HTTP Request {
+  "service": "sharaspot-bot",
+  "method": "POST",
+  "path": "/webhook",
+  "status": 200,
+  "duration": "2ms",
+  "ip": "::1",
+  "userAgent": "facebookexternalua"
+}
+2025-10-23 15:23:13 [INFO]: HTTP Request {
+  "service": "sharaspot-bot",
+  "method": "POST",
+  "path": "/webhook",
+  "status": 200,
+  "duration": "1ms",
+  "ip": "::1",
+  "userAgent": "facebookexternalua"
+}
+2025-10-23 15:23:13 [INFO]: ✅ No expired reservations to cleanup {
+  "service": "sharaspot-bot"
+}
+2025-10-23 15:23:35 [INFO]: 🛑 SIGINT received — starting graceful shutdown {
+  "service": "sharaspot-bot"
+}
+2025-10-23 15:23:39 [INFO]: 🚀 Starting SharaSpot Bot Server {
+  "service": "sharaspot-bot"
+}
+2025-10-23 15:23:39 [INFO]: 🔄 Initializing database connection... {
+  "service": "sharaspot-bot"
+}
+2025-10-23 15:23:40 [INFO]: ✅ Database connection successful {
+  "service": "sharaspot-bot"
+}
+2025-10-23 15:23:40 [INFO]: 🎉 Database initialized successfully {
+  "service": "sharaspot-bot"
+}
+2025-10-23 15:23:40 [INFO]: ✅ Database connected successfully {
+  "service": "sharaspot-bot"
+}
+2025-10-23 15:23:40 [INFO]: 🚀 Starting queue scheduler... {
+  "service": "sharaspot-bot"
+}
+2025-10-23 15:23:40 [INFO]: ✅ Queue scheduler started successfully {
+  "service": "sharaspot-bot"
+}
+2025-10-23 15:23:40 [INFO]: 🤖 Queue scheduler started {
+  "service": "sharaspot-bot"
+}
+2025-10-23 15:23:40 [INFO]: ✅ SharaSpot Bot Server Ready {
+  "service": "sharaspot-bot",
+  "port": 3000,
+  "environment": "development",
+  "whatsappWebhookUrl": "https://your-domain.com/webhook",
+  "paymentCallbackUrl": "https://your-domain.com/api/payment/callback",
+  "razorpayWebhookUrl": "https://your-domain.com/ (POST)",
+  "healthUrl": "https://your-domain.com/health",
+  "pid": 26372,
+  "nodeVersion": "v24.9.0"
+}
+2025-10-23 15:23:42 [INFO]: HTTP Request {
+  "service": "sharaspot-bot",
+  "method": "POST",
+  "path": "/webhook",
+  "status": 200,
+  "duration": "5ms",
+  "ip": "::1",
+  "userAgent": "facebookexternalua"
+}
+2025-10-23 15:23:42 [INFO]: HTTP Request {
+  "service": "sharaspot-bot",
+  "method": "POST",
+  "path": "/webhook",
+  "status": 200,
+  "duration": "1ms",
+  "ip": "::1",
+  "userAgent": "facebookexternalua"
+}
+2025-10-23 15:23:44 [INFO]: 📥 Processing user message batch {
+  "service": "sharaspot-bot",
+  "batchId": "batch-1761213224056-46wuopx",
+  "totalMessages": 1,
+  "firstMessageId": "wamid.HBgMOTE5NzkwMjk0MjIxFQIAEhgWM0VCMDRGM0I0NjcyODlBQzYxNzBBOQA="
+}
+2025-10-23 15:23:44 [INFO]: ✅ Webhook message batch dispatch completed {
+  "service": "sharaspot-bot",
+  "batchId": "batch-1761213224056-46wuopx",
+  "processed": 1,
+  "duplicatesSkipped": 0
+}
+2025-10-23 15:23:44 [INFO]: HTTP Request {
+  "service": "sharaspot-bot",
+  "method": "POST",
+  "path": "/webhook",
+  "status": 200,
+  "duration": "2ms",
+  "ip": "::1",
+  "userAgent": "facebookexternalua"
+}
+2025-10-23 15:23:44 [INFO]: 📨 Processing message {
+  "service": "sharaspot-bot",
+  "whatsappId": "919790294221",
+  "type": "interactive",
+  "messageId": "wamid.HBgMOTE5NzkwMjk0MjIxFQIAEhgWM0VCMDRGM0I0NjcyODlBQzYxNzBBOQA="
+}
+2025-10-23 15:23:44 [INFO]: 🔍 Looking for user {
+  "service": "sharaspot-bot",
+  "whatsappId": "919790294221"
+}
+2025-10-23 15:23:44 [INFO]: ✅ Found existing user {
+  "service": "sharaspot-bot",
+  "whatsappId": "919790294221",
+  "userId": 16
+}
+2025-10-23 15:23:44 [INFO]: 🔘 Button pressed {
+  "service": "sharaspot-bot",
+  "whatsappId": "919790294221",
+  "buttonId": "new_search",
+  "title": "🆕 New Search"
+}
+2025-10-23 15:23:44 [INFO]: 🎯 Routing button {
+  "service": "sharaspot-bot",
+  "whatsappId": "919790294221",
+  "buttonId": "new_search",
+  "parsed": {
+    "action": "new_search",
+    "category": "system",
+    "stationId": 0
+  }
+}
+2025-10-23 15:23:44 [INFO]: Location button pressed {
+  "service": "sharaspot-bot",
+  "whatsappId": "919790294221",
+  "buttonId": "new_search",
+  "buttonTitle": ""
+}
+2025-10-23 15:23:44 [WARN]: Could not parse button ID {
+  "service": "sharaspot-bot",
+  "buttonId": "new_search"
+}
+2025-10-23 15:23:45 [INFO]: ✅ Button message sent {
+  "service": "sharaspot-bot",
+  "to": "919790294221",
+  "messageId": "wamid.HBgMOTE5NzkwMjk0MjIxFQIAERgSMTg2M0VFM0YyMjYyMURCOTdGAA=="
+}
+2025-10-23 15:23:46 [INFO]: HTTP Request {
+  "service": "sharaspot-bot",
+  "method": "POST",
+  "path": "/webhook",
+  "status": 200,
+  "duration": "3ms",
+  "ip": "::1",
+  "userAgent": "facebookexternalua"
+}
+2025-10-23 15:23:46 [INFO]: HTTP Request {
+  "service": "sharaspot-bot",
+  "method": "POST",
+  "path": "/webhook",
+  "status": 200,
+  "duration": "2ms",
+  "ip": "::1",
+  "userAgent": "facebookexternalua"
+}
+2025-10-23 15:23:47 [INFO]: HTTP Request {
+  "service": "sharaspot-bot",
+  "method": "POST",
+  "path": "/webhook",
+  "status": 200,
+  "duration": "1ms",
+  "ip": "::1",
+  "userAgent": "facebookexternalua"
+}
+2025-10-23 15:23:49 [INFO]: 📥 Processing user message batch {
+  "service": "sharaspot-bot",
+  "batchId": "batch-1761213229225-p817m5t",
+  "totalMessages": 1,
+  "firstMessageId": "wamid.HBgMOTE5NzkwMjk0MjIxFQIAEhgWM0VCMDBFRTE3RUJBNUI1QzlCQzZBMwA="
+}
+2025-10-23 15:23:49 [INFO]: ✅ Webhook message batch dispatch completed {
+  "service": "sharaspot-bot",
+  "batchId": "batch-1761213229225-p817m5t",
+  "processed": 1,
+  "duplicatesSkipped": 0
+}
+2025-10-23 15:23:49 [INFO]: HTTP Request {
+  "service": "sharaspot-bot",
+  "method": "POST",
+  "path": "/webhook",
+  "status": 200,
+  "duration": "2ms",
+  "ip": "::1",
+  "userAgent": "facebookexternalua"
+}
+2025-10-23 15:23:49 [INFO]: 📨 Processing message {
+  "service": "sharaspot-bot",
+  "whatsappId": "919790294221",
+  "type": "interactive",
+  "messageId": "wamid.HBgMOTE5NzkwMjk0MjIxFQIAEhgWM0VCMDBFRTE3RUJBNUI1QzlCQzZBMwA="
+}
+2025-10-23 15:23:49 [INFO]: 🔍 Looking for user {
+  "service": "sharaspot-bot",
+  "whatsappId": "919790294221"
+}
+2025-10-23 15:23:49 [INFO]: ✅ Found existing user {
+  "service": "sharaspot-bot",
+  "whatsappId": "919790294221",
+  "userId": 16
+}
+2025-10-23 15:23:49 [INFO]: 🔘 Button pressed {
+  "service": "sharaspot-bot",
+  "whatsappId": "919790294221",
+  "buttonId": "recent_searches",
+  "title": "🕒 Recent Searches"
+}
+2025-10-23 15:23:49 [INFO]: 🎯 Routing button {
+  "service": "sharaspot-bot",
+  "whatsappId": "919790294221",
+  "buttonId": "recent_searches",
+  "parsed": {
+    "action": "recent_searches",
+    "category": "system",
+    "stationId": 0
+  }
+}
+2025-10-23 15:23:49 [INFO]: Location button pressed {
+  "service": "sharaspot-bot",
+  "whatsappId": "919790294221",
+  "buttonId": "recent_searches",
+  "buttonTitle": ""
+}
+2025-10-23 15:23:49 [WARN]: Could not parse button ID {
+  "service": "sharaspot-bot",
+  "buttonId": "recent_searches"
+}
+2025-10-23 15:23:51 [INFO]: ✅ List message sent {
+  "service": "sharaspot-bot",
+  "to": "919790294221",
+  "messageId": "wamid.HBgMOTE5NzkwMjk0MjIxFQIAERgSRUVDRjAwRjE3QjMyNzA2NjlEAA=="
+}
+2025-10-23 15:23:52 [INFO]: HTTP Request {
+  "service": "sharaspot-bot",
+  "method": "POST",
+  "path": "/webhook",
+  "status": 200,
+  "duration": "3ms",
+  "ip": "::1",
+  "userAgent": "facebookexternalua"
+}
+2025-10-23 15:23:52 [INFO]: HTTP Request {
+  "service": "sharaspot-bot",
+  "method": "POST",
+  "path": "/webhook",
+  "status": 200,
+  "duration": "1ms",
+  "ip": "::1",
+  "userAgent": "facebookexternalua"
+}
+2025-10-23 15:23:52 [INFO]: HTTP Request {
+  "service": "sharaspot-bot",
+  "method": "POST",
+  "path": "/webhook",
+  "status": 200,
+  "duration": "3ms",
+  "ip": "::1",
+  "userAgent": "facebookexternalua"
+}
+2025-10-23 15:23:52 [INFO]: HTTP Request {
+  "service": "sharaspot-bot",
+  "method": "POST",
+  "path": "/webhook",
+  "status": 200,
+  "duration": "1ms",
+  "ip": "::1",
+  "userAgent": "facebookexternalua"
+}
+2025-10-23 15:23:56 [INFO]: 📥 Processing user message batch {
+  "service": "sharaspot-bot",
+  "batchId": "batch-1761213236694-wmq8uo5",
+  "totalMessages": 1,
+  "firstMessageId": "wamid.HBgMOTE5NzkwMjk0MjIxFQIAEhgWM0VCMDMzQjVCMTlENzcwNjg4OUU5MwA="
+}
+2025-10-23 15:23:56 [INFO]: ✅ Webhook message batch dispatch completed {
+  "service": "sharaspot-bot",
+  "batchId": "batch-1761213236694-wmq8uo5",
+  "processed": 1,
+  "duplicatesSkipped": 0
+}
+2025-10-23 15:23:56 [INFO]: HTTP Request {
+  "service": "sharaspot-bot",
+  "method": "POST",
+  "path": "/webhook",
+  "status": 200,
+  "duration": "4ms",
+  "ip": "::1",
+  "userAgent": "facebookexternalua"
+}
+2025-10-23 15:23:56 [INFO]: 📨 Processing message {
+  "service": "sharaspot-bot",
+  "whatsappId": "919790294221",
+  "type": "interactive",
+  "messageId": "wamid.HBgMOTE5NzkwMjk0MjIxFQIAEhgWM0VCMDMzQjVCMTlENzcwNjg4OUU5MwA="
+}
+2025-10-23 15:23:56 [INFO]: 🔍 Looking for user {
+  "service": "sharaspot-bot",
+  "whatsappId": "919790294221"
+}
+2025-10-23 15:23:57 [INFO]: ✅ Found existing user {
+  "service": "sharaspot-bot",
+  "whatsappId": "919790294221",
+  "userId": 16
+}
+2025-10-23 15:23:57 [INFO]: 📋 List selected {
+  "service": "sharaspot-bot",
+  "whatsappId": "919790294221",
+  "listId": "recent_search_0",
+  "title": "Anna Nagar"
+}
+2025-10-23 15:23:57 [INFO]: Address input received {
+  "service": "sharaspot-bot",
+  "whatsappId": "919790294221",
+  "address": "Anna Nagar"
+}
+2025-10-23 15:23:58 [INFO]: ✅ Text message sent {
+  "service": "sharaspot-bot",
+  "to": "919790294221",
+  "messageId": "wamid.HBgMOTE5NzkwMjk0MjIxFQIAERgSOTFBNDQzMUY1OTlDNzU4RkRGAA=="
+}
+2025-10-23 15:23:59 [INFO]: HTTP Request {
+  "service": "sharaspot-bot",
+  "method": "POST",
+  "path": "/webhook",
+  "status": 200,
+  "duration": "1ms",
+  "ip": "::1",
+  "userAgent": "facebookexternalua"
+}
+2025-10-23 15:23:59 [INFO]: ✅ Text message sent {
+  "service": "sharaspot-bot",
+  "to": "919790294221",
+  "messageId": "wamid.HBgMOTE5NzkwMjk0MjIxFQIAERgSNzQ4QjcxNDcyNEIxRTg4RUZEAA=="
+}
+2025-10-23 15:23:59 [INFO]: 🔍 Starting station search {
+  "service": "sharaspot-bot",
+  "whatsappId": "919790294221",
+  "coordinates": {
+    "latitude": 13.0878,
+    "longitude": 80.2086
+  },
+  "address": "Anna Nagar, Chennai, Tamil Nadu, India"
+}
+2025-10-23 15:23:59 [INFO]: User found for search {
+  "service": "sharaspot-bot",
+  "whatsappId": "919790294221",
+  "userId": 16,
+  "hasPrefs": true
+}
+2025-10-23 15:23:59 [INFO]: Search options prepared {
+  "service": "sharaspot-bot",
+  "whatsappId": "919790294221",
+  "searchOptions": {
+    "userWhatsapp": "919790294221",
+    "latitude": 13.0878,
+    "longitude": 80.2086,
+    "radius": 25,
+    "maxResults": 5,
+    "offset": 0,
+    "availableOnly": false,
+    "connectorTypes": [
+      "Proprietary"
+    ],
+    "sortBy": "availability"
+  }
+}
+2025-10-23 15:23:59 [INFO]: Searching stations {
+  "service": "sharaspot-bot",
+  "userWhatsapp": "919790294221",
+  "location": {
+    "lat": 13.0878,
+    "lng": 80.2086
+  },
+  "radius": 25
+}
+2025-10-23 15:24:00 [INFO]: HTTP Request {
+  "service": "sharaspot-bot",
+  "method": "POST",
+  "path": "/webhook",
+  "status": 200,
+  "duration": "1ms",
+  "ip": "::1",
+  "userAgent": "facebookexternalua"
+}
+2025-10-23 15:24:00 [INFO]: HTTP Request {
+  "service": "sharaspot-bot",
+  "method": "POST",
+  "path": "/webhook",
+  "status": 200,
+  "duration": "1ms",
+  "ip": "::1",
+  "userAgent": "facebookexternalua"
+}
+2025-10-23 15:24:00 [INFO]: Station search service completed {
+  "service": "sharaspot-bot",
+  "whatsappId": "919790294221",
+  "stationsFound": 3,
+  "totalCount": 3,
+  "hasMore": false
+}
+2025-10-23 15:24:00 [INFO]: ✅ Search results stored in context {
+  "service": "sharaspot-bot",
+  "whatsappId": "919790294221"
+}
+2025-10-23 15:24:00 [INFO]: HTTP Request {
+  "service": "sharaspot-bot",
+  "method": "POST",
+  "path": "/webhook",
+  "status": 200,
+  "duration": "1ms",
+  "ip": "::1",
+  "userAgent": "facebookexternalua"
+}
+2025-10-23 15:24:00 [INFO]: HTTP Request {
+  "service": "sharaspot-bot",
+  "method": "POST",
+  "path": "/webhook",
+  "status": 200,
+  "duration": "1ms",
+  "ip": "::1",
+  "userAgent": "facebookexternalua"
+}
+2025-10-23 15:24:01 [INFO]: HTTP Request {
+  "service": "sharaspot-bot",
+  "method": "POST",
+  "path": "/webhook",
+  "status": 200,
+  "duration": "1ms",
+  "ip": "::1",
+  "userAgent": "facebookexternalua"
+}
+2025-10-23 15:24:01 [INFO]: HTTP Request {
+  "service": "sharaspot-bot",
+  "method": "POST",
+  "path": "/webhook",
+  "status": 200,
+  "duration": "2ms",
+  "ip": "::1",
+  "userAgent": "facebookexternalua"
+}
+2025-10-23 15:24:01 [INFO]: HTTP Request {
+  "service": "sharaspot-bot",
+  "method": "POST",
+  "path": "/webhook",
+  "status": 200,
+  "duration": "2ms",
+  "ip": "::1",
+  "userAgent": "facebookexternalua"
+}
+2025-10-23 15:24:02 [INFO]: ✅ Text message sent {
+  "service": "sharaspot-bot",
+  "to": "919790294221",
+  "messageId": "wamid.HBgMOTE5NzkwMjk0MjIxFQIAERgSNzUxM0I3RTEwM0E0MkRBOUJDAA=="
+}
+2025-10-23 15:24:03 [INFO]: ✅ Button message sent {
+  "service": "sharaspot-bot",
+  "to": "919790294221",
+  "messageId": "wamid.HBgMOTE5NzkwMjk0MjIxFQIAERgSRDczRUExNzY3QkNGQkJBMkUwAA=="
+}
+2025-10-23 15:24:03 [INFO]: ✅ Station results displayed successfully {
+  "service": "sharaspot-bot",
+  "whatsappId": "919790294221",
+  "stationsShown": 3
+}
+2025-10-23 15:24:03 [INFO]: HTTP Request {
+  "service": "sharaspot-bot",
+  "method": "POST",
+  "path": "/webhook",
+  "status": 200,
+  "duration": "1ms",
+  "ip": "::1",
+  "userAgent": "facebookexternalua"
+}
+2025-10-23 15:24:04 [INFO]: HTTP Request {
+  "service": "sharaspot-bot",
+  "method": "POST",
+  "path": "/webhook",
+  "status": 200,
+  "duration": "3ms",
+  "ip": "::1",
+  "userAgent": "facebookexternalua"
+}
+2025-10-23 15:24:04 [INFO]: HTTP Request {
+  "service": "sharaspot-bot",
+  "method": "POST",
+  "path": "/webhook",
+  "status": 200,
+  "duration": "1ms",
+  "ip": "::1",
+  "userAgent": "facebookexternalua"
+}
+2025-10-23 15:24:04 [INFO]: HTTP Request {
+  "service": "sharaspot-bot",
+  "method": "POST",
+  "path": "/webhook",
+  "status": 200,
+  "duration": "2ms",
+  "ip": "::1",
+  "userAgent": "facebookexternalua"
+}
+2025-10-23 15:24:04 [INFO]: HTTP Request {
+  "service": "sharaspot-bot",
+  "method": "POST",
+  "path": "/webhook",
+  "status": 200,
+  "duration": "1ms",
+  "ip": "::1",
+  "userAgent": "facebookexternalua"
+}
+2025-10-23 15:24:04 [INFO]: HTTP Request {
+  "service": "sharaspot-bot",
+  "method": "POST",
+  "path": "/webhook",
+  "status": 200,
+  "duration": "2ms",
+  "ip": "::1",
+  "userAgent": "facebookexternalua"
+}
+2025-10-23 15:24:04 [INFO]: HTTP Request {
+  "service": "sharaspot-bot",
+  "method": "POST",
+  "path": "/webhook",
+  "status": 200,
+  "duration": "2ms",
+  "ip": "::1",
+  "userAgent": "facebookexternalua"
+}
+2025-10-23 15:24:04 [INFO]: HTTP Request {
+  "service": "sharaspot-bot",
+  "method": "POST",
+  "path": "/webhook",
+  "status": 200,
+  "duration": "1ms",
+  "ip": "::1",
+  "userAgent": "facebookexternalua"
+}
+2025-10-23 15:24:04 [INFO]: ✅ Button message sent {
+  "service": "sharaspot-bot",
+  "to": "919790294221",
+  "messageId": "wamid.HBgMOTE5NzkwMjk0MjIxFQIAERgSN0I5QTNFNUUyOEQ1RDk3MTY0AA=="
+}
+2025-10-23 15:24:06 [INFO]: HTTP Request {
+  "service": "sharaspot-bot",
+  "method": "POST",
+  "path": "/webhook",
+  "status": 200,
+  "duration": "2ms",
+  "ip": "::1",
+  "userAgent": "facebookexternalua"
+}
+2025-10-23 15:24:06 [INFO]: HTTP Request {
+  "service": "sharaspot-bot",
+  "method": "POST",
+  "path": "/webhook",
+  "status": 200,
+  "duration": "2ms",
+  "ip": "::1",
+  "userAgent": "facebookexternalua"
+}
+2025-10-23 15:24:06 [INFO]: HTTP Request {
+  "service": "sharaspot-bot",
+  "method": "POST",
+  "path": "/webhook",
+  "status": 200,
+  "duration": "2ms",
+  "ip": "::1",
+  "userAgent": "facebookexternalua"
+}
+2025-10-23 15:24:07 [INFO]: HTTP Request {
+  "service": "sharaspot-bot",
+  "method": "POST",
+  "path": "/webhook",
+  "status": 200,
+  "duration": "2ms",
+  "ip": "::1",
+  "userAgent": "facebookexternalua"
+}
+2025-10-23 15:24:08 [INFO]: 📥 Processing user message batch {
+  "service": "sharaspot-bot",
+  "batchId": "batch-1761213248948-2i5un9b",
+  "totalMessages": 1,
+  "firstMessageId": "wamid.HBgMOTE5NzkwMjk0MjIxFQIAEhgWM0VCMEQ0ODZGQjVGOUFBOTlDRTlEOAA="
+}
+2025-10-23 15:24:08 [INFO]: ✅ Webhook message batch dispatch completed {
+  "service": "sharaspot-bot",
+  "batchId": "batch-1761213248948-2i5un9b",
+  "processed": 1,
+  "duplicatesSkipped": 0
+}
+2025-10-23 15:24:08 [INFO]: HTTP Request {
+  "service": "sharaspot-bot",
+  "method": "POST",
+  "path": "/webhook",
+  "status": 200,
+  "duration": "3ms",
+  "ip": "::1",
+  "userAgent": "facebookexternalua"
+}
+2025-10-23 15:24:08 [INFO]: 📨 Processing message {
+  "service": "sharaspot-bot",
+  "whatsappId": "919790294221",
+  "type": "interactive",
+  "messageId": "wamid.HBgMOTE5NzkwMjk0MjIxFQIAEhgWM0VCMEQ0ODZGQjVGOUFBOTlDRTlEOAA="
+}
+2025-10-23 15:24:08 [INFO]: 🔍 Looking for user {
+  "service": "sharaspot-bot",
+  "whatsappId": "919790294221"
+}
+2025-10-23 15:24:09 [INFO]: ✅ Found existing user {
+  "service": "sharaspot-bot",
+  "whatsappId": "919790294221",
+  "userId": 16
+}
+2025-10-23 15:24:09 [INFO]: 🔘 Button pressed {
+  "service": "sharaspot-bot",
+  "whatsappId": "919790294221",
+  "buttonId": "book_station_23",
+  "title": "⚡ Book Now"
+}
+2025-10-23 15:24:09 [INFO]: 🎯 Routing button {
+  "service": "sharaspot-bot",
+  "whatsappId": "919790294221",
+  "buttonId": "book_station_23",
+  "parsed": {
+    "action": "book",
+    "category": "station",
+    "stationId": 23
+  }
+}
+2025-10-23 15:24:09 [INFO]: Location button pressed {
+  "service": "sharaspot-bot",
+  "whatsappId": "919790294221",
+  "buttonId": "book_station_23",
+  "buttonTitle": ""
+}
+2025-10-23 15:24:09 [INFO]: Processing booking request from location {
+  "service": "sharaspot-bot",
+  "whatsappId": "919790294221",
+  "stationId": 23
+}
+2025-10-23 15:24:09 [INFO]: 🎫 Initiating booking payment {
+  "service": "sharaspot-bot",
+  "whatsappId": "919790294221",
+  "stationId": 23,
+  "stationName": "OMR IT Corridor Station"
+}
+2025-10-23 15:24:10 [INFO]: ✅ Booking payment link created {
+  "service": "sharaspot-bot",
+  "userWhatsappId": "919790294221",
+  "stationId": 23,
+  "amount": 50,
+  "paymentLinkId": "plink_RWs89p6VM9NRxi",
+  "referenceId": "book_919790294221_23_1761213249900"
+}
+2025-10-23 15:24:11 [INFO]: ✅ Text message sent {
+  "service": "sharaspot-bot",
+  "to": "919790294221",
+  "messageId": "wamid.HBgMOTE5NzkwMjk0MjIxFQIAERgSRDM3RTgxQjZBNkZDMzdDOUE1AA=="
+}
+2025-10-23 15:24:11 [INFO]: ✅ Booking payment link sent {
+  "service": "sharaspot-bot",
+  "whatsappId": "919790294221",
+  "stationId": 23,
+  "bookingFee": 50
+}
+2025-10-23 15:24:11 [INFO]:  Booking payment link sent successfully {
+  "service": "sharaspot-bot",
+  "whatsappId": "919790294221",
+  "stationId": 23
+}
+2025-10-23 15:24:12 [INFO]: HTTP Request {
+  "service": "sharaspot-bot",
+  "method": "POST",
+  "path": "/webhook",
+  "status": 200,
+  "duration": "1ms",
+  "ip": "::1",
+  "userAgent": "facebookexternalua"
+}
+2025-10-23 15:24:13 [INFO]: HTTP Request {
+  "service": "sharaspot-bot",
+  "method": "POST",
+  "path": "/webhook",
+  "status": 200,
+  "duration": "2ms",
+  "ip": "::1",
+  "userAgent": "facebookexternalua"
+}
+2025-10-23 15:24:13 [INFO]: HTTP Request {
+  "service": "sharaspot-bot",
+  "method": "POST",
+  "path": "/webhook",
+  "status": 200,
+  "duration": "2ms",
+  "ip": "::1",
+  "userAgent": "facebookexternalua"
+}
+2025-10-23 15:24:13 [INFO]: HTTP Request {
+  "service": "sharaspot-bot",
+  "method": "POST",
+  "path": "/webhook",
+  "status": 200,
+  "duration": "1ms",
+  "ip": "::1",
+  "userAgent": "facebookexternalua"
+}
+2025-10-23 15:24:32 [INFO]: HTTP Request {
+  "service": "sharaspot-bot",
+  "method": "POST",
+  "path": "/webhook",
+  "status": 200,
+  "duration": "2ms",
+  "ip": "::1",
+  "userAgent": "facebookexternalua"
+}
+2025-10-23 15:24:33 [INFO]: 📥 Razorpay webhook received at root {
+  "service": "sharaspot-bot",
+  "event": "payment_link.paid",
+  "paymentLinkId": "plink_RWs89p6VM9NRxi"
+}
+2025-10-23 15:24:33 [INFO]: ✅ Payment link paid event {
+  "service": "sharaspot-bot",
+  "referenceId": "book_919790294221_23_1761213249900",
+  "event": "payment_link.paid"
+}
+2025-10-23 15:24:33 [INFO]: 🎫 Confirming booking after payment {
+  "service": "sharaspot-bot",
+  "whatsappId": "919790294221",
+  "stationId": 23,
+  "referenceId": "book_919790294221_23_1761213249900"
+}
+2025-10-23 15:24:33 [INFO]: HTTP Request {
+  "service": "sharaspot-bot",
+  "method": "POST",
+  "path": "/",
+  "status": 200,
+  "duration": "8ms",
+  "ip": "::1",
+  "userAgent": "Razorpay-Webhook/v1"
+}
+2025-10-23 15:24:33 [INFO]: Attempting to join queue - constraint-safe version {
+  "service": "sharaspot-bot",
+  "userWhatsapp": "919790294221",
+  "stationId": 23
+}
+2025-10-23 15:24:34 [INFO]: Updated existing queue entry successfully {
+  "service": "sharaspot-bot",
+  "queueId": 4,
+  "userWhatsapp": "919790294221",
+  "stationId": 23,
+  "position": 1
+}
+2025-10-23 15:24:35 [INFO]: ✅ Text message sent {
+  "service": "sharaspot-bot",
+  "to": "919790294221",
+  "messageId": "wamid.HBgMOTE5NzkwMjk0MjIxFQIAERgSRkEyQTlCQkVDMUZDMzZGNDU2AA=="
+}
+2025-10-23 15:24:35 [INFO]: ✅ Text message sent {
+  "service": "sharaspot-bot",
+  "to": "919790294221",
+  "messageId": "wamid.HBgMOTE5NzkwMjk0MjIxFQIAERgSQjEzOTVDMEE2RTM5MzE5RkQ1AA=="
+}
+2025-10-23 15:24:36 [ERROR]: ❌ Text message failed {
+  "service": "sharaspot-bot",
+  "to": "919876543211",
+  "error": {
+    "error": {
+      "message": "(#131030) Recipient phone number not in allowed list",
+      "type": "OAuthException",
+      "code": 131030,
+      "error_data": {
+        "messaging_product": "whatsapp",
+        "details": "Recipient phone number not in allowed list: Add recipient phone number to recipient list and try again."
+      },
+      "fbtrace_id": "ApSgV07fKfhGE84wHTHGGkY"
+    }
+  }
+}
+2025-10-23 15:24:36 [INFO]: Station owner notified {
+  "service": "sharaspot-bot",
+  "stationId": 23,
+  "ownerWhatsapp": "919876543211",
+  "eventType": "queue_joined"
+}
+2025-10-23 15:24:37 [INFO]: HTTP Request {
+  "service": "sharaspot-bot",
+  "method": "POST",
+  "path": "/webhook",
+  "status": 200,
+  "duration": "5ms",
+  "ip": "::1",
+  "userAgent": "facebookexternalua"
+}
+2025-10-23 15:24:37 [INFO]: ✅ Text message sent {
+  "service": "sharaspot-bot",
+  "to": "919790294221",
+  "messageId": "wamid.HBgMOTE5NzkwMjk0MjIxFQIAERgSOEI3RTI5MzAzNkE5OUIzNzZFAA=="
+}
+2025-10-23 15:24:37 [INFO]: ✅ Booking confirmed successfully after payment {
+  "service": "sharaspot-bot",
+  "whatsappId": "919790294221",
+  "stationId": 23
+}
+2025-10-23 15:24:37 [INFO]: HTTP Request {
+  "service": "sharaspot-bot",
+  "method": "POST",
+  "path": "/webhook",
+  "status": 200,
+  "duration": "1ms",
+  "ip": "::1",
+  "userAgent": "facebookexternalua"
+}
+2025-10-23 15:24:37 [INFO]: HTTP Request {
+  "service": "sharaspot-bot",
+  "method": "POST",
+  "path": "/webhook",
+  "status": 200,
+  "duration": "2ms",
+  "ip": "::1",
+  "userAgent": "facebookexternalua"
+}
+2025-10-23 15:24:38 [INFO]: HTTP Request {
+  "service": "sharaspot-bot",
+  "method": "POST",
+  "path": "/webhook",
+  "status": 200,
+  "duration": "1ms",
+  "ip": "::1",
+  "userAgent": "facebookexternalua"
+}
+2025-10-23 15:24:38 [INFO]: HTTP Request {
+  "service": "sharaspot-bot",
+  "method": "POST",
+  "path": "/webhook",
+  "status": 200,
+  "duration": "1ms",
+  "ip": "::1",
+  "userAgent": "facebookexternalua"
+}
+2025-10-23 15:24:38 [INFO]: HTTP Request {
+  "service": "sharaspot-bot",
+  "method": "POST",
+  "path": "/webhook",
+  "status": 200,
+  "duration": "1ms",
+  "ip": "::1",
+  "userAgent": "facebookexternalua"
+}
+2025-10-23 15:24:38 [INFO]: ✅ List message sent {
+  "service": "sharaspot-bot",
+  "to": "919790294221",
+  "messageId": "wamid.HBgMOTE5NzkwMjk0MjIxFQIAERgSRDJFNEIzM0EwQTFFQzdFQTQ3AA=="
+}
+2025-10-23 15:24:38 [INFO]: HTTP Request {
+  "service": "sharaspot-bot",
+  "method": "POST",
+  "path": "/webhook",
+  "status": 200,
+  "duration": "1ms",
+  "ip": "::1",
+  "userAgent": "facebookexternalua"
+}
+2025-10-23 15:24:38 [INFO]: HTTP Request {
+  "service": "sharaspot-bot",
+  "method": "POST",
+  "path": "/webhook",
+  "status": 200,
+  "duration": "1ms",
+  "ip": "::1",
+  "userAgent": "facebookexternalua"
+}
+2025-10-23 15:24:38 [INFO]: ✅ Button message sent {
+  "service": "sharaspot-bot",
+  "to": "919790294221",
+  "messageId": "wamid.HBgMOTE5NzkwMjk0MjIxFQIAERgSNDBFMkRCRkFCQ0IzNThFMjA4AA=="
+}
+2025-10-23 15:24:39 [INFO]: HTTP Request {
+  "service": "sharaspot-bot",
+  "method": "POST",
+  "path": "/webhook",
+  "status": 200,
+  "duration": "1ms",
+  "ip": "::1",
+  "userAgent": "facebookexternalua"
+}
+2025-10-23 15:24:40 [INFO]: 🧹 Starting cleanup process... {
+  "service": "sharaspot-bot"
+}
+2025-10-23 15:24:40 [INFO]: HTTP Request {
+  "service": "sharaspot-bot",
+  "method": "POST",
+  "path": "/webhook",
+  "status": 200,
+  "duration": "3ms",
+  "ip": "::1",
+  "userAgent": "facebookexternalua"
+}
+2025-10-23 15:24:40 [INFO]: HTTP Request {
+  "service": "sharaspot-bot",
+  "method": "POST",
+  "path": "/webhook",
+  "status": 200,
+  "duration": "4ms",
+  "ip": "::1",
+  "userAgent": "facebookexternalua"
+}
+2025-10-23 15:24:40 [INFO]: HTTP Request {
+  "service": "sharaspot-bot",
+  "method": "POST",
+  "path": "/webhook",
+  "status": 200,
+  "duration": "1ms",
+  "ip": "::1",
+  "userAgent": "facebookexternalua"
+}
+2025-10-23 15:24:40 [INFO]: ✅ No expired reservations to cleanup {
+  "service": "sharaspot-bot"
+}
+2025-10-23 15:24:40 [INFO]: HTTP Request {
+  "service": "sharaspot-bot",
+  "method": "POST",
+  "path": "/webhook",
+  "status": 200,
+  "duration": "1ms",
+  "ip": "::1",
+  "userAgent": "facebookexternalua"
+}
+2025-10-23 15:24:40 [INFO]: HTTP Request {
+  "service": "sharaspot-bot",
+  "method": "POST",
+  "path": "/webhook",
+  "status": 200,
+  "duration": "0ms",
+  "ip": "::1",
+  "userAgent": "facebookexternalua"
+}
+2025-10-23 15:24:49 [INFO]: HTTP Request {
+  "service": "sharaspot-bot",
+  "method": "POST",
+  "path": "/webhook",
+  "status": 200,
+  "duration": "3ms",
+  "ip": "::1",
+  "userAgent": "facebookexternalua"
+}
+2025-10-23 15:24:49 [INFO]: HTTP Request {
+  "service": "sharaspot-bot",
+  "method": "POST",
+  "path": "/webhook",
+  "status": 200,
+  "duration": "4ms",
+  "ip": "::1",
+  "userAgent": "facebookexternalua"
+}
+2025-10-23 15:24:49 [INFO]: HTTP Request {
+  "service": "sharaspot-bot",
+  "method": "POST",
+  "path": "/webhook",
+  "status": 200,
+  "duration": "4ms",
+  "ip": "::1",
+  "userAgent": "facebookexternalua"
+}
+2025-10-23 15:24:49 [INFO]: HTTP Request {
+  "service": "sharaspot-bot",
+  "method": "POST",
+  "path": "/webhook",
+  "status": 200,
+  "duration": "3ms",
+  "ip": "::1",
+  "userAgent": "facebookexternalua"
+}
+2025-10-23 15:24:49 [INFO]: HTTP Request {
+  "service": "sharaspot-bot",
+  "method": "POST",
+  "path": "/webhook",
+  "status": 200,
+  "duration": "4ms",
+  "ip": "::1",
+  "userAgent": "facebookexternalua"
+}
+2025-10-23 15:24:52 [INFO]: 📥 Processing user message batch {
+  "service": "sharaspot-bot",
+  "batchId": "batch-1761213292569-g1u4gvn",
+  "totalMessages": 1,
+  "firstMessageId": "wamid.HBgMOTE5NzkwMjk0MjIxFQIAEhgWM0VCMEYxMjNCMTBFQjc1NEU4QzZDNgA="
+}
+2025-10-23 15:24:52 [INFO]: ✅ Webhook message batch dispatch completed {
+  "service": "sharaspot-bot",
+  "batchId": "batch-1761213292569-g1u4gvn",
+  "processed": 1,
+  "duplicatesSkipped": 0
+}
+2025-10-23 15:24:52 [INFO]: HTTP Request {
+  "service": "sharaspot-bot",
+  "method": "POST",
+  "path": "/webhook",
+  "status": 200,
+  "duration": "2ms",
+  "ip": "::1",
+  "userAgent": "facebookexternalua"
+}
+2025-10-23 15:24:52 [INFO]: 📨 Processing message {
+  "service": "sharaspot-bot",
+  "whatsappId": "919790294221",
+  "type": "interactive",
+  "messageId": "wamid.HBgMOTE5NzkwMjk0MjIxFQIAEhgWM0VCMEYxMjNCMTBFQjc1NEU4QzZDNgA="
+}
+2025-10-23 15:24:52 [INFO]: 🔍 Looking for user {
+  "service": "sharaspot-bot",
+  "whatsappId": "919790294221"
+}
+2025-10-23 15:24:53 [INFO]: ✅ Found existing user {
+  "service": "sharaspot-bot",
+  "whatsappId": "919790294221",
+  "userId": 16
+}
+2025-10-23 15:24:53 [INFO]: 🔘 Button pressed {
+  "service": "sharaspot-bot",
+  "whatsappId": "919790294221",
+  "buttonId": "queue_status_23",
+  "title": "📊 Refresh Status"
+}
+2025-10-23 15:24:53 [INFO]: 🎯 Routing button {
+  "service": "sharaspot-bot",
+  "whatsappId": "919790294221",
+  "buttonId": "queue_status_23",
+  "parsed": {
+    "action": "status",
+    "category": "queue",
+    "stationId": 23
+  }
+}
+2025-10-23 15:24:53 [INFO]: 🎯 Processing queue button {
+  "service": "sharaspot-bot",
+  "whatsappId": "919790294221",
+  "buttonId": "queue_status_23",
+  "buttonTitle": "📊 Refresh Status"
+}
+2025-10-23 15:24:53 [INFO]: 📋 Button parsed {
+  "service": "sharaspot-bot",
+  "whatsappId": "919790294221",
+  "buttonId": "queue_status_23",
+  "parsed": {
+    "action": "status",
+    "category": "queue",
+    "stationId": 23
+  }
+}
+2025-10-23 15:24:53 [INFO]: 🔍 handleQueueStatus called {
+  "service": "sharaspot-bot",
+  "whatsappId": "919790294221",
+  "stationId": 23,
+  "stationIdType": "number",
+  "isValidStationId": true
+}
+2025-10-23 15:24:53 [INFO]: 📊 Retrieved user queues {
+  "service": "sharaspot-bot",
+  "whatsappId": "919790294221",
+  "stationId": 23,
+  "queueCount": 1,
+  "queues": [
+    {
+      "stationId": 23,
+      "position": 1,
+      "status": "waiting"
+    }
+  ]
+}
+2025-10-23 15:24:53 [INFO]: ✅ Queue found, formatting status {
+  "service": "sharaspot-bot",
+  "whatsappId": "919790294221",
+  "queueId": 4,
+  "position": 1,
+  "status": "waiting",
+  "stationName": "OMR IT Corridor Station"
+}
+2025-10-23 15:24:53 [ERROR]: ❌ handleQueueStatus failed {
+  "service": "sharaspot-bot",
+  "whatsappId": "919790294221",
+  "stationId": 23,
+  "error": {
+    "message": "queueData.createdAt.toLocaleTimeString is not a function",
+    "stack": "TypeError: queueData.createdAt.toLocaleTimeString is not a function\n    at QueueWebhookController.formatQueueStatus (/home/fffstanza/Folonite/SharaSpot/SharaSpot-produ/src/controllers/queue-webhook.ts:434:29)\n    at QueueWebhookController.handleQueueStatus (/home/fffstanza/Folonite/SharaSpot/SharaSpot-produ/src/controllers/queue-webhook.ts:294:32)\n    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)\n    at async QueueWebhookController.handleQueueCategory (/home/fffstanza/Folonite/SharaSpot/SharaSpot-produ/src/controllers/queue-webhook.ts:141:9)\n    at async QueueWebhookController.routeAction (/home/fffstanza/Folonite/SharaSpot/SharaSpot-produ/src/controllers/queue-webhook.ts:118:9)\n    at async QueueWebhookController.handleQueueButton (/home/fffstanza/Folonite/SharaSpot/SharaSpot-produ/src/controllers/queue-webhook.ts:88:5)\n    at async WebhookController.routeButtonAction (/home/fffstanza/Folonite/SharaSpot/SharaSpot-produ/src/controllers/webhook.ts:608:7)\n    at async WebhookController.handleButtonMessage (/home/fffstanza/Folonite/SharaSpot/SharaSpot-produ/src/controllers/webhook.ts:521:5)\n    at async WebhookController.routeMessage (/home/fffstanza/Folonite/SharaSpot/SharaSpot-produ/src/controllers/webhook.ts:294:11)\n    at async WebhookController.processMessage (/home/fffstanza/Folonite/SharaSpot/SharaSpot-produ/src/controllers/webhook.ts:252:7)",
+    "name": "TypeError"
+  }
+}
+2025-10-23 15:24:53 [ERROR]: Queue webhook queue status failed {
+  "service": "sharaspot-bot",
+  "whatsappId": "919790294221",
+  "stationId": 23,
+  "error": "queueData.createdAt.toLocaleTimeString is not a function"
+}
+2025-10-23 15:24:54 [INFO]: ✅ Text message sent {
+  "service": "sharaspot-bot",
+  "to": "919790294221",
+  "messageId": "wamid.HBgMOTE5NzkwMjk0MjIxFQIAERgSOTUzOUIxMUM3RDAwQTc0MkJEAA=="
+}
+2025-10-23 15:24:55 [INFO]: HTTP Request {
+  "service": "sharaspot-bot",
+  "method": "POST",
+  "path": "/webhook",
+  "status": 200,
+  "duration": "1ms",
+  "ip": "::1",
+  "userAgent": "facebookexternalua"
+}
+2025-10-23 15:24:55 [INFO]: HTTP Request {
+  "service": "sharaspot-bot",
+  "method": "POST",
+  "path": "/webhook",
+  "status": 200,
+  "duration": "0ms",
+  "ip": "::1",
+  "userAgent": "facebookexternalua"
+}
+2025-10-23 15:24:56 [INFO]: HTTP Request {
+  "service": "sharaspot-bot",
+  "method": "POST",
+  "path": "/webhook",
+  "status": 200,
+  "duration": "2ms",
+  "ip": "::1",
+  "userAgent": "facebookexternalua"
+}
+2025-10-23 15:25:05 [INFO]: 🛑 SIGINT received — starting graceful shutdown {
+  "service": "sharaspot-bot"
+}

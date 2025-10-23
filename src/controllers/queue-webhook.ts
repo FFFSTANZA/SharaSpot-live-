@@ -4,14 +4,21 @@ import { bookingController } from './booking';
 import { logger } from '../utils/logger';
 import { validateWhatsAppId } from '../utils/validation';
 import { parseButtonId, ButtonParseResult } from '../utils/button-parser';
+import { queueService } from '../services/queue';
 
+// ✅ FIXED: Define local interface that matches the actual return type from getUserQueueStatus
 interface QueuePosition {
+  id: number;
+  userWhatsapp: string;
   position: number;
   stationId: number;
-  stationName: string;
+  stationName?: string;
+  stationAddress?: string;
   estimatedWaitMinutes: number;
-  status: 'waiting' | 'ready' | 'charging' | 'completed' | 'cancelled';
-  joinedAt: Date;
+  status: string;  // ✅ Changed to string (not union) to match actual type
+  isReserved: boolean;
+  reservationExpiry?: Date;
+  createdAt?: Date;  // ✅ Made optional to match actual type
 }
 
 interface SessionData {
@@ -29,35 +36,70 @@ export class QueueWebhookController {
   // MAIN ENTRY POINTS
   // ===============================================
 
-  async handleQueueButton(whatsappId: string, buttonId: string, buttonTitle: string): Promise<void> {
-    if (!validateWhatsAppId(whatsappId)) {
-      logger.error('Invalid WhatsApp ID', { whatsappId });
-      return;
-    }
-
-    try {
-      logger.info('Processing queue button', { whatsappId, buttonId, buttonTitle });
-      const parsed = parseButtonId(buttonId);
-      await this.routeAction(whatsappId, buttonId, parsed, buttonTitle);
-    } catch (error) {
-      await this.handleError(error, 'queue button', { whatsappId, buttonId });
-    }
+ async handleQueueButton(whatsappId: string, buttonId: string, buttonTitle: string): Promise<void> {
+  if (!validateWhatsAppId(whatsappId)) {
+    logger.error('Invalid WhatsApp ID', { whatsappId });
+    return;
   }
 
-  async handleQueueList(whatsappId: string, listId: string, listTitle: string): Promise<void> {
-    if (!validateWhatsAppId(whatsappId)) {
-      logger.error('Invalid WhatsApp ID', { whatsappId });
-      return;
+  try {
+    // ✅ ADD DIAGNOSTIC LOGGING
+    logger.info('🎯 Processing queue button', { 
+      whatsappId, 
+      buttonId, 
+      buttonTitle 
+    });
+    
+    const parsed = parseButtonId(buttonId);
+    
+    // ✅ LOG PARSED RESULT
+    logger.info('📋 Button parsed', { 
+      whatsappId,
+      buttonId,
+      parsed: {
+        action: parsed.action,
+        category: parsed.category,
+        stationId: parsed.stationId
+      }
+    });
+    
+    // ✅ VALIDATE PARSED STATION ID
+    if (parsed.category === 'queue' && parsed.action === 'status') {
+      if (!parsed.stationId || parsed.stationId <= 0) {
+        logger.error('❌ Invalid stationId from button parser', { 
+          whatsappId,
+          buttonId,
+          parsed
+        });
+        
+        // Try to extract stationId manually from buttonId
+        const match = buttonId.match(/queue_status_(\d+)/);
+        if (match && match[1]) {
+          parsed.stationId = parseInt(match[1], 10);
+          logger.info('✅ Manually extracted stationId from buttonId', { 
+            whatsappId,
+            buttonId,
+            extractedStationId: parsed.stationId
+          });
+        }
+      }
     }
-
-    try {
-      logger.info('Processing queue list', { whatsappId, listId, listTitle });
-      const parsed = parseButtonId(listId);
-      await this.routeAction(whatsappId, listId, parsed, listTitle);
-    } catch (error) {
-      await this.handleError(error, 'queue list', { whatsappId, listId });
-    }
+    
+    await this.routeAction(whatsappId, buttonId, parsed, buttonTitle);
+  } catch (error) {
+    logger.error('❌ handleQueueButton failed', {
+      whatsappId,
+      buttonId,
+      buttonTitle,
+      error: error instanceof Error ? {
+        message: error.message,
+        stack: error.stack
+      } : error
+    });
+    
+    await this.handleError(error, 'queue button', { whatsappId, buttonId });
   }
+}
 
   // ===============================================
   // ACTION ROUTING
@@ -113,21 +155,21 @@ export class QueueWebhookController {
   }
 
   private async handleSessionCategory(whatsappId: string, action: string, stationId: number): Promise<void> {
-  switch (action) {
-    case 'start':
-    case 'start_charging':  
-      await bookingController.handleChargingStart(whatsappId, stationId);
-      break;
-    case 'status':
-      await this.handleSessionStatus(whatsappId, stationId);
-      break;
-    case 'stop':
-      await bookingController.handleSessionStop(whatsappId, stationId);
-      break;
-    default:
-      await this.handleUnknownAction(whatsappId, action);
+    switch (action) {
+      case 'start':
+      case 'start_charging':  
+        await bookingController.handleChargingStart(whatsappId, stationId);
+        break;
+      case 'status':
+        await this.handleSessionStatus(whatsappId, stationId);
+        break;
+      case 'stop':
+        await bookingController.handleSessionStop(whatsappId, stationId);
+        break;
+      default:
+        await this.handleUnknownAction(whatsappId, action);
+    }
   }
-}
 
   private async handleStationCategory(whatsappId: string, action: string, stationId: number): Promise<void> {
     switch (action) {
@@ -167,10 +209,23 @@ export class QueueWebhookController {
   // ===============================================
 
   private async handleQueueStatus(whatsappId: string, stationId: number): Promise<void> {
-    try {
-      const queueData = await this.getQueueData(whatsappId, stationId);
+  try {
+    // ✅ ADD DIAGNOSTIC LOGGING
+    logger.info('🔍 handleQueueStatus called', { 
+      whatsappId, 
+      stationId,
+      stationIdType: typeof stationId,
+      isValidStationId: stationId > 0
+    });
 
-      if (!queueData) {
+    // ✅ FIX: Validate stationId before proceeding
+    if (!stationId || stationId <= 0) {
+      logger.error('❌ Invalid stationId received', { whatsappId, stationId });
+      
+      // Try to get ANY active queue for this user
+      const userQueues = await queueService.getUserQueueStatus(whatsappId);
+      
+      if (userQueues.length === 0) {
         await whatsappService.sendTextMessage(
           whatsappId,
           '📋 *No Active Queue*\n\nYou are not currently in any queue.\n\n🔍 Ready to find a charging station?'
@@ -181,18 +236,86 @@ export class QueueWebhookController {
         }, 2000);
         return;
       }
-
-      const statusMessage = this.formatQueueStatus(queueData);
-      await whatsappService.sendTextMessage(whatsappId, statusMessage);
-
-      setTimeout(async () => {
-        await this.sendQueueManagementButtons(whatsappId, queueData);
-      }, 2000);
-
-    } catch (error) {
-      await this.handleError(error, 'queue status', { whatsappId, stationId });
+      
+      // Use the first active queue's stationId
+      stationId = userQueues[0].stationId;
+      logger.info('✅ Using stationId from user\'s active queue', { 
+        whatsappId, 
+        stationId,
+        queueCount: userQueues.length 
+      });
     }
+
+    // ✅ Get all user queues using queueService
+    const userQueues = await queueService.getUserQueueStatus(whatsappId);
+    
+    logger.info('📊 Retrieved user queues', { 
+      whatsappId, 
+      stationId,
+      queueCount: userQueues.length,
+      queues: userQueues.map(q => ({
+        stationId: q.stationId,
+        position: q.position,
+        status: q.status
+      }))
+    });
+    
+    // Filter for specific station if provided, otherwise get first active queue
+    const queueData = stationId 
+      ? userQueues.find(q => q.stationId === stationId)
+      : userQueues[0];
+
+    if (!queueData) {
+      logger.warn('⚠️ No queue found for user', { 
+        whatsappId, 
+        stationId,
+        totalQueues: userQueues.length
+      });
+      
+      await whatsappService.sendTextMessage(
+        whatsappId,
+        '📋 *No Active Queue*\n\nYou are not currently in any queue at this station.\n\n🔍 Ready to find a charging station?'
+      );
+      
+      setTimeout(async () => {
+        await this.sendFindStationButtons(whatsappId);
+      }, 2000);
+      return;
+    }
+
+    logger.info('✅ Queue found, formatting status', { 
+      whatsappId,
+      queueId: queueData.id,
+      position: queueData.position,
+      status: queueData.status,
+      stationName: queueData.stationName
+    });
+
+    const statusMessage = this.formatQueueStatus(queueData);
+    await whatsappService.sendTextMessage(whatsappId, statusMessage);
+
+    setTimeout(async () => {
+      await this.sendQueueManagementButtons(whatsappId, queueData);
+    }, 2000);
+
+    logger.info('✅ Queue status sent successfully', { whatsappId, stationId });
+
+  } catch (error) {
+    // ✅ ENHANCED ERROR LOGGING
+    logger.error('❌ handleQueueStatus failed', { 
+      whatsappId, 
+      stationId,
+      error: error instanceof Error ? {
+        message: error.message,
+        stack: error.stack,
+        name: error.name
+      } : error
+    });
+    
+    await this.handleError(error, 'queue status', { whatsappId, stationId });
   }
+}
+
 
   private async handleJoinQueue(whatsappId: string, stationId: number): Promise<void> {
     try {
@@ -237,15 +360,26 @@ export class QueueWebhookController {
       if (!sessionData) {
         await whatsappService.sendTextMessage(
           whatsappId,
-          '⚡ *No Active Session*\n\nYou don\'t have an active charging session.\n\n🔍 Ready to start charging?'
+          '📋 *No Active Session*\n\nYou don\'t have an active charging session.\n\n⚡ Ready to start charging?'
         );
+        
+        setTimeout(async () => {
+          await whatsappService.sendButtonMessage(
+            whatsappId,
+            '🔋 *Next Steps:*',
+            [
+              { id: `start_charging_${stationId}`, title: '⚡ Start Charging' },
+              { id: 'find_nearby_stations', title: '🔍 Find Stations' },
+              { id: 'help', title: '❓ Help' }
+            ]
+          );
+        }, 2000);
         return;
       }
 
       const statusMessage = this.formatSessionStatus(sessionData);
       await whatsappService.sendTextMessage(whatsappId, statusMessage);
 
-      // ✅ Only send simple session controls (no time-based features)
       setTimeout(async () => {
         await this.sendSessionControls(whatsappId, sessionData);
       }, 2000);
@@ -255,18 +389,14 @@ export class QueueWebhookController {
     }
   }
 
-  // ===============================================
-  // ADDITIONAL FEATURES
-  // ===============================================
-
   private async handleNotificationActions(whatsappId: string, stationId: number): Promise<void> {
     try {
       await whatsappService.sendTextMessage(
         whatsappId,
         '🔔 *Notifications Enabled*\n\n' +
-        'You will receive alerts for:\n' +
-        '• Queue position updates\n' +
-        '• When your slot is ready\n' +
+        'You\'ll receive updates for:\n' +
+        '• Queue position changes\n' +
+        '• Slot availability\n' +
         '• Session completion\n\n' +
         '✅ All set!'
       );
@@ -299,12 +429,17 @@ export class QueueWebhookController {
     const statusEmoji = this.getQueueStatusEmoji(queueData.status);
     const progressBar = this.generateProgressBar(queueData.position, 5);
 
+    // ✅ FIXED: Use createdAt (which exists) instead of joinedAt (which doesn't)
+    const joinedTime = queueData.createdAt 
+      ? queueData.createdAt.toLocaleTimeString() 
+      : 'Unknown';
+
     return `${statusEmoji} *Queue Status*\n\n` +
-      `📍 *${queueData.stationName}*\n` +
+      `📍 *${queueData.stationName || 'Charging Station'}*\n` +
       `👥 *Position:* #${queueData.position}\n` +
       `${progressBar}\n` +
       `⏱️ *Estimated Wait:* ${queueData.estimatedWaitMinutes} minutes\n` +
-      `📅 *Joined:* ${queueData.joinedAt.toLocaleTimeString()}\n` +
+      `📅 *Joined:* ${joinedTime}\n` +
       `🔄 *Status:* ${this.getStatusDescription(queueData.status)}\n\n` +
       `${this.getQueueTip(queueData)}`;
   }
@@ -384,6 +519,7 @@ export class QueueWebhookController {
   private getQueueStatusEmoji(status: string): string {
     const emojiMap: Record<string, string> = {
       'waiting': '⏳',
+      'reserved': '✅',  
       'ready': '🎯',
       'charging': '⚡',
       'completed': '✅',
@@ -395,6 +531,7 @@ export class QueueWebhookController {
   private getStatusDescription(status: string): string {
     const descriptions: Record<string, string> = {
       'waiting': 'In Queue',
+      'reserved': 'Slot Reserved',  
       'ready': 'Ready to Charge',
       'charging': 'Charging Active',
       'completed': 'Complete',
@@ -410,7 +547,10 @@ export class QueueWebhookController {
   }
 
   private getQueueTip(queueData: QueuePosition): string {
-    if (queueData.status === 'ready') {
+    // ✅ FIXED: Check string status instead of union type
+    if (queueData.status === 'reserved') {
+      return '✅ *Your slot is reserved!* Arrive within 15 minutes.';
+    } else if (queueData.status === 'ready') {
       return '🚀 *Your slot is ready!* Please arrive within 15 minutes.';
     } else if (queueData.position === 1) {
       return '🎉 *You\'re next!* Get ready to charge soon.';
@@ -431,12 +571,15 @@ export class QueueWebhookController {
     if (!hasQueue) return null;
 
     return {
+      id: Math.floor(Math.random() * 1000),
+      userWhatsapp: whatsappId,
       position: Math.floor(Math.random() * 4) + 1,
       stationId,
       stationName: `Charging Station #${stationId}`,
       estimatedWaitMinutes: Math.floor(Math.random() * 30) + 10,
       status: 'waiting',
-      joinedAt: new Date(Date.now() - Math.random() * 1800000)
+      isReserved: false,
+      createdAt: new Date(Date.now() - Math.random() * 1800000)
     };
   }
 

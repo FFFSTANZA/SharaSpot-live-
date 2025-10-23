@@ -9,6 +9,9 @@ import { webhookController } from './controllers/webhook';
 import { QueueScheduler } from './services/queueScheduler';
 import { initializeDatabase } from './db/connection';
 import paymentRoutes from './routes/payment';
+import { bookingController } from './controllers/booking';
+import { whatsappService } from './services/whatsapp';
+import crypto from 'crypto';
 
 // ===============================================
 // TYPE-SAFE ERROR HANDLING UTILITIES
@@ -29,9 +32,6 @@ const getErrorStack = (error: unknown): string | undefined =>
 
 const app = express();
 const port = env.PORT || 3000;
-
-// ✅ ONLY mount payment routes under /api/payment
-app.use('/api/payment', paymentRoutes);
 
 // ===============================================
 // SECURITY & MIDDLEWARE STACK
@@ -151,6 +151,151 @@ app.use((req: Request, res: Response, next: NextFunction) => {
 });
 
 // ===============================================
+// PAYMENT ROUTES
+// ===============================================
+
+app.use('/api/payment', paymentRoutes);
+
+// ===============================================
+// RAZORPAY WEBHOOK HANDLER (ROOT PATH)
+// ===============================================
+
+app.post('/', async (req: Request, res: Response) => {
+  const userAgent = req.headers['user-agent'] || '';
+  
+  // ✅ Check if it's a Razorpay webhook
+  if (userAgent.includes('Razorpay')) {
+    try {
+      logger.info('📥 Razorpay webhook received at root', {
+        event: req.body?.event,
+        paymentLinkId: req.body?.payload?.payment_link?.entity?.id,
+      });
+
+      const webhookSignature = req.headers['x-razorpay-signature'] as string;
+      const webhookBody = req.body;
+
+      // ✅ Verify signature if secret is configured
+      if (env.RAZORPAY_WEBHOOK_SECRET) {
+        const expectedSignature = crypto
+          .createHmac('sha256', env.RAZORPAY_WEBHOOK_SECRET)
+          .update(JSON.stringify(webhookBody))
+          .digest('hex');
+
+        if (webhookSignature !== expectedSignature) {
+          logger.error('❌ Invalid Razorpay webhook signature');
+          return res.status(400).json({ error: 'Invalid signature' });
+        }
+      }
+
+      const event = webhookBody.event;
+
+      // ✅ Handle payment_link.paid event
+      if (event === 'payment_link.paid') {
+        const paymentLink = webhookBody.payload?.payment_link?.entity;
+        const referenceId = paymentLink?.reference_id;
+
+        logger.info('✅ Payment link paid event', { referenceId, event });
+
+        // ✅ BOOKING PAYMENT
+        if (referenceId && referenceId.startsWith('book_')) {
+          const parts = referenceId.split('_');
+          if (parts.length >= 3) {
+            const whatsappId = parts[1];
+            const stationId = parseInt(parts[2]);
+
+            logger.info('🎫 Confirming booking after payment', { 
+              whatsappId, 
+              stationId, 
+              referenceId 
+            });
+
+            // ✅ Confirm booking in background (non-blocking)
+            setImmediate(async () => {
+              try {
+                await bookingController.handleJoinQueue(whatsappId, stationId);
+                
+                await whatsappService.sendTextMessage(
+                  whatsappId,
+                  '✅ *Payment Confirmed!*\n\n' +
+                  'Your booking is complete.\n\n' +
+                  'You can now join the queue or start charging when you arrive at the station.'
+                );
+                
+                logger.info('✅ Booking confirmed successfully after payment', { 
+                  whatsappId, 
+                  stationId 
+                });
+              } catch (error) {
+                logger.error('❌ Failed to confirm booking after payment', { 
+                  whatsappId, 
+                  stationId, 
+                  error: getErrorMessage(error),
+                  stack: getErrorStack(error)
+                });
+                
+                // ✅ Notify user about the issue
+                await whatsappService.sendTextMessage(
+                  whatsappId,
+                  '⚠️ Payment received but booking confirmation failed.\n\n' +
+                  'Please contact support with your payment reference.'
+                );
+              }
+            });
+          }
+        }
+
+        // ✅ SESSION PAYMENT
+        if (referenceId && referenceId.startsWith('session_')) {
+          logger.info('⚡ Session payment confirmed', { referenceId });
+          
+          // Extract session details
+          const parts = referenceId.split('_');
+          if (parts.length >= 2) {
+            const sessionId = parts[1];
+            
+            // You can add additional logic here if needed
+            // e.g., update session payment status, send receipt, etc.
+            logger.info('💰 Session payment processed', { sessionId });
+          }
+        }
+      }
+
+      // ✅ Handle payment_link.cancelled event
+      if (event === 'payment_link.cancelled') {
+        const paymentLink = webhookBody.payload?.payment_link?.entity;
+        const referenceId = paymentLink?.reference_id;
+        
+        logger.warn('❌ Payment link cancelled', { referenceId });
+        
+        // Optional: Notify user or handle cancellation
+      }
+
+      // ✅ Handle payment_link.expired event
+      if (event === 'payment_link.expired') {
+        const paymentLink = webhookBody.payload?.payment_link?.entity;
+        const referenceId = paymentLink?.reference_id;
+        
+        logger.warn('⏰ Payment link expired', { referenceId });
+        
+        // Optional: Notify user about expiration
+      }
+
+      return res.status(200).json({ status: 'ok' });
+
+    } catch (error) {
+      logger.error('❌ Razorpay webhook processing error', {
+        error: getErrorMessage(error),
+        stack: getErrorStack(error)
+      });
+      return res.status(500).json({ error: 'Webhook processing error' });
+    }
+  }
+
+  // ✅ Otherwise, it's a WhatsApp webhook
+  return webhookController.handleWebhook(req, res);
+});
+
+// ===============================================
 // HEALTH & ROOT ENDPOINTS
 // ===============================================
 
@@ -164,7 +309,7 @@ app.get('/', (_req: Request, res: Response) => {
       health: '/health',
       whatsappWebhook: '/webhook',
       paymentCallback: '/api/payment/callback',
-      paymentWebhook: '/api/payment/webhook',
+      razorpayWebhook: '/ (POST with Razorpay user-agent)',
     },
   });
 });
@@ -198,7 +343,7 @@ app.get('/health', async (_req: Request, res: Response) => {
 });
 
 // ===============================================
-// WHATSAPP WEBHOOK (Meta) — MUST REMAIN INDEPENDENT
+// WHATSAPP WEBHOOK (Meta)
 // ===============================================
 
 app.get('/webhook', webhookController.verifyWebhook.bind(webhookController));
@@ -281,7 +426,7 @@ class ServerManager {
           environment: env.NODE_ENV,
           whatsappWebhookUrl: `${env.APP_BASE_URL}/webhook`,
           paymentCallbackUrl: `${env.APP_BASE_URL}/api/payment/callback`,
-          paymentWebhookUrl: `${env.APP_BASE_URL}/api/payment/webhook`,
+          razorpayWebhookUrl: `${env.APP_BASE_URL}/ (POST)`,
           healthUrl: `${env.APP_BASE_URL}/health`,
           pid: process.pid,
           nodeVersion: process.version,

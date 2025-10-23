@@ -75,51 +75,55 @@ class NotificationService {
     }
   }
 
-  async sendReservationConfirmation(userWhatsapp: string, stationId: number, reservationMinutes: number): Promise<void> {
-    try {
-      const station = await this.getStationDetails(stationId);
-      const expiryTime = new Date(Date.now() + reservationMinutes * 60 * 1000);
+  // Partial fix for src/services/notification.ts
+// Only showing the sendReservationConfirmation function with the fix
 
-      const message = `🎉 *SLOT RESERVED!*\n\n` +
-        `📍 *${station?.name || 'Charging Station'}*\n` +
-        `📍 ${station?.address || 'Loading address...'}\n\n` +
-        `⏰ *Reservation Expires:* ${expiryTime.toLocaleTimeString()}\n` +
-        `⏳ *You have ${reservationMinutes} minutes* to arrive\n\n` +
-        `🚗 *Next Steps:*\n` +
-        `• Navigate to the station now\n` +
-        `• Scan QR code or tap "Start Charging"\n` +
-        `• Your charging slot is secured!\n\n` +
-        `💡 *Pro Tip:* Enable location sharing for real-time navigation assistance`;
+async sendReservationConfirmation(userWhatsapp: string, stationId: number, reservationMinutes: number): Promise<void> {
+  try {
+    const station = await this.getStationDetails(stationId);
+    const expiryTime = new Date(Date.now() + reservationMinutes * 60 * 1000);
 
-      await whatsappService.sendTextMessage(userWhatsapp, message);
+    const message = `🎉 *SLOT RESERVED!*\n\n` +
+      `📍 *${station?.name || 'Charging Station'}*\n` +
+      `📍 ${station?.address || 'Loading address...'}\n\n` +
+      `⏰ *Reservation Expires:* ${expiryTime.toLocaleTimeString()}\n` +
+      `⏳ *You have ${reservationMinutes} minutes* to arrive\n\n` +
+      `🚗 *Next Steps:*\n` +
+      `• Navigate to the station now\n` +
+      `• Scan QR code or tap "Start Charging"\n` +
+      `• Your charging slot is secured!\n\n` +
+      `💡 *Pro Tip:* Enable location sharing for real-time navigation assistance`;
 
-      if (station?.latitude && station?.longitude) {
-        setTimeout(async () => {
-          await whatsappService.sendLocationMessage(
-            userWhatsapp,
-            station.latitude,
-            station.longitude,
-            `${station.name} - Your Reserved Slot`,
-            station.address || ''
-          );
-        }, 1000);
-      }
+    await whatsappService.sendTextMessage(userWhatsapp, message);
 
+    if (station?.latitude && station?.longitude) {
       setTimeout(async () => {
-        await whatsappService.sendButtonMessage(
+        await whatsappService.sendLocationMessage(
           userWhatsapp,
-          `🚀 *Ready to charge?*\n\nArrive at the station and select an option:`,
-          [
-            { id: `start_charging_${stationId}`, title: '⚡ Start Charging' },
-            { id: `extend_reservation_${stationId}`, title: '⏰ Extend Time' },
-            { id: `cancel_reservation_${stationId}`, title: '❌ Cancel' }
-          ]
+          station.latitude,
+          station.longitude,
+          `${station.name} - Your Reserved Slot`,
+          station.address || ''
         );
-      }, 3000);
-    } catch (error) {
-      logger.error('Failed to send reservation confirmation', { userWhatsapp, stationId, error });
+      }, 1000);
     }
+
+    // ✅ FIXED: Reduced delay from 3000ms to 1000ms for faster button appearance
+    setTimeout(async () => {
+      await whatsappService.sendButtonMessage(
+        userWhatsapp,
+        `🚀 *Ready to charge?*\n\nArrive at the station and select an option:`,
+        [
+          { id: `start_charging_${stationId}`, title: '⚡ Start Charging' },
+          { id: `extend_reservation_${stationId}`, title: '⏰ Extend Time' },
+          { id: `cancel_reservation_${stationId}`, title: '❌ Cancel' }
+        ]
+      );
+    }, 1000);  // ← CHANGED FROM 3000 TO 1000
+  } catch (error) {
+    logger.error('Failed to send reservation confirmation', { userWhatsapp, stationId, error });
   }
+}
 
   /**
    * OPTIMIZED: Simplified charging started notification

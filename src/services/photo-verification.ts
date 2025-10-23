@@ -446,6 +446,8 @@ cleanupState(userWhatsapp: string): void {
    */
   async confirmEndReading(userWhatsapp: string): Promise<boolean> {
   const state = this.states.get(userWhatsapp);
+  
+  // ✅ Validation: Check if state exists and is valid
   if (!state || state.type !== 'end' || !state.lastReading) {
     await whatsappService.sendTextMessage(
       userWhatsapp,
@@ -454,16 +456,36 @@ cleanupState(userWhatsapp: string): void {
     return false;
   }
 
+  // ✅ Get session details
   const session = await this.getSession(state.sessionId);
   if (!session?.startMeterReading) {
-    logger.error('Start reading not found during END confirmation', { sessionId: state.sessionId });
+    logger.error('❌ Start reading not found during END confirmation', { 
+      sessionId: state.sessionId,
+      userWhatsapp 
+    });
     return false;
   }
 
   const startReading = parseFloat(session.startMeterReading);
   const consumption = state.lastReading - startReading;
 
-  // ✅ Update session with END reading (Vision API)
+  // ✅ Validate consumption is positive
+  if (consumption < 0) {
+    logger.error('❌ Invalid consumption (negative)', {
+      userWhatsapp,
+      sessionId: state.sessionId,
+      startReading,
+      endReading: state.lastReading,
+      consumption
+    });
+    await whatsappService.sendTextMessage(
+      userWhatsapp,
+      '❌ Invalid meter reading. End reading must be greater than start reading.'
+    );
+    return false;
+  }
+
+  // ✅ Update session with END reading
   await db
     .update(chargingSessions)
     .set({
@@ -479,56 +501,98 @@ cleanupState(userWhatsapp: string): void {
 
   logger.info('✅ END reading confirmed (Vision API)', {
     userWhatsapp,
-    reading: state.lastReading,
-    consumption,
     sessionId: state.sessionId,
+    startReading,
+    endReading: state.lastReading,
+    consumption: consumption.toFixed(2),
     confidence: state.lastConfidence,
   });
 
-  // ✅ CRITICAL: Complete session with consumption
+  // ✅ Complete session with consumption
   await sessionService.completeSessionAfterVerification(
     state.sessionId,
     state.lastReading,
     consumption
   );
 
-  // ✅ ADD PAYMENT INTEGRATION HERE (after session is complete, before cleanup)
+  // ✅ PAYMENT INTEGRATION: Initiate payment after session completion
   try {
+    logger.info('💳 Initiating session payment', {
+      userWhatsapp,
+      sessionId: state.sessionId,
+      stationId: session.stationId,
+      consumption: consumption.toFixed(2)
+    });
+
     const [station] = await db
       .select()
       .from(chargingStations)
       .where(eq(chargingStations.id, session.stationId))
       .limit(1);
 
-    if (station) {
-      const { handleSessionPayment } = await import('../controllers/booking-payment-integration');
-      const pricePerKwh = parseFloat(station.pricePerKwh);
-
-      await handleSessionPayment(
-        userWhatsapp,
-        state.sessionId,
-        session.stationId,
-        consumption,
-        pricePerKwh
-      );
-    } else {
-      logger.warn('Station not found for payment', { stationId: session.stationId, sessionId: state.sessionId });
+    if (!station) {
+      throw new Error(`Station not found: ${session.stationId}`);
     }
-  } catch (paymentError) {
-    logger.error('Failed to initiate session payment', {
-      error: paymentError instanceof Error ? paymentError.message : String(paymentError),
+
+    const pricePerKwh = parseFloat(station.pricePerKwh || '10');
+    const totalAmount = Math.round(consumption * pricePerKwh);
+
+    logger.info('💰 Calculated payment amount', {
       userWhatsapp,
       sessionId: state.sessionId,
-      consumption,
+      consumption: consumption.toFixed(2),
+      pricePerKwh,
+      totalAmount
     });
-    // Note: Payment failure shouldn't roll back session completion,
-    // but you may want to notify admin or retry later.
+
+    // ✅ Dynamic import to avoid circular dependency
+    const { handleSessionPayment } = await import('../controllers/booking-payment-integration');
+
+    await handleSessionPayment(
+      userWhatsapp,
+      state.sessionId,
+      session.stationId,
+      consumption,
+      pricePerKwh
+    );
+
+    logger.info('✅ Session payment initiated successfully', {
+      userWhatsapp,
+      sessionId: state.sessionId,
+      totalAmount
+    });
+
+  } catch (paymentError) {
+    // ✅ Payment failure shouldn't block session completion
+    logger.error('❌ Failed to initiate session payment', {
+      userWhatsapp,
+      sessionId: state.sessionId,
+      stationId: session.stationId,
+      consumption: consumption.toFixed(2),
+      error: paymentError instanceof Error ? paymentError.message : String(paymentError),
+      stack: paymentError instanceof Error ? paymentError.stack : undefined
+    });
+
+    // ✅ Notify user about payment issue
+    await whatsappService.sendTextMessage(
+      userWhatsapp,
+      '⚠️ Session completed but payment link failed to generate.\n\n' +
+      'Please contact support for payment assistance.'
+    );
+
+    // TODO: Consider adding retry mechanism or admin notification
   }
 
+  // ✅ Cleanup state
   this.states.delete(userWhatsapp);
+  
+  logger.info('✅ Session end reading flow completed', {
+    userWhatsapp,
+    sessionId: state.sessionId
+  });
+
   return true;
 }
-
   /**
    * Retry END photo
    */

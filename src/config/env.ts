@@ -25,9 +25,11 @@ const envSchema = z.object({
   PHONE_NUMBER_ID: z.string().min(10, 'Phone number ID must be at least 10 characters'),
   VERIFY_TOKEN: z.string().min(8, 'Verify token must be at least 8 characters'),
   
-  // Razorpay Configuration (Optional but recommended)
+  // Razorpay Configuration
   RAZORPAY_KEY_ID: z.string().optional(),
   RAZORPAY_KEY_SECRET: z.string().optional(),
+  // ✅ ADD THIS: Razorpay webhook signing secret
+  RAZORPAY_WEBHOOK_SECRET: z.string().optional(), // Required in production
   
   // Application Base URL (Optional)
   APP_BASE_URL: z.string()
@@ -38,7 +40,6 @@ const envSchema = z.object({
   DATABASE_URL: z.string()
     .url('Must be a valid database URL')
     .refine((url) => {
-      // Validate database URL format
       const validProtocols = ['postgres://', 'postgresql://', 'mysql://', 'sqlite://'];
       return validProtocols.some(protocol => url.startsWith(protocol));
     }, 'Database URL must use a supported protocol (postgres, mysql, sqlite)'),
@@ -62,7 +63,7 @@ const envSchema = z.object({
   RATE_LIMIT_WINDOW: z.string()
     .transform((val) => {
       const num = Number(val);
-      return isNaN(num) ? 60000 : num; // Default 1 minute
+      return isNaN(num) ? 60000 : num;
     })
     .default('60000'),
   
@@ -81,7 +82,6 @@ const envSchema = z.object({
   REQUEST_SIZE_LIMIT: z.string()
     .default('5mb')
     .refine((val) => {
-      // Validate size format (e.g., '5mb', '10kb')
       return /^\d+[kmg]?b$/i.test(val);
     }, 'Request size limit must be in format like "5mb", "10kb", etc.'),
   
@@ -114,7 +114,7 @@ const envSchema = z.object({
     .default('30000'),
   
   CLEANUP_INTERVAL: z.string()
-    .transform((val) => Number(val) || 300000) // 5 minutes
+    .transform((val) => Number(val) || 300000)
     .default('300000'),
   
   // Performance Settings (Optional)
@@ -169,7 +169,6 @@ export const validateEnvironment = () => {
     recommendations: [] as string[]
   };
 
-  // Production environment checks
   if (env.NODE_ENV === 'production') {
     if (!env.ALLOWED_ORIGINS.length) {
       report.warnings.push('ALLOWED_ORIGINS not set - CORS will block all origins');
@@ -186,24 +185,27 @@ export const validateEnvironment = () => {
       report.recommendations.push('Set LOG_LEVEL to "info" or "warn" in production');
     }
 
-    // Razorpay checks
+    // Razorpay production checks
     if (!env.RAZORPAY_KEY_ID || !env.RAZORPAY_KEY_SECRET) {
       report.warnings.push('Razorpay credentials missing in production');
-      report.recommendations.push('Set RAZORPAY_KEY_ID and RAZORPAY_KEY_SECRET for payment functionality');
+      report.recommendations.push('Set RAZORPAY_KEY_ID and RAZORPAY_KEY_SECRET');
+    }
+
+    if (!env.RAZORPAY_WEBHOOK_SECRET) {
+      report.warnings.push('RAZORPAY_WEBHOOK_SECRET not set');
+      report.recommendations.push('Set RAZORPAY_WEBHOOK_SECRET for secure webhook verification');
     }
   }
 
-  // Development environment checks
   if (env.NODE_ENV === 'development') {
     if (env.RATE_LIMIT_MAX < 50) {
       report.warnings.push('Rate limit might be too restrictive for development');
-      report.recommendations.push('Consider increasing RATE_LIMIT_MAX for easier development');
+      report.recommendations.push('Consider increasing RATE_LIMIT_MAX');
     }
   }
 
-  // General recommendations
   if (env.REQUEST_SIZE_LIMIT === '10mb') {
-    report.recommendations.push('Consider if 10mb request limit is necessary - smaller limits improve security');
+    report.recommendations.push('Consider reducing request size limit for security');
   }
 
   return report;
@@ -251,7 +253,8 @@ export const getWhatsAppConfig = () => ({
 
 export const getRazorpayConfig = () => ({
   keyId: env.RAZORPAY_KEY_ID,
-  keySecret: env.RAZORPAY_KEY_SECRET
+  keySecret: env.RAZORPAY_KEY_SECRET,
+  webhookSecret: env.RAZORPAY_WEBHOOK_SECRET // ✅ Now available
 });
 
 export const getBackgroundJobConfig = () => ({
@@ -304,7 +307,6 @@ export { env };
 // STARTUP ENVIRONMENT CHECK
 // ===============================================
 
-// Run validation check on import
 if (process.env.NODE_ENV !== 'test') {
   const validation = validateEnvironment();
   

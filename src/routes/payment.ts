@@ -55,7 +55,7 @@ router.get('/callback', async (req: Request, res: Response): Promise<void> => {
         const whatsappId = parts[1];
         const stationId = parseInt(parts[2]);
         
-        logger.info('✅ Confirming booking after payment', { whatsappId, stationId });
+        logger.info('Confirming booking after payment', { whatsappId, stationId });
         
         // Confirm booking in background
         setImmediate(async () => {
@@ -63,7 +63,7 @@ router.get('/callback', async (req: Request, res: Response): Promise<void> => {
             await bookingController.handleJoinQueue(whatsappId, stationId);
             await whatsappService.sendTextMessage(
               whatsappId,
-              '✅ Payment confirmed! Your booking is complete.\n\nYou can now join the queue or start charging.'
+              'Payment confirmed! Your booking is complete.\n\nYou can now join the queue or start charging.'
             );
           } catch (error) {
             logger.error('❌ Failed to confirm booking', { whatsappId, stationId, error });

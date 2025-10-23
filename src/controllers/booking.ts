@@ -225,11 +225,13 @@ async handleStationBooking(whatsappId: string, stationId: number): Promise<void>
   if (!this.validateInput(whatsappId, stationId)) return;
 
   try {
+    // ✅ Fetch user and station in parallel
     const [user, station] = await Promise.all([
       userService.getUserByWhatsAppId(whatsappId),
       this.getStationDetails(stationId)
     ]);
 
+    // ✅ Validation checks
     if (!user) {
       await this.sendError(whatsappId, 'User not found. Please register first.');
       return;
@@ -254,6 +256,8 @@ async handleStationBooking(whatsappId: string, stationId: number): Promise<void>
     }
 
     // ✅ All validations passed → Trigger payment
+    logger.info('🎫 Initiating booking payment', { whatsappId, stationId, stationName: station.name });
+    
     await handleBookingWithPayment(
       whatsappId,
       stationId,
@@ -261,12 +265,19 @@ async handleStationBooking(whatsappId: string, stationId: number): Promise<void>
       50 // ₹50 booking fee
     );
 
-    // 💡 Note: Actual booking (instant or queue) will be completed
-    // AFTER successful payment confirmation via Razorpay webhook.
-    // So we do NOT call handleInstantBooking or handleQueueBooking here.
-    // Instead, the webhook will resume the flow.
+    logger.info(' Booking payment link sent successfully', { whatsappId, stationId });
+
+    // NOTE: Actual booking (instant or queue) will be completed AFTER
+    // successful payment confirmation via Razorpay webhook callback.
+    // The webhook handler will call handleJoinQueue() to complete booking.
 
   } catch (error) {
+    logger.error('❌ Station booking failed', {
+      whatsappId,
+      stationId,
+      error: error instanceof Error ? error.message : String(error),
+      stack: error instanceof Error ? error.stack : undefined
+    });
     await this.handleError(error, 'station booking', { whatsappId, stationId });
   }
 }
