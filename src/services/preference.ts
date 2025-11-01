@@ -1,4 +1,4 @@
-// src/services/preference.ts - COMPLETE FIXED IMPLEMENTATION
+
 import { eq } from 'drizzle-orm';
 import { db } from '../config/database';
 import { users, type User } from '../db/schema';
@@ -23,7 +23,7 @@ export interface UserContext {
 }
 
 export class PreferenceService {
-  // In-memory context storage (Phase 1 limitation - no Redis)
+  
   private userContexts = new Map<string, UserContext>();
 
   /**
@@ -31,7 +31,7 @@ export class PreferenceService {
    */
   async startPreferenceFlow(whatsappId: string, isOnboarding: boolean = false): Promise<void> {
     try {
-      // Initialize user context
+      
       this.userContexts.set(whatsappId, {
         whatsappId,
         currentStep: 'ev_model',
@@ -82,13 +82,13 @@ export class PreferenceService {
         return null;
       }
 
-      // Get or create user first - using dynamic import to avoid circular dependency
+      
       const { userService } = await import('./userService');
       
-      // Try to get existing user first
+      
       let user = await userService.getUserByWhatsAppId(whatsappId);
       
-      // If user doesn't exist, create one
+      
       if (!user) {
         user = await userService.createUser({ whatsappId });
         if (!user) {
@@ -99,13 +99,13 @@ export class PreferenceService {
 
       logger.info('✅ User found/created, updating preferences', { whatsappId, userId: user.id });
 
-      // Prepare update data with only non-null values
+      
       const updateData: any = {
         preferencesCaptured: true,
         updatedAt: new Date(),
       };
 
-      // Only update fields that have values
+      
       if (context.preferenceData.vehicleType) {
         updateData.vehicleType = context.preferenceData.vehicleType;
       }
@@ -122,7 +122,7 @@ export class PreferenceService {
         updateData.queuePreference = context.preferenceData.queuePreference;
       }
 
-      // Update preferences directly in database
+      
       const [updatedUser] = await db
         .update(users)
         .set(updateData)
@@ -159,7 +159,7 @@ export class PreferenceService {
     try {
       logger.info('🔄 Resetting user preferences', { whatsappId });
 
-      // Clear from database
+      
       await db
         .update(users)
         .set({
@@ -173,7 +173,7 @@ export class PreferenceService {
         })
         .where(eq(users.whatsappId, whatsappId));
 
-      // Clear from memory
+      
       this.clearUserContext(whatsappId);
       
       logger.info('✅ User preferences reset successfully', { whatsappId });
@@ -276,7 +276,7 @@ export class PreferenceService {
         .set(updateData)
         .where(eq(users.whatsappId, whatsappId));
 
-      // Also update in-memory context if exists
+      
       const context = this.getUserContext(whatsappId);
       if (context) {
         context.preferenceData[field] = value;
@@ -325,7 +325,7 @@ export class PreferenceService {
       errors.push('Invalid vehicle type');
     }
     
-    // Updated connector types for Indian market
+    
     const validConnectors = ['CCS2', 'CHAdeMO', 'Type2', 'Bharat DC001', 'Proprietary', '3-Pin', 'Fast Charge', 'Any'];
     if (data.connectorType && !validConnectors.includes(data.connectorType)) {
       errors.push('Invalid connector type');
@@ -370,7 +370,7 @@ export class PreferenceService {
     let cleanupCount = 0;
     
     for (const [whatsappId, context] of this.userContexts.entries()) {
-      // Remove contexts older than 1 hour (if they have timestamps)
+      
       if ((context as any).timestamp && (context as any).timestamp < oneHourAgo) {
         this.userContexts.delete(whatsappId);
         cleanupCount++;

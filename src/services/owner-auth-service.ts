@@ -4,7 +4,7 @@ import { eq } from 'drizzle-orm';
 import { logger } from '../utils/logger';
 import { validateWhatsAppId } from '../utils/validation';
 
-// Session storage (in production, use Redis or database)
+
 interface AuthSession {
   whatsappId: string;
   token: string;
@@ -26,7 +26,7 @@ export class OwnerAuthService {
         return false;
       }
 
-      // Direct database query - no dependency on owner-service
+      
       const [owner] = await db
         .select({ 
           isActive: stationOwners.isActive,
@@ -52,7 +52,7 @@ export class OwnerAuthService {
         return false;
       }
 
-      // Direct database query - no circular dependency
+      
       const [owner] = await db
         .select({
           whatsappId: stationOwners.whatsappId,
@@ -69,7 +69,7 @@ export class OwnerAuthService {
         return false;
       }
 
-      // Security check: WhatsApp ID must match
+      
       if (owner.whatsappId !== whatsappId) {
         logger.warn('WhatsApp ID mismatch for business name', { 
           businessName, 
@@ -79,7 +79,7 @@ export class OwnerAuthService {
         return false;
       }
 
-      // Check if owner is active and verified
+      
       if (!owner.isActive) {
         logger.warn('Owner account is not active', { whatsappId, businessName });
         return false;
@@ -130,17 +130,17 @@ export class OwnerAuthService {
         return null;
       }
 
-      // Check if owner exists and is active
+      
       const isAuthenticated = await this.isAuthenticated(whatsappId);
       if (!isAuthenticated) {
         return null;
       }
 
-      // Generate session token
+      
       const token = this.generateSessionToken(whatsappId);
       const expiresAt = new Date(Date.now() + this.SESSION_DURATION);
 
-      // Store session
+      
       const session: AuthSession = {
         whatsappId,
         token,
@@ -172,7 +172,7 @@ export class OwnerAuthService {
         return false;
       }
 
-      // Update expiration (sliding window)
+      
       session.expiresAt = new Date(Date.now() + this.SESSION_DURATION);
       this.activeSessions.set(token, session);
 
@@ -277,10 +277,10 @@ export class OwnerAuthService {
   }
 }
 
-// Export singleton
+
 export const ownerAuthService = new OwnerAuthService();
 
-// Regular cleanup of expired sessions
+
 setInterval(() => {
   ownerAuthService.cleanupExpiredSessions();
 }, 60 * 60 * 1000); // Cleanup every hour

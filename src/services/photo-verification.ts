@@ -1,4 +1,4 @@
-// src/services/photo-verification.ts - GOOGLE VISION API VERSION
+
 import { db } from '../config/database';
 import { chargingSessions } from '../db/schema';
 import { eq } from 'drizzle-orm';
@@ -53,7 +53,7 @@ interface OCRMetrics {
   visionAPICallsToday: number;
 }
 
-// ==================== SERVICE CLASS ====================
+
 
 class PhotoVerificationService {
   private states = new Map<string, VerificationState>();
@@ -73,7 +73,7 @@ cleanupState(userWhatsapp: string): void {
   logger.debug('Photo verification state cleaned up', { userWhatsapp });
 }
 
-  // ==================== START PHOTO FLOW ====================
+  
 
   /**
    * ✅ Step 1: Initiate START photo - Session stays 'initiated'
@@ -117,7 +117,7 @@ cleanupState(userWhatsapp: string): void {
     state.attemptCount++;
     this.states.set(userWhatsapp, state);
 
-    // Track API usage
+    
     this.ocrMetrics.totalAttempts++;
     this.ocrMetrics.visionAPICallsToday++;
 
@@ -129,7 +129,7 @@ cleanupState(userWhatsapp: string): void {
       apiCallsToday: this.ocrMetrics.visionAPICallsToday,
     });
 
-    // Check API quota (warning only)
+    
     if (this.ocrMetrics.visionAPICallsToday > OCR_CONFIG.PRICING.freeMonthlyQuota * 0.9) {
       logger.warn('⚠️ Approaching Vision API quota limit', {
         callsToday: this.ocrMetrics.visionAPICallsToday,
@@ -141,7 +141,7 @@ cleanupState(userWhatsapp: string): void {
     const ocrResult = await ocrProcessor.extractKwhReading(imageBuffer);
     const processingTime = Date.now() - startTime;
 
-    // Update metrics
+    
     this.ocrMetrics.averageProcessingTime = 
       (this.ocrMetrics.averageProcessingTime + processingTime) / 2;
 
@@ -163,7 +163,7 @@ cleanupState(userWhatsapp: string): void {
 
     const confidence = ocrResult.confidence || 0;
 
-    // Vision API typically has higher confidence, so we can be more lenient
+    
     if (confidence < OCR_CONFIG.MIN_OCR_CONFIDENCE) {
       return await this.handleLowConfidence(
         userWhatsapp, 
@@ -173,7 +173,7 @@ cleanupState(userWhatsapp: string): void {
       );
     }
 
-    // Update success metrics
+    
     this.ocrMetrics.successfulReads++;
     this.ocrMetrics.averageConfidence = 
       (this.ocrMetrics.averageConfidence + confidence) / 2;
@@ -213,7 +213,7 @@ cleanupState(userWhatsapp: string): void {
   }
 
   try {
-    // ✅ Get session before updating
+    
     const session = await this.getSession(state.sessionId);
     if (!session) {
       logger.error('Session not found during START confirmation', { 
@@ -221,18 +221,18 @@ cleanupState(userWhatsapp: string): void {
         userWhatsapp 
       });
       
-      // ✅ Send user-friendly error message
+      
       await whatsappService.sendTextMessage(
         userWhatsapp,
         '❌ *Session Not Found*\n\nYour charging session has expired or was cancelled.\n\nPlease start a new charging session.'
       );
       
-      // ✅ Clean up verification state
+      
       this.states.delete(userWhatsapp);
       return false;
     }
 
-    // ✅ Update session with START reading
+    
     await db
       .update(chargingSessions)
       .set({
@@ -253,10 +253,10 @@ cleanupState(userWhatsapp: string): void {
       attempts: state.attemptCount,
     });
 
-    // ✅ CRITICAL: Activate charging ONLY after confirmation
+    
     await sessionService.startChargingAfterVerification(state.sessionId, state.lastReading);
 
-    // ✅ Send enhanced activation message
+    
     const confidenceBadge = ocrProcessor.isGoodConfidence(state.lastConfidence || 0) 
       ? '🎯 High accuracy detection' 
       : '📊 Reading verified';
@@ -271,7 +271,7 @@ cleanupState(userWhatsapp: string): void {
       `When done charging, use:\n🛑 /stop - To end session`
     );
 
-    // ✅ Clean up verification state
+    
     this.states.delete(userWhatsapp);
     return true;
     
@@ -308,7 +308,7 @@ cleanupState(userWhatsapp: string): void {
     await this.sendStartPhotoRequest(userWhatsapp, state.attemptCount);
   }
 
-  // ==================== END PHOTO FLOW ====================
+  
 
   /**
    * ✅ Step 1: Initiate END photo
@@ -357,7 +357,7 @@ cleanupState(userWhatsapp: string): void {
     state.attemptCount++;
     this.states.set(userWhatsapp, state);
 
-    // Track API usage
+    
     this.ocrMetrics.totalAttempts++;
     this.ocrMetrics.visionAPICallsToday++;
 
@@ -399,7 +399,7 @@ cleanupState(userWhatsapp: string): void {
       );
     }
 
-    // ✅ Validate consumption
+    
     const validation = await this.validateConsumption(state.sessionId, ocrResult.reading);
     if (!validation.isValid) {
       await whatsappService.sendTextMessage(
@@ -414,7 +414,7 @@ cleanupState(userWhatsapp: string): void {
       };
     }
 
-    // Update success metrics
+    
     this.ocrMetrics.successfulReads++;
     this.ocrMetrics.averageConfidence = 
       (this.ocrMetrics.averageConfidence + confidence) / 2;
@@ -447,7 +447,7 @@ cleanupState(userWhatsapp: string): void {
   async confirmEndReading(userWhatsapp: string): Promise<boolean> {
   const state = this.states.get(userWhatsapp);
   
-  // ✅ Validation: Check if state exists and is valid
+  
   if (!state || state.type !== 'end' || !state.lastReading) {
     await whatsappService.sendTextMessage(
       userWhatsapp,
@@ -456,7 +456,7 @@ cleanupState(userWhatsapp: string): void {
     return false;
   }
 
-  // ✅ Get session details
+  
   const session = await this.getSession(state.sessionId);
   if (!session?.startMeterReading) {
     logger.error('❌ Start reading not found during END confirmation', { 
@@ -469,7 +469,7 @@ cleanupState(userWhatsapp: string): void {
   const startReading = parseFloat(session.startMeterReading);
   const consumption = state.lastReading - startReading;
 
-  // ✅ Validate consumption is positive
+  
   if (consumption < 0) {
     logger.error('❌ Invalid consumption (negative)', {
       userWhatsapp,
@@ -485,7 +485,7 @@ cleanupState(userWhatsapp: string): void {
     return false;
   }
 
-  // ✅ Update session with END reading
+  
   await db
     .update(chargingSessions)
     .set({
@@ -508,14 +508,14 @@ cleanupState(userWhatsapp: string): void {
     confidence: state.lastConfidence,
   });
 
-  // ✅ Complete session with consumption
+  
   await sessionService.completeSessionAfterVerification(
     state.sessionId,
     state.lastReading,
     consumption
   );
 
-  // ✅ PAYMENT INTEGRATION: Initiate payment after session completion
+  
   try {
     logger.info('💳 Initiating session payment', {
       userWhatsapp,
@@ -545,7 +545,7 @@ cleanupState(userWhatsapp: string): void {
       totalAmount
     });
 
-    // ✅ Dynamic import to avoid circular dependency
+    
     const { handleSessionPayment } = await import('../controllers/booking-payment-integration');
 
     await handleSessionPayment(
@@ -563,7 +563,7 @@ cleanupState(userWhatsapp: string): void {
     });
 
   } catch (paymentError) {
-    // ✅ Payment failure shouldn't block session completion
+    
     logger.error('❌ Failed to initiate session payment', {
       userWhatsapp,
       sessionId: state.sessionId,
@@ -573,17 +573,17 @@ cleanupState(userWhatsapp: string): void {
       stack: paymentError instanceof Error ? paymentError.stack : undefined
     });
 
-    // ✅ Notify user about payment issue
+    
     await whatsappService.sendTextMessage(
       userWhatsapp,
       '⚠️ Session completed but payment link failed to generate.\n\n' +
       'Please contact support for payment assistance.'
     );
 
-    // TODO: Consider adding retry mechanism or admin notification
+    
   }
 
-  // ✅ Cleanup state
+  
   this.states.delete(userWhatsapp);
   
   logger.info('✅ Session end reading flow completed', {
@@ -611,7 +611,7 @@ cleanupState(userWhatsapp: string): void {
     await this.sendEndPhotoRequest(userWhatsapp, state.attemptCount);
   }
 
-  // ==================== MANUAL ENTRY ====================
+  
 
   async handleManualEntry(userWhatsapp: string, input: string): Promise<boolean> {
     const state = this.states.get(userWhatsapp);
@@ -656,7 +656,7 @@ cleanupState(userWhatsapp: string): void {
     return true;
   }
 
-  // ==================== VALIDATION ====================
+  
 
   private async validateConsumption(sessionId: string, endReading: number): Promise<ConsumptionValidation> {
   const session = await this.getSession(sessionId);
@@ -671,13 +671,13 @@ cleanupState(userWhatsapp: string): void {
     return { isValid: false, error: result.error };
   }
 
-  // ✅ FIX: Use actual session start time from database
+  
   const sessionStartTime = session.startTime || session.startedAt || session.createdAt;
   const durationMinutes = sessionStartTime 
     ? Math.floor((Date.now() - sessionStartTime.getTime()) / (1000 * 60))
     : 0;
   
-  // ✅ FIX: If duration is 0 or negative, skip context validation
+  
   if (durationMinutes < 1) {
     logger.warn('Charging duration too short for validation', { 
       sessionId, 
@@ -705,7 +705,7 @@ cleanupState(userWhatsapp: string): void {
   };
 }
 
-  // ==================== MESSAGING ====================
+  
 
   private async sendStartPhotoRequest(
     userWhatsapp: string, 
@@ -836,7 +836,7 @@ cleanupState(userWhatsapp: string): void {
     );
   }
 
-  // ==================== ERROR HANDLING ====================
+  
 
   private async handleOCRFailure(
     userWhatsapp: string,
@@ -855,7 +855,7 @@ cleanupState(userWhatsapp: string): void {
 
     const suggestions = ocrProcessor.getRetrySuggestions();
     
-    // Check for Vision API specific errors
+    
     let errorMessage = error || 'Could not read the display';
     if (error?.includes('PERMISSION_DENIED')) {
       errorMessage = 'Authentication error. Please contact support.';
@@ -944,7 +944,7 @@ cleanupState(userWhatsapp: string): void {
     });
   }
 
-  // ==================== UTILITIES ====================
+  
 
   private async getSession(sessionId: string) {
     const sessions = await db
@@ -959,7 +959,7 @@ cleanupState(userWhatsapp: string): void {
     const state = this.states.get(userWhatsapp);
     if (!state) return false;
     
-    // Check if expired
+    
     if (Date.now() - state.timestamp.getTime() > OCR_CONFIG.STATE_EXPIRY_MS) {
       this.states.delete(userWhatsapp);
       return false;
@@ -985,7 +985,7 @@ cleanupState(userWhatsapp: string): void {
     }
   }
 
-  // ==================== ANALYTICS & MONITORING ====================
+  
 
   /**
    * Get OCR metrics for monitoring
@@ -1069,18 +1069,18 @@ cleanupState(userWhatsapp: string): void {
   }
 }
 
-// ==================== EXPORT ====================
+
 
 export const photoVerificationService = new PhotoVerificationService();
 
 
 
-// Cleanup expired states every 10 minutes
+
 setInterval(() => {
   photoVerificationService.cleanupExpiredStates();
 }, 10 * 60 * 1000);
 
-// Reset daily API counter at midnight
+
 const resetAtMidnight = () => {
   const now = new Date();
   const night = new Date(
@@ -1093,7 +1093,7 @@ const resetAtMidnight = () => {
 
   setTimeout(() => {
     photoVerificationService.resetDailyAPICounter();
-    // Schedule next reset
+    
     setInterval(() => {
       photoVerificationService.resetDailyAPICounter();
     }, 24 * 60 * 60 * 1000); // 24 hours
@@ -1102,12 +1102,12 @@ const resetAtMidnight = () => {
 
 resetAtMidnight();
 
-// Log performance metrics every hour
+
 setInterval(() => {
   photoVerificationService.logPerformanceMetrics();
 }, 60 * 60 * 1000);
 
-// ==================== ADDITIONAL EXPORTS ====================
+
 
 export type { 
   VerificationState, 

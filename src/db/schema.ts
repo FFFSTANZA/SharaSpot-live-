@@ -1,4 +1,4 @@
-// src/db/schema.ts - COMPLETE CORRECTED SCHEMA WITH VERIFICATION COLUMNS
+
 import {
   pgTable,
   text,
@@ -15,7 +15,7 @@ import {
 import { sql } from 'drizzle-orm';
 import { relations } from 'drizzle-orm';
 
-// ==================== USERS ====================
+
 export const users = pgTable('users', {
   id: serial('id').primaryKey(),
   whatsappId: varchar('whatsapp_id', { length: 20 }).notNull().unique(),
@@ -53,7 +53,7 @@ export const users = pgTable('users', {
   activityIdx: index('users_activity_idx').on(table.lastActivityAt),
 }));
 
-// ==================== CHARGING STATIONS ====================
+
 export const chargingStations = pgTable('charging_stations', {
   id: serial('id').primaryKey(),
   name: varchar('name', { length: 200 }).notNull(),
@@ -63,7 +63,7 @@ export const chargingStations = pgTable('charging_stations', {
   longitude: decimal('longitude', { precision: 11, scale: 8 }).notNull(),
   geohash: varchar('geohash', { length: 12 }),
 
-  // ✅ Support both naming conventions
+  
   totalPorts: integer('total_ports').notNull().default(1),
   availablePorts: integer('available_ports').notNull().default(1),
   totalSlots: integer('total_slots').notNull().default(1), // Alias
@@ -72,7 +72,7 @@ export const chargingStations = pgTable('charging_stations', {
   connectorTypes: jsonb('connector_types').notNull(),
   maxPowerKw: integer('max_power_kw').notNull().default(50),
   
-  // ✅ Support both naming conventions  
+  
   pricePerKwh: decimal('price_per_kwh', { precision: 5, scale: 2 }).notNull().default('10.00'),
   pricePerUnit: decimal('price_per_unit', { precision: 5, scale: 2 }).notNull().default('10.00'), // Alias
 
@@ -97,7 +97,7 @@ export const chargingStations = pgTable('charging_stations', {
   totalEnergyDelivered: decimal('total_energy_delivered', { precision: 12, scale: 3 }).default('0'),
   totalRevenue: decimal('total_revenue', { precision: 12, scale: 2 }).default('0'),
   
-  // ✅ Support both naming conventions
+  
   averageRating: decimal('average_rating', { precision: 3, scale: 2 }).default('0'),
   rating: decimal('rating', { precision: 3, scale: 2 }).default('0'), // Alias
   reviewCount: integer('review_count').default(0),
@@ -116,7 +116,7 @@ export const chargingStations = pgTable('charging_stations', {
   ratingIdx: index('stations_rating_idx').on(table.averageRating),
 }));
 
-// ==================== QUEUES ====================
+
 export const queues = pgTable('queues', {
   id: serial('id').primaryKey(),
   stationId: integer('station_id').notNull().references(() => chargingStations.id),
@@ -151,7 +151,7 @@ export const queues = pgTable('queues', {
   userStationUnique: unique('queues_user_station_active').on(table.userWhatsapp, table.stationId),
 }));
 
-// ==================== CHARGING SESSIONS (WITH VERIFICATION COLUMNS) ====================
+
 export const chargingSessions = pgTable('charging_sessions', {
   id: serial('id').primaryKey(),
   sessionId: varchar('session_id', { length: 50 }).notNull().unique(),
@@ -167,12 +167,12 @@ export const chargingSessions = pgTable('charging_sessions', {
   endedAt: timestamp('ended_at'),
   duration: integer('duration'),
 
-  // 🔌 Meter readings (kWh) - ✅ ADDED MISSING COLUMNS
+  
   startMeterReading: decimal('start_meter_reading', { precision: 10, scale: 3 }),
   endMeterReading: decimal('end_meter_reading', { precision: 10, scale: 3 }),
   energyDelivered: decimal('energy_delivered', { precision: 10, scale: 3 }),
 
-  // 🔍 Verification - ✅ ADDED ALL MISSING VERIFICATION COLUMNS
+  
   verificationStatus: varchar('verification_status', { length: 30 }).default('pending'),
   startVerificationAttempts: integer('start_verification_attempts').default(0),
   endVerificationAttempts: integer('end_verification_attempts').default(0),
@@ -182,13 +182,13 @@ export const chargingSessions = pgTable('charging_sessions', {
   meterValidated: boolean('meter_validated').default(false),
   validationWarnings: jsonb('validation_warnings').default(sql`'[]'::jsonb`),
 
-  // ⚡ Charging
+  
   connectorUsed: varchar('connector_used', { length: 20 }),
   maxPowerUsed: integer('max_power_used'),
   peakPowerKw: decimal('peak_power_kw', { precision: 6, scale: 2 }),
   averagePowerKw: decimal('average_power_kw', { precision: 6, scale: 2 }),
 
-  // 💰 Billing
+  
   totalCost: decimal('total_cost', { precision: 10, scale: 2 }),
   ratePerKwh: decimal('rate_per_kwh', { precision: 5, scale: 2 }),
   baseCharge: decimal('base_charge', { precision: 6, scale: 2 }).default('0'),
@@ -197,13 +197,13 @@ export const chargingSessions = pgTable('charging_sessions', {
 
   paymentStatus: varchar('payment_status', { length: 20 }).default('pending'),
 
-  // 🚗 Metadata
+  
   vehicleModel: varchar('vehicle_model', { length: 100 }),
   initialBatteryPercent: integer('initial_battery_percent'),
   finalBatteryPercent: integer('final_battery_percent'),
   stopReason: varchar('stop_reason', { length: 50 }),
 
-  // 📝 Feedback
+  
   hadIssues: boolean('had_issues').default(false),
   issueDescription: text('issue_description'),
   customerRating: integer('customer_rating'),
@@ -220,7 +220,7 @@ export const chargingSessions = pgTable('charging_sessions', {
   startedAtIdx: index('sessions_started_at_idx').on(table.startedAt),
 }));
 
-// ==================== STATION OWNERS ====================
+
 export const stationOwners = pgTable('station_owners', {
   id: serial('id').primaryKey(),
   whatsappId: varchar('whatsapp_id', { length: 20 }).notNull().unique(),
@@ -264,7 +264,7 @@ export const stationOwners = pgTable('station_owners', {
   verificationIdx: index('owners_verification_idx').on(table.isVerified, table.kycStatus),
 }));
 
-// ==================== ADMINS ====================
+
 export const admins = pgTable('admins', {
   id: serial('id').primaryKey(),
   whatsappId: varchar('whatsapp_id', { length: 20 }).notNull().unique(),
@@ -289,7 +289,7 @@ export const admins = pgTable('admins', {
   roleIdx: index('admins_role_idx').on(table.role),
 }));
 
-// ==================== GEOCODE CACHE ====================
+
 export const geocodeCacheV2 = pgTable('geocode_cache_v2', {
   id: serial('id').primaryKey(),
   searchTerm: text('search_term').notNull().unique(),
@@ -316,7 +316,7 @@ export const geocodeCacheV2 = pgTable('geocode_cache_v2', {
   geohashIdx: index('geocode_v2_geohash_idx').on(table.geohash),
 }));
 
-// ==================== USER SEARCH HISTORY ====================
+
 export const userSearchHistory = pgTable('user_search_history', {
   id: serial('id').primaryKey(),
   userWhatsapp: varchar('user_whatsapp', { length: 20 }).notNull().references(() => users.whatsappId),
@@ -332,7 +332,7 @@ export const userSearchHistory = pgTable('user_search_history', {
   userIdx: index('search_history_user_idx').on(table.userWhatsapp),
 }));
 
-// ==================== NOTIFICATIONS ====================
+
 export const notifications = pgTable('notifications', {
   id: serial('id').primaryKey(),
   userId: varchar('user_id', { length: 20 }).notNull().references(() => users.whatsappId),
@@ -356,7 +356,7 @@ export const notifications = pgTable('notifications', {
   statusIdx: index('notifications_status_idx').on(table.status),
 }));
 
-// ==================== PAYMENTS ====================
+
 export const payments = pgTable('payments', {
   id: serial('id').primaryKey(),
   paymentId: varchar('payment_id', { length: 100 }).notNull().unique(),
@@ -383,7 +383,7 @@ export const payments = pgTable('payments', {
   statusIdx: index('payments_status_idx').on(table.status),
 }));
 
-// ==================== AUDIT LOGS ====================
+
 export const auditLogs = pgTable('audit_logs', {
   id: serial('id').primaryKey(),
   actorWhatsappId: varchar('actor_whatsapp_id', { length: 20 }).notNull(),
@@ -403,7 +403,7 @@ export const auditLogs = pgTable('audit_logs', {
   actionIdx: index('audit_action_idx').on(table.action),
 }));
 
-// ==================== RELATIONS ====================
+
 export const usersRelations = relations(users, ({ many }) => ({
   queues: many(queues),
   sessions: many(chargingSessions),
@@ -475,7 +475,7 @@ export const notificationsRelations = relations(notifications, ({ one }) => ({
   }),
 }));
 
-// ==================== TYPES ====================
+
 export type User = typeof users.$inferSelect;
 export type NewUser = typeof users.$inferInsert;
 export type ChargingStation = typeof chargingStations.$inferSelect;

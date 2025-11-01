@@ -1,10 +1,10 @@
-// src/services/payment.ts - FIXED ALL TYPESCRIPT ERRORS
+
 import Razorpay from 'razorpay';
 import crypto from 'crypto';
 import { logger } from '../utils/logger';
 import { env } from '../config/env';
 
-// ==================== TYPES ====================
+
 export interface PaymentLinkRequest {
   amount: number;
   description: string;
@@ -13,7 +13,7 @@ export interface PaymentLinkRequest {
   type: 'booking' | 'session';
 }
 
-// ==================== IN-MEMORY PAYMENT TRACKING ====================
+
 const paymentCache = new Map<string, {
   userWhatsappId: string;
   stationId: number;
@@ -22,13 +22,13 @@ const paymentCache = new Map<string, {
   createdAt: Date;
 }>();
 
-// ==================== RAZORPAY CLIENT ====================
+
 const razorpayClient = new Razorpay({
   key_id: env.RAZORPAY_KEY_ID || '',
   key_secret: env.RAZORPAY_KEY_SECRET || '',
 });
 
-// ==================== PAYMENT SERVICE ====================
+
 class PaymentService {
   
   /**
@@ -42,7 +42,7 @@ class PaymentService {
     try {
       const referenceId = `book_${userWhatsappId}_${stationId}_${Date.now()}`;
       
-      // Store in memory (optional)
+      
       paymentCache.set(referenceId, {
         userWhatsappId,
         stationId,
@@ -51,7 +51,7 @@ class PaymentService {
         createdAt: new Date(),
       });
 
-      // ✅ FIX: Proper Razorpay payment link creation with correct types
+      
       const paymentLink = await razorpayClient.paymentLink.create({
         amount: amount * 100, // Convert to paise
         currency: 'INR',
@@ -101,7 +101,7 @@ class PaymentService {
     try {
       const referenceId = `session_${sessionId}_${Date.now()}`;
 
-      // Store in memory (optional)
+      
       paymentCache.set(referenceId, {
         userWhatsappId,
         stationId,
@@ -110,7 +110,7 @@ class PaymentService {
         createdAt: new Date(),
       });
 
-      // ✅ FIX: Proper Razorpay payment link creation
+      
       const paymentLink = await razorpayClient.paymentLink.create({
         amount: amount * 100,
         currency: 'INR',
@@ -191,7 +191,7 @@ class PaymentService {
     paymentType: 'booking' | 'session' | 'unknown';
   }> {
     try {
-      // Verify signature
+      
       const isValid = this.verifyPaymentSignature(
         paymentLinkId,
         paymentLinkReferenceId,
@@ -203,7 +203,7 @@ class PaymentService {
       if (!isValid) {
         logger.error('❌ Invalid payment signature', { paymentLinkId });
         
-        // ✅ FIX: Use PHONE_NUMBER_ID instead of PHONE_NUMBER_ID
+        
         const whatsappNumber = env.PHONE_NUMBER_ID || env.PHONE_NUMBER_ID;
         
         return {
@@ -215,7 +215,7 @@ class PaymentService {
         };
       }
 
-      // Get payment info from cache (optional)
+      
       const paymentInfo = paymentCache.get(paymentLinkReferenceId);
       const paymentType = paymentInfo?.type || 
         (paymentLinkReferenceId.startsWith('book_') ? 'booking' : 
@@ -228,15 +228,15 @@ class PaymentService {
         type: paymentType,
       });
 
-      // Success/failure message
+      
       const message = paymentLinkStatus === 'paid' 
         ? '✅ Payment successful! Your booking is confirmed.'
         : '❌ Payment failed. Please try again.';
 
-      // Clean up cache
+      
       paymentCache.delete(paymentLinkReferenceId);
 
-      // ✅ FIX: Use PHONE_NUMBER_ID
+      
       const whatsappNumber = env.PHONE_NUMBER_ID || env.PHONE_NUMBER_ID;
 
       return {
@@ -252,7 +252,7 @@ class PaymentService {
         error: (error as Error).message,
       });
       
-      // ✅ FIX: Use PHONE_NUMBER_ID
+      
       const whatsappNumber = env.PHONE_NUMBER_ID || env.PHONE_NUMBER_ID;
       
       return {
@@ -273,7 +273,7 @@ class PaymentService {
     isPaid: boolean;
   }> {
     try {
-      // Query Razorpay API directly
+      
       const paymentLinks = await razorpayClient.paymentLink.fetch(referenceId);
       
       return {
@@ -297,5 +297,5 @@ class PaymentService {
   }
 }
 
-// ==================== EXPORT SINGLETON ====================
+
 export const paymentService = new PaymentService();

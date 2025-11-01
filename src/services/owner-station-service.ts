@@ -1,12 +1,8 @@
 import { db } from '../config/database';
-import { chargingStations, stationOwners, queues, chargingSessions } from '../db/schema';
-import { eq, and, gte, count, desc } from 'drizzle-orm';
+import { chargingStations, queues, chargingSessions } from '../db/schema';
+import { eq, and, gte, desc, sql } from 'drizzle-orm';
 import { logger } from '../utils/logger';
 import { validateWhatsAppId } from '../utils/validation';
-
-// ===============================================
-// INTERFACES
-// ===============================================
 
 export interface OwnerStation {
   id: number;
@@ -32,20 +28,12 @@ export interface StationAnalytics {
   averageSessionDuration: number;
 }
 
-// ===============================================
-// OWNER STATION SERVICE - FIXED
-// ===============================================
-
 export class OwnerStationService {
   
-  /**
-   * Get all stations for owner - FIXED: Assumes ownerWhatsappId stores WhatsApp ID directly
-   */
   async getOwnerStations(whatsappId: string): Promise<OwnerStation[]> {
     if (!validateWhatsAppId(whatsappId)) return [];
 
     try {
-      // FIXED: Direct query assuming ownerWhatsappId contains the WhatsApp ID
       const stations = await db
         .select({
           id: chargingStations.id,
@@ -58,19 +46,16 @@ export class OwnerStationService {
           pricePerKwh: chargingStations.pricePerKwh,
           connectorTypes: chargingStations.connectorTypes,
           operatingHours: chargingStations.operatingHours,
-          currentQueueLength: chargingStations.currentQueueLength,
+          createdAt: chargingStations.createdAt
         })
         .from(chargingStations)
-        .where(eq(chargingStations.ownerWhatsappId, whatsappId)) // FIXED: Direct WhatsApp ID match
+        .where(eq(chargingStations.ownerWhatsappId, whatsappId))
         .orderBy(desc(chargingStations.createdAt));
 
-      // Enhance with real-time data
-      const enhancedStations = await Promise.all(
+      const stationsWithAnalytics = await Promise.all(
         stations.map(async (station) => {
-          const [queueCount, todayRevenue] = await Promise.all([
-            this.getQueueLength(station.id),
-            this.getTodayRevenue(station.id)
-          ]);
+          const queueLength = await this.getQueueLength(station.id);
+          const todayRevenue = await this.getTodayRevenue(station.id);
 
           return {
             id: station.id,
@@ -78,19 +63,18 @@ export class OwnerStationService {
             address: station.address,
             isActive: station.isActive || false,
             isOpen: station.isOpen || false,
-            totalSlots: station.totalSlots || 4,
-            availableSlots: station.availableSlots || 4,
-            pricePerKwh: station.pricePerKwh?.toString() || '12.50',
+            totalSlots: station.totalSlots || 0,
+            availableSlots: station.availableSlots || 0,
+            pricePerKwh: station.pricePerKwh?.toString() || '0',
             connectorTypes: station.connectorTypes,
             operatingHours: station.operatingHours,
-            queueLength: queueCount,
+            queueLength,
             todayRevenue
           };
         })
       );
 
-      logger.info('Retrieved owner stations', { whatsappId, count: enhancedStations.length });
-      return enhancedStations;
+      return stationsWithAnalytics;
 
     } catch (error) {
       logger.error('Failed to get owner stations', { whatsappId, error });
@@ -98,12 +82,8 @@ export class OwnerStationService {
     }
   }
 
-  /**
-   * Toggle station status - FIXED: Direct ownership verification
-   */
   async toggleStationStatus(stationId: number, ownerWhatsappId: string): Promise<boolean> {
     try {
-      // FIXED: Direct ownership verification using WhatsApp ID
       const [station] = await db
         .select({ 
           isActive: chargingStations.isActive,
@@ -113,7 +93,7 @@ export class OwnerStationService {
         .where(
           and(
             eq(chargingStations.id, stationId),
-            eq(chargingStations.ownerWhatsappId, ownerWhatsappId) // Direct WhatsApp ID check
+            eq(chargingStations.ownerWhatsappId, ownerWhatsappId)
           )
         )
         .limit(1);
@@ -123,7 +103,6 @@ export class OwnerStationService {
         return false;
       }
 
-      // Toggle status
       const newStatus = !station.isActive;
       
       await db
@@ -134,13 +113,7 @@ export class OwnerStationService {
         })
         .where(eq(chargingStations.id, stationId));
 
-      logger.info('Station status toggled', { 
-        stationId, 
-        ownerWhatsappId,
-        oldStatus: station.isActive,
-        newStatus
-      });
-
+      logger.info('Station status toggled', { stationId, newStatus, ownerWhatsappId });
       return true;
 
     } catch (error) {
@@ -149,9 +122,6 @@ export class OwnerStationService {
     }
   }
 
-  /**
-   * Get station details for owner
-   */
   async getStationDetails(stationId: number, ownerWhatsappId: string): Promise<any | null> {
     try {
       const [station] = await db
@@ -169,12 +139,11 @@ export class OwnerStationService {
         return null;
       }
 
-      // Get analytics
       const analytics = await this.getStationAnalytics(stationId);
 
       return {
         ...station,
-        ...analytics
+        analytics
       };
 
     } catch (error) {
@@ -183,15 +152,8 @@ export class OwnerStationService {
     }
   }
 
-  /**
-   * Get comprehensive station analytics - ENHANCED
-   */
   async getStationAnalytics(stationId: number): Promise<StationAnalytics> {
     try {
-      const today = new Date();
-      today.setHours(0, 0, 0, 0);
-
-      // Parallel queries for efficiency
       const [
         queueLength,
         todaySessions,
@@ -208,10 +170,8 @@ export class OwnerStationService {
         this.getAverageSessionDuration(stationId)
       ]);
 
-      // Calculate utilization (active sessions / total slots * 100)
       const activeSessions = await this.getActiveSessionsCount(stationId);
-      const utilizationRate = totalSlots > 0 ? 
-        Math.round((activeSessions / totalSlots) * 100) : 0;
+      const utilizationRate = totalSlots > 0 ? Math.round((activeSessions / totalSlots) * 100) : 0;
 
       return {
         queueLength,
@@ -235,64 +195,10 @@ export class OwnerStationService {
     }
   }
 
-  /**
-   * Get owner quick stats for dashboard
-   */
-  async getOwnerQuickStats(whatsappId: string): Promise<{
-    totalStations: number;
-    activeStations: number;
-    todayRevenue: number;
-    activeSessions: number;
-    todayEnergy: number;
-  }> {
-    try {
-      const stations = await this.getOwnerStations(whatsappId);
-      
-      const totalStations = stations.length;
-      const activeStations = stations.filter(s => s.isActive).length;
-      const todayRevenue = stations.reduce((sum, s) => sum + s.todayRevenue, 0);
-      
-      // Calculate total active sessions across all stations
-      const activeSessionsPromises = stations.map(s => this.getActiveSessionsCount(s.id));
-      const activeSessionsCounts = await Promise.all(activeSessionsPromises);
-      const activeSessions = activeSessionsCounts.reduce((sum, count) => sum + count, 0);
-
-      // Calculate today's total energy across all stations
-      const todayEnergyPromises = stations.map(s => this.getTodayEnergy(s.id));
-      const todayEnergyCounts = await Promise.all(todayEnergyPromises);
-      const todayEnergy = todayEnergyCounts.reduce((sum, energy) => sum + energy, 0);
-
-      return {
-        totalStations,
-        activeStations,
-        todayRevenue,
-        activeSessions,
-        todayEnergy: Math.round(todayEnergy * 100) / 100 // Round to 2 decimals
-      };
-
-    } catch (error) {
-      logger.error('Failed to get owner quick stats', { whatsappId, error });
-      return {
-        totalStations: 0,
-        activeStations: 0,
-        todayRevenue: 0,
-        activeSessions: 0,
-        todayEnergy: 0
-      };
-    }
-  }
-
-  // ===============================================
-  // HELPER METHODS - ENHANCED ERROR HANDLING
-  // ===============================================
-
-  /**
-   * Get current queue length
-   */
   private async getQueueLength(stationId: number): Promise<number> {
     try {
       const [result] = await db
-        .select({ count: count() })
+        .select({ count: sql<number>`cast(count(*) as integer)` })
         .from(queues)
         .where(
           and(
@@ -308,46 +214,13 @@ export class OwnerStationService {
     }
   }
 
-  /**
-   * Get today's revenue for station
-   */
-  private async getTodayRevenue(stationId: number): Promise<number> {
-    try {
-      const today = new Date();
-      today.setHours(0, 0, 0, 0);
-
-      const sessions = await db
-        .select({ totalCost: chargingSessions.totalCost })
-        .from(chargingSessions)
-        .where(
-          and(
-            eq(chargingSessions.stationId, stationId),
-            gte(chargingSessions.startTime, today),
-            eq(chargingSessions.status, 'completed') // Only count completed sessions
-          )
-        );
-
-      const revenue = sessions.reduce((sum, session) => 
-        sum + parseFloat(session.totalCost?.toString() || '0'), 0
-      );
-
-      return Math.round(revenue);
-    } catch (error) {
-      logger.error('Failed to get today revenue', { stationId, error });
-      return 0;
-    }
-  }
-
-  /**
-   * Get today's sessions count
-   */
   private async getTodaySessionsCount(stationId: number): Promise<number> {
     try {
       const today = new Date();
       today.setHours(0, 0, 0, 0);
 
       const [result] = await db
-        .select({ count: count() })
+        .select({ count: sql<number>`cast(count(*) as integer)` })
         .from(chargingSessions)
         .where(
           and(
@@ -363,9 +236,32 @@ export class OwnerStationService {
     }
   }
 
-  /**
-   * Get today's energy delivered
-   */
+  private async getTodayRevenue(stationId: number): Promise<number> {
+    try {
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
+
+      const sessions = await db
+        .select({ totalCost: chargingSessions.totalCost })
+        .from(chargingSessions)
+        .where(
+          and(
+            eq(chargingSessions.stationId, stationId),
+            gte(chargingSessions.startTime, today)
+          )
+        );
+
+      const revenue = sessions.reduce((sum, session) => 
+        sum + parseFloat(session.totalCost?.toString() || '0'), 0
+      );
+
+      return Math.round(revenue);
+    } catch (error) {
+      logger.error('Failed to get today revenue', { stationId, error });
+      return 0;
+    }
+  }
+
   private async getTodayEnergy(stationId: number): Promise<number> {
     try {
       const today = new Date();
@@ -377,8 +273,7 @@ export class OwnerStationService {
         .where(
           and(
             eq(chargingSessions.stationId, stationId),
-            gte(chargingSessions.startTime, today),
-            eq(chargingSessions.status, 'completed')
+            gte(chargingSessions.startTime, today)
           )
         );
 
@@ -386,16 +281,13 @@ export class OwnerStationService {
         sum + parseFloat(session.energyDelivered?.toString() || '0'), 0
       );
 
-      return energy;
+      return Math.round(energy * 100) / 100;
     } catch (error) {
       logger.error('Failed to get today energy', { stationId, error });
       return 0;
     }
   }
 
-  /**
-   * Get station total slots
-   */
   private async getStationSlots(stationId: number): Promise<number> {
     try {
       const [station] = await db
@@ -411,13 +303,10 @@ export class OwnerStationService {
     }
   }
 
-  /**
-   * Get active sessions count
-   */
   private async getActiveSessionsCount(stationId: number): Promise<number> {
     try {
       const [result] = await db
-        .select({ count: count() })
+        .select({ count: sql<number>`cast(count(*) as integer)` })
         .from(chargingSessions)
         .where(
           and(
@@ -433,9 +322,6 @@ export class OwnerStationService {
     }
   }
 
-  /**
-   * Get average session duration in minutes
-   */
   private async getAverageSessionDuration(stationId: number): Promise<number> {
     try {
       const sessions = await db
@@ -450,14 +336,14 @@ export class OwnerStationService {
             eq(chargingSessions.status, 'completed')
           )
         )
-        .limit(100); // Last 100 sessions for average
+        .limit(100);
 
       if (sessions.length === 0) return 0;
 
       const totalDuration = sessions.reduce((sum, session) => {
         if (session.startTime && session.endTime) {
           const duration = session.endTime.getTime() - session.startTime.getTime();
-          return sum + (duration / (1000 * 60)); // Convert to minutes
+          return sum + (duration / (1000 * 60));
         }
         return sum;
       }, 0);
@@ -465,33 +351,9 @@ export class OwnerStationService {
       return Math.round(totalDuration / sessions.length);
     } catch (error) {
       logger.error('Failed to get average session duration', { stationId, error });
-      return 30; // Default 30 minutes
-    }
-  }
-
-  /**
-   * Verify station ownership
-   */
-  private async verifyStationOwnership(stationId: number, ownerWhatsappId: string): Promise<boolean> {
-    try {
-      const [result] = await db
-        .select({ id: chargingStations.id })
-        .from(chargingStations)
-        .where(
-          and(
-            eq(chargingStations.id, stationId),
-            eq(chargingStations.ownerWhatsappId, ownerWhatsappId)
-          )
-        )
-        .limit(1);
-
-      return !!result;
-    } catch (error) {
-      logger.error('Failed to verify station ownership', { stationId, ownerWhatsappId, error });
-      return false;
+      return 30;
     }
   }
 }
 
-// Export singleton
 export const ownerStationService = new OwnerStationService();

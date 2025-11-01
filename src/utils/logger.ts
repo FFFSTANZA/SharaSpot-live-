@@ -40,7 +40,7 @@ export const logger = winston.createLogger({
   ],
 });
 
-// Production-specific configuration
+
 if (env.NODE_ENV === 'production') {
   logger.info('🚀 Logger initialized for production (console output only)');
 }

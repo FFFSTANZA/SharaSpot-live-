@@ -1,4 +1,4 @@
-// src/controllers/booking.ts - FULLY OPTIMIZED, TYPE-SAFE, AND POWERFUL
+
 import { whatsappService } from '../services/whatsapp';
 import { userService } from '../services/userService';
 import { queueService } from '../services/queue';
@@ -12,9 +12,9 @@ import { eq, and, desc } from 'drizzle-orm';
 import { validateWhatsAppId } from '../utils/validation';
 import { handleBookingWithPayment } from './booking-payment-integration'; // ← ADD THIS
 
-// ===============================================
-// INTERFACES & TYPES
-// ===============================================
+
+
+
 interface StationDetails {
   id: number;
   name: string;
@@ -52,22 +52,22 @@ interface ProcessedStation extends StationDetails {
   finalReviews: number;
 }
 
-// ===============================================
-// IN-MEMORY CACHING & DEBOUNCE
-// ===============================================
+
+
+
 const stationCache = new Map<number, { data: ProcessedStation; expiry: number }>();
 const CACHE_TTL_MS = 30_000; // 30 seconds
 
-// ===============================================
-// BOOKING CONTROLLER WITH PHOTO VERIFICATION
-// ===============================================
+
+
+
 export class BookingController {
-  // Prevent duplicate button processing
+  
   private readonly recentButtonActions = new Map<string, string>();
 
-  // ===============================================
-  // MESSAGE HANDLING WITH VERIFICATION
-  // ===============================================
+  
+  
+  
   async handleMessage(message: any): Promise<void> {
     const whatsappId = message.from;
     const verificationState = photoVerificationService.getVerificationState(whatsappId);
@@ -126,7 +126,7 @@ export class BookingController {
   }
 
   async handleButtonClick(buttonId: string, whatsappId: string): Promise<void> {
-    // Idempotency guard
+    
     const lastActionKey = `last_button_${whatsappId}`;
     const lastAction = this.recentButtonActions.get(lastActionKey);
     if (lastAction === buttonId) {
@@ -136,7 +136,7 @@ export class BookingController {
     this.recentButtonActions.set(lastActionKey, buttonId);
     setTimeout(() => this.recentButtonActions.delete(lastActionKey), 5000);
 
-    // Photo verification confirmations
+    
     if (buttonId === 'confirm_start_reading') {
       const success = await photoVerificationService.confirmStartReading(whatsappId);
       if (success) {
@@ -156,7 +156,7 @@ export class BookingController {
       return;
     }
 
-    // Retake photo buttons
+    
     if (buttonId === 'retake_start_photo') {
       await photoVerificationService.retakeStartPhoto(whatsappId);
       return;
@@ -166,7 +166,7 @@ export class BookingController {
       return;
     }
 
-    // Session start/stop
+    
     if (buttonId.startsWith('session_start_')) {
       const stationId = parseInt(buttonId.replace('session_start_', ''));
       await this.handleChargingStart(whatsappId, stationId);
@@ -178,7 +178,7 @@ export class BookingController {
       return;
     }
 
-    // Route other actions
+    
     await this.routeButtonAction(buttonId, whatsappId);
   }
 
@@ -204,9 +204,9 @@ export class BookingController {
     }
   }
 
-  // ===============================================
-  // CORE BOOKING OPERATIONS
-  // ===============================================
+  
+  
+  
   async handleStationSelection(whatsappId: string, stationId: number): Promise<void> {
     if (!this.validateInput(whatsappId, stationId)) return;
     try {
@@ -225,13 +225,13 @@ async handleStationBooking(whatsappId: string, stationId: number): Promise<void>
   if (!this.validateInput(whatsappId, stationId)) return;
 
   try {
-    // ✅ Fetch user and station in parallel
+    
     const [user, station] = await Promise.all([
       userService.getUserByWhatsAppId(whatsappId),
       this.getStationDetails(stationId)
     ]);
 
-    // ✅ Validation checks
+    
     if (!user) {
       await this.sendError(whatsappId, 'User not found. Please register first.');
       return;
@@ -242,20 +242,20 @@ async handleStationBooking(whatsappId: string, stationId: number): Promise<void>
       return;
     }
 
-    // ✅ Check for existing active bookings/queues
+    
     const existingQueues = await queueService.getUserQueueStatus(whatsappId);
     if (existingQueues.length > 0) {
       await this.handleExistingBooking(whatsappId, existingQueues[0]);
       return;
     }
 
-    // ✅ Validate station availability BEFORE payment
+    
     if (!station.isAvailable || !this.isStationBookable(station)) {
       await this.handleUnavailableStation(whatsappId, station);
       return;
     }
 
-    // ✅ All validations passed → Trigger payment
+    
     logger.info('🎫 Initiating booking payment', { whatsappId, stationId, stationName: station.name });
     
     await handleBookingWithPayment(
@@ -267,9 +267,9 @@ async handleStationBooking(whatsappId: string, stationId: number): Promise<void>
 
     logger.info(' Booking payment link sent successfully', { whatsappId, stationId });
 
-    // NOTE: Actual booking (instant or queue) will be completed AFTER
-    // successful payment confirmation via Razorpay webhook callback.
-    // The webhook handler will call handleJoinQueue() to complete booking.
+    
+    
+    
 
   } catch (error) {
     logger.error('❌ Station booking failed', {
@@ -297,9 +297,9 @@ async handleStationBooking(whatsappId: string, stationId: number): Promise<void>
     }
   }
 
-  // ===============================================
-  // QUEUE MANAGEMENT
-  // ===============================================
+  
+  
+  
   async handleJoinQueue(whatsappId: string, stationId: number): Promise<void> {
     if (!this.validateInput(whatsappId, stationId)) return;
     try {
@@ -348,7 +348,7 @@ async handleStationBooking(whatsappId: string, stationId: number): Promise<void>
   if (!this.validateInput(whatsappId, stationId)) return;
   
   try {
-    // ✅ STEP 1: Check for active charging session and cancel it first
+    
     const activeSession = await sessionService.getActiveSession(whatsappId, stationId);
     
     if (activeSession && ['initiated', 'active'].includes(activeSession.status)) {
@@ -360,7 +360,7 @@ async handleStationBooking(whatsappId: string, stationId: number): Promise<void>
       });
       
       try {
-        // ✅ Cancel the charging session
+        
         await db
           .update(chargingSessions)
           .set({
@@ -372,7 +372,7 @@ async handleStationBooking(whatsappId: string, stationId: number): Promise<void>
           })
           .where(eq(chargingSessions.sessionId, activeSession.id));
         
-        // ✅ Remove from active sessions
+        
         sessionService.getActiveSessions().delete(activeSession.id);
         
         logger.info('✅ Charging session cancelled successfully', { 
@@ -381,7 +381,7 @@ async handleStationBooking(whatsappId: string, stationId: number): Promise<void>
           sessionId: activeSession.id 
         });
         
-        // ✅ Clean up photo verification state if exists
+        
         photoVerificationService.cleanupState(whatsappId);
         
       } catch (sessionError) {
@@ -390,11 +390,11 @@ async handleStationBooking(whatsappId: string, stationId: number): Promise<void>
           stationId, 
           sessionError 
         });
-        // Continue with queue cancellation even if session cancellation fails
+        
       }
     }
     
-    // ✅ STEP 2: Cancel the queue
+    
     const success = await queueService.leaveQueue(whatsappId, stationId, 'user_cancelled');
     
     if (!success) {
@@ -402,7 +402,7 @@ async handleStationBooking(whatsappId: string, stationId: number): Promise<void>
       return;
     }
     
-    // ✅ STEP 3: Send success notification
+    
     await this.handleSuccessfulCancellation(whatsappId, stationId);
     
   } catch (error) {
@@ -410,22 +410,22 @@ async handleStationBooking(whatsappId: string, stationId: number): Promise<void>
   }
 }
 
-  // ===============================================
-  // SESSION MANAGEMENT WITH VERIFICATION
-  // ===============================================
+  
+  
+  
   /**
  * ❌ PROBLEM: Validation issues with queue status checks
  */
 async handleChargingStart(whatsappId: string, stationId: number): Promise<void> {
   if (!this.validateInput(whatsappId, stationId)) return;
   try {
-    // ❌ PROBLEM: Queue status might not be synchronized
+    
     const userQueues = await queueService.getUserQueueStatus(whatsappId);
     const reservedQueue = userQueues.find(q =>
       q.stationId === stationId && ['reserved', 'waiting'].includes(q.status)
     );
     
-    // ❌ PROBLEM: Fails if queue status isn't exactly 'reserved' or 'waiting'
+    
     if (!reservedQueue) {
       await this.handleNoValidReservation(whatsappId, stationId);
       return;
@@ -437,7 +437,7 @@ async handleChargingStart(whatsappId: string, stationId: number): Promise<void> 
       return;
     }
 
-    // ❌ PROBLEM: This might fail silently if queue service has issues
+    
     await queueService.startCharging(whatsappId, stationId).catch(err =>
       logger.warn('Failed to update queue status', { whatsappId, stationId, err })
     );
@@ -547,9 +547,9 @@ async handleChargingStart(whatsappId: string, stationId: number): Promise<void> 
     }
   }
 
-  // ===============================================
-  // SMART BOOKING HANDLERS
-  // ===============================================
+  
+  
+  
   private async handleInstantBooking(whatsappId: string, station: ProcessedStation, user: any): Promise<void> {
     try {
       const queuePosition = await queueService.joinQueue(whatsappId, station.id);
@@ -618,9 +618,9 @@ async handleChargingStart(whatsappId: string, stationId: number): Promise<void> 
     ), 2000);
   }
 
-  // ===============================================
-  // SUCCESS & FAILURE HANDLERS
-  // ===============================================
+  
+  
+  
   private async showInstantBookingSuccess(whatsappId: string, station: ProcessedStation, user: any): Promise<void> {
   await whatsappService.sendTextMessage(
     whatsappId,
@@ -702,7 +702,7 @@ async handleChargingStart(whatsappId: string, stationId: number): Promise<void> 
  */
 private async handleSessionStartFailure(whatsappId: string, stationId: number): Promise<void> {
   try {
-    // Try to diagnose the issue
+    
     const [userQueues, activeSession] = await Promise.all([
       queueService.getUserQueueStatus(whatsappId).catch(() => []),
       sessionService.getActiveSession(whatsappId, stationId).catch(() => null)
@@ -713,7 +713,7 @@ private async handleSessionStartFailure(whatsappId: string, stationId: number): 
     let message: string;
     let buttons: Array<{ id: string; title: string }>;
 
-    // Case 1: User already has an active session
+    
     if (activeSession) {
       message = `⚠️ *Session Already Active*\n\n` +
         `You already have an active charging session at this station.\n\n` +
@@ -762,7 +762,7 @@ private async handleSessionStartFailure(whatsappId: string, stationId: number): 
 
     await whatsappService.sendTextMessage(whatsappId, message);
 
-    // Send action buttons after a short delay
+    
     setTimeout(async () => {
       await whatsappService.sendButtonMessage(
         whatsappId,
@@ -771,7 +771,7 @@ private async handleSessionStartFailure(whatsappId: string, stationId: number): 
       );
     }, 2000);
 
-    // Log the failure for diagnostics
+    
     logger.error('Session start failure handled', {
       whatsappId,
       stationId,
@@ -783,7 +783,7 @@ private async handleSessionStartFailure(whatsappId: string, stationId: number): 
   } catch (error) {
     logger.error('Failed to handle session start failure', { whatsappId, stationId, error });
     
-    // Fallback generic message if diagnostic checks fail
+    
     await whatsappService.sendTextMessage(
       whatsappId,
       `❌ *Failed to Start Charging*\n\n` +
@@ -814,11 +814,11 @@ private async handleSessionStartFailure(whatsappId: string, stationId: number): 
 }
   
  /**
- * ✅ FIXED: Enhanced error handling with actionable next steps
+ * Error handling with actionable next steps
  */
 private async handleNoValidReservation(whatsappId: string, stationId: number): Promise<void> {
   try {
-    // Check if user has any queue position at all
+    
     const userQueues = await queueService.getUserQueueStatus(whatsappId);
     const queueAtStation = userQueues.find(q => q.stationId === stationId);
 
@@ -826,7 +826,7 @@ private async handleNoValidReservation(whatsappId: string, stationId: number): P
     let buttons: Array<{ id: string; title: string }>;
 
     if (queueAtStation) {
-      // User has a queue position but it's not in the right state
+      
       message = `⚠️ *Reservation Not Ready*\n\n` +
         `Your queue position: #${queueAtStation.position}\n` +
         `Status: ${queueAtStation.status}\n\n` +
@@ -839,10 +839,10 @@ private async handleNoValidReservation(whatsappId: string, stationId: number): P
         { id: `cancel_queue_${stationId}`, title: '❌ Cancel Queue' }
       ];
     } else {
-      // User has no queue position at this station
+      
       message = `❌ *No Active Reservation*\n\n` +
         `You need an active queue position to start charging at this station.\n\n` +
-        `💡 *Next Steps:*\n` +
+        ` *Next Steps:*\n` +
         `• Join the queue first\n` +
         `• Wait for your turn\n` +
         `• You'll be notified when ready`;
@@ -856,7 +856,7 @@ private async handleNoValidReservation(whatsappId: string, stationId: number): P
 
     await whatsappService.sendTextMessage(whatsappId, message);
 
-    // Send action buttons after a short delay
+    
     setTimeout(async () => {
       await whatsappService.sendButtonMessage(
         whatsappId,
@@ -868,7 +868,7 @@ private async handleNoValidReservation(whatsappId: string, stationId: number): P
   } catch (error) {
     logger.error('Failed to handle no valid reservation', { whatsappId, stationId, error });
     
-    // Fallback simple message if queue check fails
+    
     await whatsappService.sendTextMessage(
       whatsappId,
       '❌ *No Valid Reservation*\n\n' +
@@ -915,9 +915,8 @@ private async handleNoValidReservation(whatsappId: string, stationId: number): P
     ), 2000);
   }
 
-  // ===============================================
-  // DISPLAY METHODS
-  // ===============================================
+  
+
   private async displayQueueStatus(whatsappId: string, queue: any): Promise<void> {
     const statusEmoji: Record<string, string> = {
       waiting: '⏳', reserved: '✅', charging: '⚡',
@@ -1022,9 +1021,9 @@ private async handleNoValidReservation(whatsappId: string, stationId: number): P
     );
   }
 
-  // ===============================================
-  // ADDITIONAL ACTIONS
-  // ===============================================
+  
+  
+  
   async handleGetDirections(whatsappId: string, stationId: number): Promise<void> {
     if (!this.validateInput(whatsappId, stationId)) return;
     try {
@@ -1099,9 +1098,9 @@ private async handleNoValidReservation(whatsappId: string, stationId: number): P
     }
   }
 
-  // ===============================================
-  // DATABASE OPERATIONS WITH CACHING
-  // ===============================================
+  
+  
+  
   private async getStationDetails(stationId: number): Promise<ProcessedStation | null> {
     const now = Date.now();
     const cached = stationCache.get(stationId);
@@ -1170,9 +1169,9 @@ private async handleNoValidReservation(whatsappId: string, stationId: number): P
     };
   }
 
-  // ===============================================
-  // MESSAGE FORMATTING
-  // ===============================================
+  
+  
+  
   private async showStationOverview(whatsappId: string, station: ProcessedStation): Promise<void> {
     await whatsappService.sendTextMessage(
       whatsappId,
@@ -1233,9 +1232,9 @@ private async handleNoValidReservation(whatsappId: string, stationId: number): P
     }
   }
 
-  // ===============================================
-  // UTILITY METHODS
-  // ===============================================
+  
+  
+  
   private validateInput(whatsappId: string, stationId: number): boolean {
     if (!validateWhatsAppId(whatsappId)) {
       logger.error('Invalid WhatsApp ID', { whatsappId });
@@ -1286,9 +1285,9 @@ private async handleNoValidReservation(whatsappId: string, stationId: number): P
     return (basePrice * estimatedKwh).toFixed(0);
   }
 
-  // ===============================================
-  // ERROR HANDLING
-  // ===============================================
+  
+  
+  
   private async handleError(error: any, operation: string, context: Record<string, any>): Promise<void> {
     const errorMsg = error instanceof Error ? error.message : String(error);
     logger.error(`${operation} failed`, { ...context, error: errorMsg });
@@ -1313,9 +1312,9 @@ private async handleNoValidReservation(whatsappId: string, stationId: number): P
     }
   }
 
-  // ===============================================
-  // HEALTH CHECK
-  // ===============================================
+  
+  
+  
   public getHealthStatus() {
     return {
       status: 'healthy' as const,
@@ -1330,15 +1329,15 @@ private async handleNoValidReservation(whatsappId: string, stationId: number): P
     };
   }
 
-  // ===============================================
-  // BACKWARD COMPATIBILITY
-  // ===============================================
+  
+  
+  
   async processQueueJoin(whatsappId: string, stationId: number): Promise<void> {
     return this.handleJoinQueue(whatsappId, stationId);
   }
 }
 
-// ===============================================
-// EXPORT SINGLETON
-// ===============================================
+
+
+
 export const bookingController = new BookingController(); 

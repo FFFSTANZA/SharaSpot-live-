@@ -1,4 +1,4 @@
-// src/services/notification.ts 
+
 import { whatsappService } from './whatsapp';
 import { userService } from './userService';
 import { logger } from '../utils/logger';
@@ -75,8 +75,8 @@ class NotificationService {
     }
   }
 
-  // Partial fix for src/services/notification.ts
-// Only showing the sendReservationConfirmation function with the fix
+  
+
 
 async sendReservationConfirmation(userWhatsapp: string, stationId: number, reservationMinutes: number): Promise<void> {
   try {
@@ -108,7 +108,7 @@ async sendReservationConfirmation(userWhatsapp: string, stationId: number, reser
       }, 1000);
     }
 
-    // ✅ FIXED: Reduced delay from 3000ms to 1000ms for faster button appearance
+    
     setTimeout(async () => {
       await whatsappService.sendButtonMessage(
         userWhatsapp,
@@ -146,7 +146,7 @@ async sendChargingStartedNotification(userWhatsapp: string, session: any): Promi
 
     await whatsappService.sendTextMessage(userWhatsapp, message);
 
-    // Simple stop button only
+    
     setTimeout(async () => {
       await whatsappService.sendButtonMessage(
         userWhatsapp,
@@ -176,7 +176,7 @@ async sendChargingCompletedNotification(
   summary?: any
 ): Promise<void> {
   try {
-    // ✅ Safe access with fallbacks
+    
     const stationName = session?.stationName || 'Charging Station';
     const duration = summary?.duration || 'N/A';
     const energyDelivered = summary?.energyDelivered || session?.energyDelivered || 0;
@@ -196,7 +196,7 @@ async sendChargingCompletedNotification(
 
     await whatsappService.sendTextMessage(userWhatsapp, message);
 
-    // Send follow-up actions
+    
     setTimeout(async () => {
       await whatsappService.sendButtonMessage(
         userWhatsapp,
@@ -216,7 +216,7 @@ async sendChargingCompletedNotification(
       summary,
       error: error instanceof Error ? error.message : String(error)
     });
-    // ✅ Don't throw - notification failure shouldn't break session completion
+    
   }
 }
 
@@ -319,9 +319,9 @@ async sendChargingCompletedNotification(
     }
   }
 
-  // ===============================================
-  // RESERVATION EXPIRY MANAGEMENT
-  // ===============================================
+  
+  
+  
 
   async scheduleReservationExpiry(userWhatsapp: string, stationId: number, expiryTime: Date): Promise<void> {
     try {
@@ -420,9 +420,9 @@ async sendChargingCompletedNotification(
     }
   }
 
-  // ===============================================
-  // STATION OWNER NOTIFICATIONS
-  // ===============================================
+  
+  
+  
 
   async notifyStationOwner(stationId: number, eventType: string, data: any): Promise<void> {
     try {
@@ -478,16 +478,16 @@ async sendChargingCompletedNotification(
     }
   }
 
-  // ===============================================
-  // SESSION NOTIFICATIONS (SIMPLIFIED)
-  // ===============================================
+  
+  
+  
 
   /**
    * REMOVED: Complex session monitoring notification
    * Now handled by sendChargingStartedNotification after photo verification
    */
   async sendSessionStartNotification(userWhatsapp: string, session: any): Promise<void> {
-    // Delegate to sendChargingStartedNotification
+    
     await this.sendChargingStartedNotification(userWhatsapp, session);
   }
 
@@ -555,9 +555,9 @@ async sendChargingCompletedNotification(
     }
   }
 
-  // ===============================================
-  // ALERT NOTIFICATIONS
-  // ===============================================
+  
+  
+  
 
   async sendAnomalyAlert(userWhatsapp: string, session: any, status: any): Promise<void> {
     try {
@@ -632,9 +632,9 @@ async sendChargingCompletedNotification(
     }
   }
 
-  // ===============================================
-  // HELPER METHODS
-  // ===============================================
+  
+  
+  
 
   /**
    * Fetch station details and optionally compute distance from user
@@ -675,7 +675,7 @@ async sendChargingCompletedNotification(
 
       const data = station[0];
 
-      // Compute distance if user location is provided
+      
       let distance: number | null = null;
       if (userLat != null && userLng != null && data.latitude && data.longitude) {
         distance = calculateDistance(
@@ -686,7 +686,7 @@ async sendChargingCompletedNotification(
         );
       }
 
-      // Normalize metrics
+      
       const total = data.totalSlots || data.totalPorts || 1;
       const available = data.availableSlots || data.availablePorts || 0;
       const utilization = total > 0 ? Math.round(((total - available) / total) * 100) : 0;
@@ -730,7 +730,7 @@ async sendChargingCompletedNotification(
   }
 
   private async generateSessionSummary(userWhatsapp: string, stationId: number): Promise<any> {
-    // Placeholder - should be replaced with actual session data
+    
     return {
       energyDelivered: 25.5,
       duration: 45,
@@ -746,9 +746,9 @@ async sendChargingCompletedNotification(
     return 'Consider exploring nearby attractions!';
   }
 
-  // ===============================================
-  // UTILITY METHODS
-  // ===============================================
+  
+  
+  
 
   clearUserNotifications(userWhatsapp: string): void {
     for (const [key, timeout] of this.scheduledNotifications.entries()) {

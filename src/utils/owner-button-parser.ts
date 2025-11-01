@@ -1,4 +1,4 @@
-// src/owner/utils/owner-button-parser.ts
+
 import { logger } from './logger';
 
 export interface OwnerButtonParseResult {
@@ -13,14 +13,14 @@ export interface OwnerButtonParseResult {
  */
 export function parseOwnerButtonId(buttonId: string): OwnerButtonParseResult {
   try {
-    // Remove 'owner_' prefix if present
+    
     const cleanId = buttonId.replace(/^owner_/, '');
     
-    // Split by underscore
+    
     const parts = cleanId.split('_');
     const action = parts[0];
 
-    // Authentication actions
+    
     if (['register', 'login', 'help', 'contact_support'].includes(action)) {
       return {
         action,
@@ -28,7 +28,7 @@ export function parseOwnerButtonId(buttonId: string): OwnerButtonParseResult {
       };
     }
 
-    // Main menu actions
+    
     if (['stations', 'profile', 'analytics', 'settings', 'main', 'menu'].includes(action)) {
       return {
         action: action === 'menu' ? 'main_menu' : action,
@@ -36,7 +36,7 @@ export function parseOwnerButtonId(buttonId: string): OwnerButtonParseResult {
       };
     }
 
-    // Edit actions
+    
     if (['edit', 'update'].includes(action)) {
       const target = parts[1];
       return {
@@ -45,7 +45,7 @@ export function parseOwnerButtonId(buttonId: string): OwnerButtonParseResult {
       };
     }
 
-    // Station-specific actions
+    
     if (action === 'station' || parts.includes('station')) {
       const stationIndex = parts.findIndex(part => part === 'station');
       const stationId = stationIndex >= 0 && parts[stationIndex + 1] ? 
@@ -58,7 +58,7 @@ export function parseOwnerButtonId(buttonId: string): OwnerButtonParseResult {
       };
     }
 
-    // Toggle actions with station ID
+    
     if (action === 'toggle' && parts.includes('station')) {
       const stationId = parseInt(parts[parts.length - 1], 10);
       return {
@@ -68,7 +68,7 @@ export function parseOwnerButtonId(buttonId: string): OwnerButtonParseResult {
       };
     }
 
-    // Add station action
+    
     if (action === 'add' && parts[1] === 'station') {
       return {
         action: 'add_station',
@@ -76,7 +76,7 @@ export function parseOwnerButtonId(buttonId: string): OwnerButtonParseResult {
       };
     }
 
-    // Analytics actions
+    
     if (['analytics', 'stats', 'reports'].includes(action)) {
       const detail = parts[1];
       return {
@@ -85,7 +85,7 @@ export function parseOwnerButtonId(buttonId: string): OwnerButtonParseResult {
       };
     }
 
-    // KYC actions
+    
     if (action === 'kyc') {
       return {
         action: parts.join('_'),
@@ -93,7 +93,7 @@ export function parseOwnerButtonId(buttonId: string): OwnerButtonParseResult {
       };
     }
 
-    // Navigation actions
+    
     if (['exit', 'back', 'return', 'main'].includes(action)) {
       return {
         action: parts.join('_'),
@@ -101,7 +101,7 @@ export function parseOwnerButtonId(buttonId: string): OwnerButtonParseResult {
       };
     }
 
-    // System actions
+    
     if (['help', 'contact', 'support'].includes(action)) {
       return {
         action: parts.join('_'),
@@ -109,7 +109,7 @@ export function parseOwnerButtonId(buttonId: string): OwnerButtonParseResult {
       };
     }
 
-    // Default parsing for unknown patterns
+    
     return {
       action: parts.join('_'),
       category: 'main'

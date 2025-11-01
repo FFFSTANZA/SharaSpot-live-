@@ -1,4 +1,4 @@
-// src/services/session.ts - Photo-Based Verification (No Time Tracking)
+
 import { db } from '../db/connection';
 import { chargingStations, chargingSessions, users } from '../db/schema';
 import { eq, and, desc, sql, count, sum, avg } from 'drizzle-orm';
@@ -42,14 +42,14 @@ class SessionService {
     queueId?: number
   ): Promise<ChargingSession | null> {
     try {
-      // Check for existing active session
+      
       const existingSession = await this.getActiveSession(userWhatsapp, stationId);
       if (existingSession && ['active', 'initiated'].includes(existingSession.status)) {
         logger.warn('Active session already exists', { userWhatsapp, stationId });
         return existingSession;
       }
 
-      // Get station details
+      
       const station = await db
         .select()
         .from(chargingStations)
@@ -61,10 +61,10 @@ class SessionService {
       }
       const stationData = station[0];
 
-      // Generate unique session ID
+      
       const sessionId = `session_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
 
-      // Create session with 'initiated' status - NO startTime yet
+      
       const [newSession] = await db
         .insert(chargingSessions)
         .values({
@@ -87,7 +87,7 @@ class SessionService {
         stationId,
       });
 
-      // Trigger photo verification - NO success message yet
+      
       await photoVerificationService.initiateStartVerification(
         userWhatsapp,
         sessionId,
@@ -124,14 +124,14 @@ class SessionService {
       })
       .where(eq(chargingSessions.sessionId, sessionId));
 
-    //  Get fresh session data after update
+    
     const session = await this.getSessionById(sessionId);
     if (!session) {
       logger.error('Session not found after verification', { sessionId });
       throw new Error('Session not found after verification');
     }
 
-    //  Add to active sessions map
+    
     this.activeSessions.set(sessionId, session);
 
     logger.info('✅ Charging activated', {
@@ -141,7 +141,7 @@ class SessionService {
       startReading: startMeterReading,
     });
 
-    //  FIXED: Pass entire session object, not just stationId
+    
     await notificationService.sendChargingStartedNotification(
       session.userWhatsapp,
       session  //  Pass full session object
@@ -156,7 +156,7 @@ class SessionService {
    * Get active session for user and station
    */
   async getActiveSession(userWhatsapp: string, stationId: number): Promise<ChargingSession | null> {
-    // Check in-memory first
+    
     for (const s of this.activeSessions.values()) {
       if (
         s.userWhatsapp === userWhatsapp &&
@@ -167,7 +167,7 @@ class SessionService {
       }
     }
 
-    // Check database
+    
     try {
       const [dbSession] = await db
         .select()
@@ -213,7 +213,7 @@ class SessionService {
         userWhatsapp,
       });
 
-      //  Trigger END photo verification
+      
       await photoVerificationService.initiateEndVerification(
         userWhatsapp,
         session.id,
@@ -236,7 +236,7 @@ class SessionService {
   consumption: number
 ): Promise<void> {
   try {
-    //  Fetch session WITH station name via JOIN
+    
     const result = await db
       .select({
         session: chargingSessions,
@@ -255,7 +255,7 @@ class SessionService {
     const session = result[0].session;
     const station = result[0].station;
 
-    //  Validate required session data
+    
     if (!session.userWhatsapp) {
       throw new Error('Session missing user WhatsApp ID');
     }
@@ -264,12 +264,12 @@ class SessionService {
       throw new Error('Session missing start meter reading');
     }
 
-    //  Calculate session metrics
+    
     const startTime = session.startTime || session.startedAt || session.createdAt || new Date();
     const endTime = new Date();
     const durationMinutes = Math.floor((endTime.getTime() - startTime.getTime()) / (1000 * 60));
 
-    //  Calculate costs with validation
+    
     const ratePerKwh = parseFloat(session.ratePerKwh || '12');
     if (isNaN(ratePerKwh) || ratePerKwh <= 0) {
       throw new Error(`Invalid rate per kWh: ${session.ratePerKwh}`);
@@ -290,7 +290,7 @@ class SessionService {
       totalCost: totalCost.toFixed(2)
     });
 
-    //  Update session in database
+    
     await db
       .update(chargingSessions)
       .set({
@@ -309,10 +309,10 @@ class SessionService {
       })
       .where(eq(chargingSessions.sessionId, sessionId));
 
-    //  Remove from active sessions
+    
     this.activeSessions.delete(sessionId);
 
-    //  Create session summary
+    
     const summary: SessionSummary = {
       sessionId,
       duration: this.formatDuration(durationMinutes),
@@ -332,7 +332,7 @@ class SessionService {
       duration: `${durationMinutes} minutes`
     });
 
-    //  Create enriched session object for notification
+    
     const enrichedSession = {
       ...session,
       stationName: station?.name || 'Charging Station',
@@ -344,7 +344,7 @@ class SessionService {
       totalCost: totalCost.toFixed(2),
     };
 
-    //  Send completion notification (non-blocking to prevent failures from affecting completion)
+    
     setImmediate(async () => {
       try {
         await notificationService.sendSessionCompletedNotification(
@@ -362,7 +362,7 @@ class SessionService {
       }
     });
 
-    //  Update user stats
+    
     await this.updateUserStats(session.userWhatsapp, consumption, totalCost);
     
   } catch (error) {
@@ -373,11 +373,11 @@ class SessionService {
       stack: error instanceof Error ? error.stack : undefined
     });
     
-    // Re-throw to be caught by calling function
+    
     throw error;
   }
 }
-  // === HELPER METHODS ===
+  
 
   private formatDuration(minutes: number): string {
     const hours = Math.floor(minutes / 60);
@@ -424,7 +424,7 @@ class SessionService {
     };
   }
 
-  // === PUBLIC QUERY METHODS ===
+  
   async getSessionById(sessionId: string): Promise<ChargingSession | null> {
   try {
     const result = await db
@@ -442,7 +442,7 @@ class SessionService {
       return null;
     }
     
-    // Extract session from joined result
+    
     const sessionData = {
       ...result[0].session,
       stationName: result[0].station?.name || 'Charging Station',
@@ -503,7 +503,7 @@ class SessionService {
     }
   }
 
-  // === ADMIN METHODS ===
+  
 
   async emergencyStopStation(stationId: number): Promise<boolean> {
     try {

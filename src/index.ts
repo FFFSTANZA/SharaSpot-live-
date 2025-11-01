@@ -1,4 +1,4 @@
-// src/index.ts
+
 
 import express, { Request, Response, NextFunction } from 'express';
 import cors from 'cors';
@@ -11,11 +11,8 @@ import { initializeDatabase } from './db/connection';
 import paymentRoutes from './routes/payment';
 import { bookingController } from './controllers/booking';
 import { whatsappService } from './services/whatsapp';
+import { paymentService } from './services/payment'; 
 import crypto from 'crypto';
-
-// ===============================================
-// TYPE-SAFE ERROR HANDLING UTILITIES
-// ===============================================
 
 const getErrorMessage = (error: unknown): string => {
   if (error instanceof Error) return error.message;
@@ -26,16 +23,8 @@ const getErrorMessage = (error: unknown): string => {
 const getErrorStack = (error: unknown): string | undefined =>
   error instanceof Error ? error.stack : undefined;
 
-// ===============================================
-// EXPRESS APP CONFIGURATION
-// ===============================================
-
 const app = express();
 const port = env.PORT || 3000;
-
-// ===============================================
-// SECURITY & MIDDLEWARE STACK
-// ===============================================
 
 app.use(
   helmet({
@@ -72,10 +61,6 @@ app.use(
     parameterLimit: 50,
   })
 );
-
-// ===============================================
-// SMART RATE LIMITING (memory-safe)
-// ===============================================
 
 const rateLimitMap = new Map<string, { count: number; resetTime: number }>();
 const RATE_LIMIT_WINDOW = env.RATE_LIMIT_WINDOW;
@@ -118,10 +103,6 @@ app.use((req: Request, res: Response, next: NextFunction) => {
   next();
 });
 
-// ===============================================
-// REQUEST LOGGING
-// ===============================================
-
 app.use((req: Request, res: Response, next: NextFunction) => {
   const startTime = Date.now();
 
@@ -150,20 +131,12 @@ app.use((req: Request, res: Response, next: NextFunction) => {
   next();
 });
 
-// ===============================================
-// PAYMENT ROUTES
-// ===============================================
-
 app.use('/api/payment', paymentRoutes);
-
-// ===============================================
-// RAZORPAY WEBHOOK HANDLER (ROOT PATH)
-// ===============================================
 
 app.post('/', async (req: Request, res: Response) => {
   const userAgent = req.headers['user-agent'] || '';
   
-  // ✅ Check if it's a Razorpay webhook
+  
   if (userAgent.includes('Razorpay')) {
     try {
       logger.info('📥 Razorpay webhook received at root', {
@@ -174,7 +147,7 @@ app.post('/', async (req: Request, res: Response) => {
       const webhookSignature = req.headers['x-razorpay-signature'] as string;
       const webhookBody = req.body;
 
-      // ✅ Verify signature if secret is configured
+      
       if (env.RAZORPAY_WEBHOOK_SECRET) {
         const expectedSignature = crypto
           .createHmac('sha256', env.RAZORPAY_WEBHOOK_SECRET)
@@ -189,54 +162,54 @@ app.post('/', async (req: Request, res: Response) => {
 
       const event = webhookBody.event;
 
-      // ✅ Handle payment_link.paid event
+      
       if (event === 'payment_link.paid') {
         const paymentLink = webhookBody.payload?.payment_link?.entity;
         const referenceId = paymentLink?.reference_id;
 
         logger.info('✅ Payment link paid event', { referenceId, event });
 
-        // ✅ BOOKING PAYMENT
+        
         if (referenceId && referenceId.startsWith('book_')) {
           const parts = referenceId.split('_');
           if (parts.length >= 3) {
             const whatsappId = parts[1];
             const stationId = parseInt(parts[2]);
 
-            logger.info('🎫 Confirming booking after payment', { 
+            logger.info(' Confirming booking after payment', { 
               whatsappId, 
               stationId, 
               referenceId 
             });
 
-            // ✅ Confirm booking in background (non-blocking)
+            
             setImmediate(async () => {
               try {
                 await bookingController.handleJoinQueue(whatsappId, stationId);
                 
                 await whatsappService.sendTextMessage(
                   whatsappId,
-                  '✅ *Payment Confirmed!*\n\n' +
+                  '*Payment Confirmed!*\n\n' +
                   'Your booking is complete.\n\n' +
                   'You can now join the queue or start charging when you arrive at the station.'
                 );
                 
-                logger.info('✅ Booking confirmed successfully after payment', { 
+                logger.info('Booking confirmed successfully after payment', { 
                   whatsappId, 
                   stationId 
                 });
               } catch (error) {
-                logger.error('❌ Failed to confirm booking after payment', { 
+                logger.error('Failed to confirm booking after payment', { 
                   whatsappId, 
                   stationId, 
                   error: getErrorMessage(error),
                   stack: getErrorStack(error)
                 });
                 
-                // ✅ Notify user about the issue
+                
                 await whatsappService.sendTextMessage(
                   whatsappId,
-                  '⚠️ Payment received but booking confirmation failed.\n\n' +
+                  'Payment received but booking confirmation failed.\n\n' +
                   'Please contact support with your payment reference.'
                 );
               }
@@ -244,40 +217,75 @@ app.post('/', async (req: Request, res: Response) => {
           }
         }
 
-        // ✅ SESSION PAYMENT
+        
         if (referenceId && referenceId.startsWith('session_')) {
           logger.info('⚡ Session payment confirmed', { referenceId });
           
-          // Extract session details
           const parts = referenceId.split('_');
           if (parts.length >= 2) {
             const sessionId = parts[1];
             
-            // You can add additional logic here if needed
-            // e.g., update session payment status, send receipt, etc.
-            logger.info('💰 Session payment processed', { sessionId });
+            
+            setImmediate(async () => {
+              try {
+                
+                const paymentInfo = paymentService.getPaymentFromCache(referenceId);
+                
+                if (paymentInfo) {
+                  await whatsappService.sendTextMessage(
+                    paymentInfo.userWhatsappId,
+                    '*Payment Confirmed!*\n\n' +
+                    '🎉 Thank you for using SharaSpot!\n\n' +
+                    'Your charging session payment has been received.\n\n' +
+                    'Drive safe! 🚗⚡'
+                  );
+                  
+                  logger.info('✅ Session payment confirmation sent', {
+                    userWhatsapp: paymentInfo.userWhatsappId,
+                    sessionId,
+                    referenceId,
+                    amount: paymentInfo.amount
+                  });
+                } else {
+                  logger.warn('⚠️ Payment info not found in cache', { 
+                    referenceId,
+                    sessionId 
+                  });
+                }
+                
+              } catch (error) {
+                logger.error('❌ Failed to send session payment confirmation', {
+                  sessionId,
+                  referenceId,
+                  error: getErrorMessage(error),
+                  stack: getErrorStack(error)
+                });
+              }
+            });
+          } else {
+            logger.error('❌ Invalid session payment reference ID format', { referenceId });
           }
         }
       }
 
-      // ✅ Handle payment_link.cancelled event
+      
       if (event === 'payment_link.cancelled') {
         const paymentLink = webhookBody.payload?.payment_link?.entity;
         const referenceId = paymentLink?.reference_id;
         
         logger.warn('❌ Payment link cancelled', { referenceId });
         
-        // Optional: Notify user or handle cancellation
+        
       }
 
-      // ✅ Handle payment_link.expired event
+      
       if (event === 'payment_link.expired') {
         const paymentLink = webhookBody.payload?.payment_link?.entity;
         const referenceId = paymentLink?.reference_id;
         
         logger.warn('⏰ Payment link expired', { referenceId });
         
-        // Optional: Notify user about expiration
+        
       }
 
       return res.status(200).json({ status: 'ok' });
@@ -291,13 +299,12 @@ app.post('/', async (req: Request, res: Response) => {
     }
   }
 
-  // ✅ Otherwise, it's a WhatsApp webhook
+  
   return webhookController.handleWebhook(req, res);
 });
 
-// ===============================================
-// HEALTH & ROOT ENDPOINTS
-// ===============================================
+
+
 
 app.get('/', (_req: Request, res: Response) => {
   res.status(200).json({
@@ -342,16 +349,13 @@ app.get('/health', async (_req: Request, res: Response) => {
   }
 });
 
-// ===============================================
-// WHATSAPP WEBHOOK (Meta)
-// ===============================================
+
 
 app.get('/webhook', webhookController.verifyWebhook.bind(webhookController));
 app.post('/webhook', webhookController.handleWebhook.bind(webhookController));
 
-// ===============================================
-// API PLACEHOLDER
-// ===============================================
+
+
 
 app.use('/api/v1', (_req: Request, res: Response) => {
   res.status(501).json({
@@ -361,9 +365,8 @@ app.use('/api/v1', (_req: Request, res: Response) => {
   });
 });
 
-// ===============================================
-// 404 HANDLER
-// ===============================================
+
+
 
 app.use('*', (req: Request, res: Response) => {
   res.status(404).json({
@@ -377,9 +380,7 @@ app.use('*', (req: Request, res: Response) => {
   });
 });
 
-// ===============================================
-// GLOBAL ERROR HANDLER
-// ===============================================
+
 
 app.use((err: unknown, req: Request, res: Response, _next: NextFunction) => {
   const errorId = Date.now().toString(36) + Math.random().toString(36).substring(2);
@@ -407,9 +408,8 @@ app.use((err: unknown, req: Request, res: Response, _next: NextFunction) => {
   res.status(statusCode).json(errorResponse);
 });
 
-// ===============================================
-// SERVER LIFECYCLE MANAGEMENT
-// ===============================================
+
+
 
 class ServerManager {
   private server: ReturnType<typeof app.listen> | null = null;
@@ -512,9 +512,7 @@ class ServerManager {
   }
 }
 
-// ===============================================
-// SERVER INITIALIZATION
-// ===============================================
+
 
 const serverManager = new ServerManager();
 
@@ -525,9 +523,7 @@ if (require.main === module) {
   });
 }
 
-// ===============================================
-// EXPORTS
-// ===============================================
+
 
 export { app, serverManager };
 

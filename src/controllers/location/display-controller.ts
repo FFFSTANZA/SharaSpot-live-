@@ -21,11 +21,11 @@ export class LocationDisplayController {
         return;
       }
 
-      // Show first station as a detailed card
+      
       const topStation = stations[0];
       await this.showStationCard(whatsappId, topStation, startIndex + 1, totalCount);
 
-      // Show quick actions
+      
       const buttons = [
         { id: `book_station_${topStation.id}`, title: '⚡ Book Now' },
         { id: `station_info_${topStation.id}`, title: '📋 More Info' },
@@ -42,7 +42,7 @@ export class LocationDisplayController {
         '🎯 Quick Actions'
       );
 
-      // Show navigation options if there are more results
+      
       if (stations.length > 1 || hasMore) {
         setTimeout(async () => {
           await this.showNavigationOptions(whatsappId, stations.length > 1, hasMore);
@@ -77,7 +77,7 @@ export class LocationDisplayController {
         matchScore
       } = station;
 
-      // Status indicator
+      
       let statusIcon = '🔴';
       let statusText = 'Busy';
       
@@ -89,12 +89,12 @@ export class LocationDisplayController {
         statusText = `~${estimatedWaitMinutes}min wait`;
       }
 
-      // Connector types display
+      
       const connectorDisplay = Array.isArray(connectorTypes) 
         ? connectorTypes.join(' • ')
         : connectorTypes || 'Multiple';
 
-      // Match score indicator
+      
       let matchIcon = '⭐';
       if (matchScore >= 85) matchIcon = '🌟';
       else if (matchScore >= 70) matchIcon = '⭐';
@@ -154,7 +154,7 @@ export class LocationDisplayController {
         return;
       }
 
-      // Create list message with all stations
+      
       const stationRows = stations.slice(0, 10).map((station) => {
         const statusIcon = station.isAvailable ? '🟢' : station.estimatedWaitMinutes <= 15 ? '🟡' : '🔴';
         const title = `${statusIcon} ${station.name}`;
@@ -180,7 +180,7 @@ export class LocationDisplayController {
         '📋 All Nearby Stations'
       );
 
-      // Show additional options
+      
       setTimeout(async () => {
         await whatsappService.sendButtonMessage(
           whatsappId,

@@ -1,4 +1,4 @@
-// src/routes/payment.ts - FIXED WEBHOOK ROUTE
+
 
 import { Router, Request, Response } from 'express';
 import { paymentService } from '../services/payment';
@@ -39,7 +39,7 @@ router.get('/callback', async (req: Request, res: Response): Promise<void> => {
       return;
     }
 
-    // Handle callback
+    
     const result = await paymentService.handlePaymentCallback(
       razorpay_payment_link_id,
       razorpay_payment_link_reference_id,
@@ -48,7 +48,7 @@ router.get('/callback', async (req: Request, res: Response): Promise<void> => {
       razorpay_signature
     );
 
-    // ✅ If payment successful and it's a booking payment, confirm booking
+    
     if (result.success && result.paymentType === 'booking') {
       const parts = result.referenceId.split('_');
       if (parts.length >= 3) {
@@ -57,7 +57,7 @@ router.get('/callback', async (req: Request, res: Response): Promise<void> => {
         
         logger.info('Confirming booking after payment', { whatsappId, stationId });
         
-        // Confirm booking in background
+        
         setImmediate(async () => {
           try {
             await bookingController.handleJoinQueue(whatsappId, stationId);
@@ -72,7 +72,7 @@ router.get('/callback', async (req: Request, res: Response): Promise<void> => {
       }
     }
 
-    // Redirect to WhatsApp
+    
     res.redirect(result.redirectUrl);
     return;
   } catch (error) {
@@ -97,7 +97,7 @@ router.post('/webhook', async (req: Request, res: Response): Promise<void> => {
       paymentLinkId: webhookBody.payload?.payment_link?.entity?.id,
     });
 
-    // Verify webhook signature (if secret is configured)
+    
     if (process.env.RAZORPAY_WEBHOOK_SECRET) {
       const crypto = require('crypto');
       const expectedSignature = crypto
@@ -114,7 +114,7 @@ router.post('/webhook', async (req: Request, res: Response): Promise<void> => {
 
     const event = webhookBody.event;
 
-    // ✅ Handle payment_link.paid event
+    
     if (event === 'payment_link.paid') {
       const paymentLink = webhookBody.payload?.payment_link?.entity;
       const referenceId = paymentLink?.reference_id;
@@ -127,7 +127,7 @@ router.post('/webhook', async (req: Request, res: Response): Promise<void> => {
 
           logger.info('✅ Webhook: Booking payment confirmed', { whatsappId, stationId, referenceId });
 
-          // Confirm booking
+          
           setImmediate(async () => {
             try {
               await bookingController.handleJoinQueue(whatsappId, stationId);

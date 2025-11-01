@@ -1,4 +1,4 @@
-// src/services/userService.ts
+
 import { db } from '../config/database';
 import { users, auditLogs, type User, type NewUser } from '../db/schema';
 import { eq } from 'drizzle-orm';
@@ -17,7 +17,7 @@ export class UserService {
         throw new Error('Invalid WhatsApp ID format');
       }
 
-      // First, try to find existing user
+      
       const existingUser = await this.getUserByWhatsAppId(whatsappId);
       
       if (existingUser) {
@@ -28,7 +28,7 @@ export class UserService {
         return existingUser;
       }
 
-      // If user doesn't exist, create new one
+      
       logger.info('➕ Creating new user', { whatsappId });
       
       try {
@@ -41,7 +41,7 @@ export class UserService {
           })
           .returning();
 
-        // Log the user creation
+        
         await this.logUserAction(whatsappId, 'user_created', null, newUser);
 
         logger.info('✅ Successfully created new user', { 
@@ -51,12 +51,12 @@ export class UserService {
 
         return newUser;
       } catch (error: any) {
-        // Handle the specific constraint violation (race condition)
+        
         if (error?.code === '23505' && error?.constraint === 'users_whatsapp_id_unique') {
           logger.warn('🔄 User creation race condition detected, fetching existing user', { whatsappId });
           
-          // Race condition: user was created between our check and insert
-          // Just fetch the existing user
+          
+          
           const existingUser = await this.getUserByWhatsAppId(whatsappId);
           if (existingUser) {
             return existingUser;
@@ -106,10 +106,10 @@ export class UserService {
       throw new Error('Invalid WhatsApp ID format');
     }
 
-    // Use getOrCreateUser which handles race conditions and always returns User
+    
     const user = await this.getOrCreateUser(userData.whatsappId);
     
-    // Build update object only with non-null/undefined values
+    
     const updates: Partial<User> = {};
     if (typeof userData.name === 'string' && userData.name.trim().length > 0) {
       updates.name = userData.name.trim();
@@ -118,11 +118,11 @@ export class UserService {
       updates.phoneNumber = userData.phoneNumber.trim();
     }
     
-    // ✅ FIXED - Handle potential null return from updateUserProfile
+    
     if (Object.keys(updates).length > 0) {
       const updatedUser = await this.updateUserProfile(userData.whatsappId, updates);
       
-      // If update failed, return the original user (better than throwing error)
+      
       if (!updatedUser) {
         logger.warn('Profile update failed during user creation, returning original user', { 
           whatsappId: userData.whatsappId 
@@ -133,7 +133,7 @@ export class UserService {
       return updatedUser;
     }
     
-    // No updates needed, return the created/existing user
+    
     return user;
     
   } catch (error: any) {
@@ -155,14 +155,14 @@ export class UserService {
     }
   ): Promise<User | null> {
     try {
-      // Validate preferences
+      
       const validationResult = userPreferencesSchema.safeParse(preferences);
       if (!validationResult.success) {
         logger.warn('Invalid user preferences', { whatsappId, preferences, errors: validationResult.error });
         return null;
       }
 
-      // Get current user data for audit log
+      
       const currentUser = await this.getUserByWhatsAppId(whatsappId);
       if (!currentUser) {
         logger.warn('User not found for preferences update', { whatsappId });
@@ -179,7 +179,7 @@ export class UserService {
         .where(eq(users.whatsappId, whatsappId))
         .returning();
 
-      // Log the preference update
+      
       await this.logUserAction(whatsappId, 'preferences_updated', currentUser, updatedUser);
 
       logger.info('✅ User preferences updated', { 
@@ -209,17 +209,17 @@ export class UserService {
       return null;
     }
 
-    // Get current user for audit trail
+    
     const currentUser = await this.getUserByWhatsAppId(whatsappId);
     if (!currentUser) {
       logger.warn('User not found for profile update', { whatsappId });
       return null;
     }
 
-    // Build update object, filtering out null values
+    
     const updates: Partial<User> = {};
     
-    // Only include non-null/undefined values
+    
     if (typeof profileData.name === 'string' && profileData.name.trim().length > 0) {
       updates.name = profileData.name.trim();
     }
@@ -228,16 +228,16 @@ export class UserService {
       updates.phoneNumber = profileData.phoneNumber.trim();
     }
 
-    // If no valid updates, return current user
+    
     if (Object.keys(updates).length === 0) {
       logger.info('No valid updates provided for profile', { whatsappId, profileData });
       return currentUser;
     }
 
-    // Add timestamp
+    
     updates.updatedAt = new Date();
 
-    // Perform update
+    
     const [updatedUser] = await db
       .update(users)
       .set(updates)
@@ -245,7 +245,7 @@ export class UserService {
       .returning();
 
     if (updatedUser) {
-      // Log the profile update for audit trail
+      
       await this.logUserAction(whatsappId, 'profile_updated', currentUser, updatedUser);
       
       logger.info('✅ User profile updated successfully', {
@@ -303,7 +303,7 @@ export class UserService {
         .where(eq(users.whatsappId, whatsappId))
         .returning();
 
-      // Log the ban/unban action
+      
       await db.insert(auditLogs).values({
         actorWhatsappId: adminWhatsappId,
         actorType: 'admin',
@@ -405,18 +405,18 @@ export class UserService {
   }
 }
 
-// Export a singleton instance
+
 export const userService = new UserService();
 
-// Helper function for message processing
+
 export async function handleIncomingMessage(whatsappId: string, message: any) {
   try {
     logger.info('📨 Processing message', { whatsappId, messageType: message?.type });
 
-    // Use the safe user creation method
+    
     const user = await userService.getOrCreateUser(whatsappId);
     
-    // Continue with your message processing logic...
+    
     return user;
     
   } catch (error: any) {
@@ -426,13 +426,13 @@ export async function handleIncomingMessage(whatsappId: string, message: any) {
       error: error?.message || 'Unknown error'
     });
     
-    // Send error response to user
+    
     await sendErrorMessage(whatsappId, "Sorry, something went wrong. Please try again.");
     throw error;
   }
 }
 
 async function sendErrorMessage(whatsappId: string, message: string) {
-  // Implement your WhatsApp message sending logic here
+  
   logger.info('📤 Sending error message', { whatsappId, message });
 }

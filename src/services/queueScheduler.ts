@@ -1,4 +1,4 @@
-// src/services/queueScheduler.ts
+
 import { db } from '../config/database';
 import { queues } from '../db/schema';
 import { eq, lt, inArray, and } from 'drizzle-orm';
@@ -109,7 +109,7 @@ export class QueueScheduler {
          AND table_schema = 'public'`
       );
 
-      // Works for both Neon and PostgreSQL
+      
       return result?.rows?.length > 0;
     } catch (error) {
       logger.error('❌ Failed to check column existence', { tableName, columnName, error });
@@ -149,8 +149,8 @@ export class QueueScheduler {
         position: queue.position,
       });
 
-      // ✅ TODO: Integrate your WhatsApp send logic here
-      // await whatsappService.sendTextMessage(queue.userWhatsapp, message);
+      
+      
 
       const reminderColumnExists = await this.checkColumnExists('queues', 'reminder_sent');
       if (reminderColumnExists) {
@@ -192,10 +192,10 @@ export class QueueScheduler {
       }
     };
 
-    // Run cleanup every 60 seconds
+    
     setInterval(runCleanup, 60 * 1000);
 
-    // Run notifications every 120 seconds
+    
     setInterval(runNotifications, 120 * 1000);
 
     logger.info('✅ Queue scheduler started successfully');

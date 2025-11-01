@@ -100,3 +100,194 @@
   "stationId": 23,
   "error": "queueData.createdAt.toLocaleTimeString is not a function"
 }
+2025-10-23 15:59:02 [ERROR]: ❌ Text message failed {
+  "service": "sharaspot-bot",
+  "to": "919876543211",
+  "error": {
+    "error": {
+      "message": "(#131030) Recipient phone number not in allowed list",
+      "type": "OAuthException",
+      "code": 131030,
+      "error_data": {
+        "messaging_product": "whatsapp",
+        "details": "Recipient phone number not in allowed list: Add recipient phone number to recipient list and try again."
+      },
+      "fbtrace_id": "Au7QvaEGvWJc64KM7x1GBTV"
+    }
+  }
+}
+2025-10-23 15:59:43 [ERROR]: ❌ handleQueueStatus failed {
+  "service": "sharaspot-bot",
+  "whatsappId": "919790294221",
+  "stationId": 23,
+  "error": {
+    "message": "queueData.createdAt.toLocaleTimeString is not a function",
+    "stack": "TypeError: queueData.createdAt.toLocaleTimeString is not a function\n    at QueueWebhookController.formatQueueStatus (/home/fffstanza/Folonite/SharaSpot/SharaSpot-produ/src/controllers/queue-webhook.ts:434:29)\n    at QueueWebhookController.handleQueueStatus (/home/fffstanza/Folonite/SharaSpot/SharaSpot-produ/src/controllers/queue-webhook.ts:294:32)\n    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)\n    at async QueueWebhookController.handleQueueCategory (/home/fffstanza/Folonite/SharaSpot/SharaSpot-produ/src/controllers/queue-webhook.ts:141:9)\n    at async QueueWebhookController.routeAction (/home/fffstanza/Folonite/SharaSpot/SharaSpot-produ/src/controllers/queue-webhook.ts:118:9)\n    at async QueueWebhookController.handleQueueButton (/home/fffstanza/Folonite/SharaSpot/SharaSpot-produ/src/controllers/queue-webhook.ts:88:5)\n    at async WebhookController.routeButtonAction (/home/fffstanza/Folonite/SharaSpot/SharaSpot-produ/src/controllers/webhook.ts:608:7)\n    at async WebhookController.handleButtonMessage (/home/fffstanza/Folonite/SharaSpot/SharaSpot-produ/src/controllers/webhook.ts:521:5)\n    at async WebhookController.routeMessage (/home/fffstanza/Folonite/SharaSpot/SharaSpot-produ/src/controllers/webhook.ts:294:11)\n    at async WebhookController.processMessage (/home/fffstanza/Folonite/SharaSpot/SharaSpot-produ/src/controllers/webhook.ts:252:7)",
+    "name": "TypeError"
+  }
+}
+2025-10-23 15:59:43 [ERROR]: Queue webhook queue status failed {
+  "service": "sharaspot-bot",
+  "whatsappId": "919790294221",
+  "stationId": 23,
+  "error": "queueData.createdAt.toLocaleTimeString is not a function"
+}
+2025-10-23 16:04:24 [ERROR]: ❌ Text message failed {
+  "service": "sharaspot-bot",
+  "to": "919876543211",
+  "error": {
+    "error": {
+      "message": "(#131030) Recipient phone number not in allowed list",
+      "type": "OAuthException",
+      "code": 131030,
+      "error_data": {
+        "messaging_product": "whatsapp",
+        "details": "Recipient phone number not in allowed list: Add recipient phone number to recipient list and try again."
+      },
+      "fbtrace_id": "AAhcdtwh7Y4fM_EQgbNcVnc"
+    }
+  }
+}
+2025-10-23 16:06:28 [ERROR]: ❌ Vision API execution error {
+  "service": "sharaspot-bot",
+  "error": {
+    "code": 16,
+    "details": "Request had invalid authentication credentials. Expected OAuth 2 access token, login cookie or other valid authentication credential. See https://developers.google.com/identity/sign-in/web/devconsole-project.",
+    "metadata": {
+      "www-authenticate": [
+        "Bearer realm=\"https://accounts.google.com/\""
+      ]
+    },
+    "note": "Exception occurred in retry method that was not classified as transient"
+  }
+}
+2025-10-23 16:09:32 [ERROR]: ❌ Vision API execution error {
+  "service": "sharaspot-bot",
+  "error": {
+    "code": 16,
+    "details": "Request had invalid authentication credentials. Expected OAuth 2 access token, login cookie or other valid authentication credential. See https://developers.google.com/identity/sign-in/web/devconsole-project.",
+    "metadata": {
+      "www-authenticate": [
+        "Bearer realm=\"https://accounts.google.com/\""
+      ]
+    },
+    "note": "Exception occurred in retry method that was not classified as transient"
+  }
+}
+2025-10-23 16:18:57 [ERROR]: ❌ Vision API execution error {
+  "service": "sharaspot-bot",
+  "error": {
+    "code": 16,
+    "details": "Request had invalid authentication credentials. Expected OAuth 2 access token, login cookie or other valid authentication credential. See https://developers.google.com/identity/sign-in/web/devconsole-project.",
+    "metadata": {
+      "www-authenticate": [
+        "Bearer realm=\"https://accounts.google.com/\""
+      ]
+    },
+    "note": "Exception occurred in retry method that was not classified as transient"
+  }
+}
+2025-10-23 16:21:06 [ERROR]: ❌ Vision API execution error {
+  "service": "sharaspot-bot",
+  "error": {
+    "code": 16,
+    "details": "Request had invalid authentication credentials. Expected OAuth 2 access token, login cookie or other valid authentication credential. See https://developers.google.com/identity/sign-in/web/devconsole-project.",
+    "metadata": {
+      "www-authenticate": [
+        "Bearer realm=\"https://accounts.google.com/\""
+      ]
+    },
+    "note": "Exception occurred in retry method that was not classified as transient"
+  }
+}
+2025-10-23 19:46:55 [ERROR]: ❌ Failed to check column existence {
+  "service": "sharaspot-bot",
+  "tableName": "queues",
+  "columnName": "reservation_expiry",
+  "error": {
+    "query": "SELECT column_name \n         FROM information_schema.columns \n         WHERE table_name = 'queues' \n         AND column_name = 'reservation_expiry' \n         AND table_schema = 'public'",
+    "params": [],
+    "cause": {
+      "name": "NeonDbError",
+      "sourceError": {}
+    }
+  }
+}
+2025-10-23 19:51:20 [ERROR]: ❌ Text message failed {
+  "service": "sharaspot-bot",
+  "to": "919876543211",
+  "error": {
+    "error": {
+      "message": "(#131030) Recipient phone number not in allowed list",
+      "type": "OAuthException",
+      "code": 131030,
+      "error_data": {
+        "messaging_product": "whatsapp",
+        "details": "Recipient phone number not in allowed list: Add recipient phone number to recipient list and try again."
+      },
+      "fbtrace_id": "AxNwhqZ-uA2SZ-jrX17JWxy"
+    }
+  }
+}
+2025-10-23 20:00:58 [ERROR]: ❌ Failed to create session payment {
+  "service": "sharaspot-bot",
+  "userWhatsappId": "919790294221",
+  "sessionId": "session_1761229318380_2gpk3u88a"
+}
+2025-10-23 20:00:58 [ERROR]: ❌ Session payment failed {
+  "service": "sharaspot-bot",
+  "whatsappId": "919790294221",
+  "sessionId": "session_1761229318380_2gpk3u88a"
+}
+2025-10-23 20:11:32 [ERROR]: ❌ Failed to check column existence {
+  "service": "sharaspot-bot",
+  "tableName": "queues",
+  "columnName": "reservation_expiry",
+  "error": {
+    "query": "SELECT column_name \n         FROM information_schema.columns \n         WHERE table_name = 'queues' \n         AND column_name = 'reservation_expiry' \n         AND table_schema = 'public'",
+    "params": [],
+    "cause": {
+      "name": "NeonDbError",
+      "sourceError": {}
+    }
+  }
+}
+2025-10-25 10:31:04 [ERROR]: ❌ Failed to check column existence {
+  "service": "sharaspot-bot",
+  "tableName": "queues",
+  "columnName": "reservation_expiry",
+  "error": {
+    "query": "SELECT column_name \n         FROM information_schema.columns \n         WHERE table_name = 'queues' \n         AND column_name = 'reservation_expiry' \n         AND table_schema = 'public'",
+    "params": [],
+    "cause": {
+      "name": "NeonDbError",
+      "sourceError": {}
+    }
+  }
+}
+2025-10-25 10:44:39 [ERROR]: ❌ Text message failed {
+  "service": "sharaspot-bot",
+  "to": "919876543211",
+  "error": {
+    "error": {
+      "message": "(#131030) Recipient phone number not in allowed list",
+      "type": "OAuthException",
+      "code": 131030,
+      "error_data": {
+        "messaging_product": "whatsapp",
+        "details": "Recipient phone number not in allowed list: Add recipient phone number to recipient list and try again."
+      },
+      "fbtrace_id": "AdSNSJ-0M3SJQ6-fEuCvcKm"
+    }
+  }
+}
+2025-10-25 10:51:44 [ERROR]: ❌ Failed to create session payment {
+  "service": "sharaspot-bot",
+  "userWhatsappId": "919790294221",
+  "sessionId": "session_1761369296925_p8d2gt3gf"
+}
+2025-10-25 10:51:44 [ERROR]: ❌ Session payment failed {
+  "service": "sharaspot-bot",
+  "whatsappId": "919790294221",
+  "sessionId": "session_1761369296925_p8d2gt3gf"
+}

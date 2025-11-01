@@ -1,4 +1,4 @@
-// src/controllers/preference.ts - CORRECTED & OPTIMIZED
+
 import { whatsappService } from '../services/whatsapp';
 import { preferenceService, type UserContext } from '../services/preference';
 import { userService } from '../services/userService';
@@ -12,7 +12,7 @@ interface PreferenceData {
   queuePreference?: string;
 }
 
-// ✅ Include 'address_input' locally in controller
+
 type PreferenceStep = 'vehicle_type' | 'ev_model' | 'connector_type' | 'charging_intent' | 'queue_preference' | 'address_input' | 'completed';
 
 interface OptimizedUserContext {
@@ -34,7 +34,7 @@ export class PreferenceController {
     COMPLETED: 'completed' as const
   };
 
-  // INDIAN EV MODELS
+  
   private readonly CAR_MODELS = {
   INDIAN: [
     { id: 'Tata Nexon EV', name: 'Tata Nexon EV', desc: 'India’s best-selling EV SUV' },
@@ -470,14 +470,14 @@ export class PreferenceController {
     context.timestamp = Date.now();
     this.contexts.set(whatsappId, context);
     
-    // ✅ Fix 1: Don't pass 'address_input' to service context
+    
     const serviceContext = this.convertToServiceContext(context);
     preferenceService.updateUserContext(whatsappId, serviceContext);
   }
 
-  // ✅ Fix 1: Map 'address_input' to a valid step
+  
   private convertToServiceContext(context: OptimizedUserContext): UserContext {
-    // Map controller-specific steps to service-compatible ones
+    
     let step: UserContext['currentStep'] = 'ev_model';
 
     if (context.currentStep === 'vehicle_type') step = 'ev_model';
@@ -485,7 +485,7 @@ export class PreferenceController {
     else if (['ev_model', 'connector_type', 'charging_intent', 'queue_preference'].includes(context.currentStep)) {
       step = context.currentStep as any;
     } else {
-      // For 'address_input', we can map to 'completed' or keep last valid step
+      
       step = 'completed';
     }
 
@@ -574,16 +574,16 @@ await whatsappService.sendTextMessage(whatsappId, summary);
     }
   }
 
-  // ✅ Fix 2: Use existing method or create fallback
+  
   async resetPreferences(whatsappId: string): Promise<void> {
     try {
       this.contexts.delete(whatsappId);
 
-      // ✅ Check if reset method exists — if not, use savePreferences with defaults
+      
       if (typeof (preferenceService as any).resetUserPreferences === 'function') {
         await (preferenceService as any).resetUserPreferences(whatsappId);
       } else {
-        // Fallback: update with empty preferences
+        
         await preferenceService.savePreferences(whatsappId);
       }
 

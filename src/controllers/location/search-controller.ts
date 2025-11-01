@@ -26,7 +26,7 @@ export class LocationSearchController {
       address 
     });
 
-    // ENHANCED: Get user with better error handling
+    
     const user = await userService.getUserByWhatsAppId(whatsappId);
     if (!user) {
       logger.error('User not found for station search', { whatsappId });
@@ -43,7 +43,7 @@ export class LocationSearchController {
       hasPrefs: user.preferencesCaptured 
     });
 
-    // ENHANCED: Build search options with validation
+    
     const searchOptions = {
       userWhatsapp: whatsappId,
       latitude,
@@ -58,7 +58,7 @@ export class LocationSearchController {
 
     logger.info('Search options prepared', { whatsappId, searchOptions });
 
-    // ENHANCED: Search for stations with detailed logging
+    
     let searchResult;
     try {
       searchResult = await stationSearchService.searchStations(searchOptions);
@@ -79,23 +79,23 @@ export class LocationSearchController {
       throw new Error(`Search service failed: ${searchServiceError}`);
     }
 
-    // ENHANCED: Store search context with validation
+    
     try {
       this.contextManager.updateSearchResults(whatsappId, searchResult);
       logger.info('✅ Search results stored in context', { whatsappId });
     } catch (contextError) {
       logger.warn('⚠️ Failed to store search context', { whatsappId, contextError });
-      // Continue anyway - not critical for immediate search
+      
     }
 
-    // ENHANCED: Handle no results
+    
     if (!searchResult.stations || searchResult.stations.length === 0) {
       logger.info('📍 No stations found', { whatsappId, searchLocation: { latitude, longitude, address } });
       await this.displayController.handleNoStationsFound(whatsappId, address);
       return;
     }
 
-    // ENHANCED: Display results with error handling
+    
     try {
       await this.displayController.displayStationResults(whatsappId, searchResult, 0);
       logger.info('✅ Station results displayed successfully', { 
@@ -109,7 +109,7 @@ export class LocationSearchController {
         error: displayError instanceof Error ? displayError.message : String(displayError)
       });
       
-      // Fallback: Send basic station info
+      
       await whatsappService.sendTextMessage(
         whatsappId,
         `Found ${searchResult.stations.length} charging stations nearby!\n\n` +
@@ -152,7 +152,7 @@ export class LocationSearchController {
       const currentIndex = context.currentOffset + 1;
 
       if (currentIndex < lastSearchResults.stations.length) {
-        // Show next station from current results
+        
         this.contextManager.updateOffset(whatsappId, currentIndex);
 
         const station = lastSearchResults.stations[currentIndex];
@@ -174,7 +174,7 @@ export class LocationSearchController {
           'Quick Actions'
         );
       } else {
-        // Load more stations from server
+        
         await this.loadMoreStations(whatsappId);
       }
 
@@ -206,7 +206,7 @@ export class LocationSearchController {
         '🔄 Loading more stations...'
       );
 
-      // Get user for search options
+      
       const user = await userService.getUserByWhatsAppId(whatsappId);
       if (!user) return;
 
@@ -232,7 +232,7 @@ export class LocationSearchController {
         return;
       }
 
-      // Merge with existing results
+      
       this.contextManager.mergeSearchResults(whatsappId, newResults);
       
       const updatedContext = this.contextManager.getLocationContext(whatsappId);
@@ -240,7 +240,7 @@ export class LocationSearchController {
         const newOffset = (updatedContext.lastSearchResults.stations.length || 1) - 1;
         this.contextManager.updateOffset(whatsappId, newOffset);
 
-        // Show the first new station
+        
         const newStation = newResults.stations[0];
         await this.displayController.showStationCard(whatsappId, newStation, newOffset + 1, updatedContext.lastSearchResults.totalCount);
         
@@ -284,7 +284,7 @@ export class LocationSearchController {
         '📋 Loading all nearby stations...'
       );
 
-      // Get user for search options
+      
       const user = await userService.getUserByWhatsAppId(whatsappId);
       if (!user) return;
 
@@ -332,7 +332,7 @@ export class LocationSearchController {
         '🔍 *Expanding search to 50km radius...*\n\nLooking for more charging stations...'
       );
 
-      // Get user for search options
+      
       const user = await userService.getUserByWhatsAppId(whatsappId);
       if (!user) return;
 
@@ -358,7 +358,7 @@ export class LocationSearchController {
         return;
       }
 
-      // Update context with expanded results
+      
       this.contextManager.updateSearchResults(whatsappId, results);
 
       await whatsappService.sendTextMessage(
@@ -366,7 +366,7 @@ export class LocationSearchController {
         `🎯 *Found ${results.totalCount} stations within 50km!*\n\nShowing results sorted by distance...`
       );
 
-      // Show results
+      
       await this.displayController.displayStationResults(whatsappId, results, 0);
 
     } catch (error) {
@@ -416,7 +416,7 @@ export class LocationSearchController {
         return;
       }
 
-      // Update context
+      
       this.contextManager.updateSearchResults(whatsappId, results);
 
       await whatsappService.sendTextMessage(
@@ -424,7 +424,7 @@ export class LocationSearchController {
         `🎯 *Found ${results.totalCount} stations (all types)*\n\nShowing all available options...`
       );
 
-      // Show results
+      
       await this.displayController.displayStationResults(whatsappId, results, 0);
 
     } catch (error) {

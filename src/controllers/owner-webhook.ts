@@ -1,4 +1,4 @@
-// src/controllers/owner-webhook.ts - MINIMAL FIXES ONLY
+
 import { whatsappService } from '../services/whatsapp';
 import { ownerService } from '../services/owner-service';
 import { ownerStationService } from '../services/owner-station-service';
@@ -88,17 +88,17 @@ export class OwnerWebhookController {
     }
   }
 
-  // FIX 1: Proper text handling with exit command
+  
   private async handleOwnerText(whatsappId: string, text: string, context: OwnerContext): Promise<void> {
     const cleanText = text.toLowerCase().trim();
 
-    // FIXED: Exit command handling
+    
     if (cleanText === 'exit' || cleanText === 'quit' || cleanText === 'back') {
       await this.exitOwnerMode(whatsappId);
       return;
     }
 
-    // Handle login input
+    
     if (context.waitingFor === 'business_name') {
       const trimmedText = text.trim();
       
@@ -131,7 +131,7 @@ export class OwnerWebhookController {
       return;
     }
 
-    // Handle other commands
+    
     const commands: Record<string, () => Promise<void>> = {
       'help': () => this.showOwnerHelp(whatsappId),
       'menu': () => this.showOwnerMainMenu(whatsappId),
@@ -149,18 +149,18 @@ export class OwnerWebhookController {
     }
   }
 
-  // FIX 2: Proper button handling
+  
   private async handleOwnerButton(whatsappId: string, button: any, context: OwnerContext): Promise<void> {
     const { id: buttonId, title } = button;
     logger.info('🏢 Owner button pressed', { whatsappId, buttonId, title });
 
-    // FIXED: Exit button handling
+    
     if (buttonId === 'exit_owner_mode') {
       await this.exitOwnerMode(whatsappId);
       return;
     }
 
-    // Parse button for routing
+    
     const parsed = parseOwnerButtonId(buttonId);
 
     switch (parsed.action || buttonId.replace('owner_', '')) {
@@ -195,7 +195,7 @@ export class OwnerWebhookController {
     }
   }
 
-  // FIX 3: Proper authentication screen
+  
   private async showOwnerAuthentication(whatsappId: string): Promise<void> {
     await whatsappService.sendTextMessage(
       whatsappId,
@@ -217,7 +217,7 @@ export class OwnerWebhookController {
     }, 1000);
   }
 
-  // FIX 4: Proper registration handler
+  
   private async handleOwnerRegistration(whatsappId: string): Promise<void> {
     await whatsappService.sendTextMessage(
       whatsappId,
@@ -240,7 +240,7 @@ export class OwnerWebhookController {
     }, 2000);
   }
 
-  // FIX 5: Proper login handler
+  
   private async handleOwnerLogin(whatsappId: string): Promise<void> {
     const context = this.getOwnerContext(whatsappId);
     if (context) {
@@ -300,7 +300,7 @@ export class OwnerWebhookController {
     }, 1500);
   }
 
-  // Placeholder methods (existing functionality)
+  
   private async showStationManagement(whatsappId: string): Promise<void> {
     await whatsappService.sendTextMessage(whatsappId, '🔌 Station Management - Coming soon');
   }
@@ -331,16 +331,16 @@ export class OwnerWebhookController {
   }
 
   private async handleOwnerList(whatsappId: string, list: any, context: OwnerContext): Promise<void> {
-    // Placeholder for list handling
+    
     await this.sendOwnerError(whatsappId, 'List handling not implemented yet.');
   }
 
-  // Utility methods
+  
   isInOwnerMode(whatsappId: string): boolean {
     return this.ownerContexts.has(whatsappId);
   }
 
-  // FIX 6: Proper exit functionality
+  
   private async exitOwnerMode(whatsappId: string): Promise<void> {
     this.ownerContexts.delete(whatsappId);
 
@@ -362,7 +362,7 @@ export class OwnerWebhookController {
     );
   }
 
-  // Context management
+  
   private getOwnerContext(whatsappId: string): OwnerContext | null {
     const context = this.ownerContexts.get(whatsappId);
     if (context && Date.now() - context.lastActivity.getTime() > this.CONTEXT_TIMEOUT) {
@@ -388,7 +388,7 @@ export class OwnerWebhookController {
     this.ownerContexts.set(whatsappId, context);
   }
 
-  // Cleanup methods
+  
   cleanupExpiredContexts(): void {
     const now = Date.now();
     for (const [whatsappId, context] of this.ownerContexts.entries()) {

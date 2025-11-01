@@ -28,12 +28,12 @@ isDuplicate(messageKey: string): boolean {
     const now = Date.now();
     const lastSeen = this.processedMessages.get(messageKey);
     
-    // Fast return for active duplicates
+    
     if (lastSeen && now - lastSeen < this.TTL) {
         return true;
     }
     
-    // If cache too large, trim oldest entries
+    
     if (this.processedMessages.size >= this.MAX_CACHE_SIZE) {
         this.trimCache();
     }
@@ -56,7 +56,7 @@ isDuplicate(messageKey: string): boolean {
       }
     }
 
-    // Log only once every 5 minutes max to avoid spam
+    
     if (removed > 0 && now - this.lastCleanupLog > 5 * 60 * 1000) {
       this.lastCleanupLog = now;
       logger.info(`🧹 Message cache cleanup complete`, {

@@ -1,12 +1,12 @@
-// src/services/analytics.ts - CLEAN, POWERFUL, ERROR-FREE IMPLEMENTATION
+
 import { db } from '../db/connection';
 import { chargingStations, queues, chargingSessions, users } from '../db/schema';
 import { eq, and, desc, sql, gte, lte, count, sum, avg, between } from 'drizzle-orm';
 import { logger } from '../utils/logger';
 
-// ===============================================
-// COMPLETE TYPES & INTERFACES
-// ===============================================
+
+
+
 
 export interface StationAnalytics {
   stationId: number;
@@ -96,9 +96,9 @@ interface AlertData {
   expiresAt: Date;
 }
 
-// ===============================================
-// COMPLETE ANALYTICS SERVICE CLASS - CLEANED & FIXED
-// ===============================================
+
+
+
 
 class AnalyticsService {
   private cache = new Map<string, { data: any; expiry: number }>();
@@ -112,7 +112,7 @@ class AnalyticsService {
       const now = new Date();
       const currentHour = now.getHours();
       
-      // Get current queue length
+      
       const currentQueue = await db
         .select({ count: count() })
         .from(queues)
@@ -125,7 +125,7 @@ class AnalyticsService {
 
       const currentQueueLength = Number(currentQueue[0]?.count) || 0;
 
-      // Get average wait time from recent sessions (last 7 days)
+      
       const recentSessions = await db
         .select({
           waitTime: sql<number>`EXTRACT(EPOCH FROM (${chargingSessions.startedAt} - ${chargingSessions.createdAt})) / 60`
@@ -143,7 +143,7 @@ class AnalyticsService {
         ? Math.round(recentSessions.reduce((sum, s) => sum + (Number(s.waitTime) || 0), 0) / recentSessions.length)
         : 5;
 
-      // Get peak hours from historical data
+      
       const peakHoursData = await db
         .select({
           hour: sql<string>`EXTRACT(HOUR FROM ${chargingSessions.createdAt})`,
@@ -169,7 +169,7 @@ class AnalyticsService {
 
       const isPeakHour = peakHoursData.slice(0, 3).some(p => parseInt(String(p.hour)) === currentHour);
 
-      // Calculate utilization (last 24 hours)
+      
       const utilizationData = await db
         .select({
           totalSessions: count(),
@@ -189,7 +189,7 @@ class AnalyticsService {
       const maxPossibleSessions = Math.floor((24 * 60) / avgDurationMinutes);
       const utilization = Math.min(Math.round((sessionsToday / maxPossibleSessions) * 100), 100);
 
-      // Calculate efficiency based on successful completions
+      
       const completedSessions = await db
         .select({ count: count() })
         .from(chargingSessions)
@@ -215,12 +215,12 @@ class AnalyticsService {
         ? Math.round((Number(completedSessions[0]?.count) / Number(totalSessionsWeek[0]?.count)) * 100)
         : 95;
 
-      // Estimate current wait time based on queue and average processing time
+      
       const baseWaitTime = averageWaitTime * Math.max(currentQueueLength, 1);
       const peakMultiplier = isPeakHour ? 1.3 : 1.0;
       const estimatedWaitTime = Math.round(baseWaitTime * peakMultiplier);
 
-      // Calculate user satisfaction (based on ratings and completion rates)
+      
       const stationData = await db
         .select({
           rating: chargingStations.rating,
@@ -235,14 +235,14 @@ class AnalyticsService {
       const stationRating = Number(stationData[0]?.rating || stationData[0]?.averageRating) || 4.0;
       const userSatisfaction = Math.min(Math.round((stationRating / 5.0) * 100), 100);
 
-      // Generate trend data
+      
       const trends: TrendData = {
         hourly: await this.getHourlyTrends(stationId),
         daily: await this.getDailyTrends(stationId),
         weekly: await this.getWeeklyTrends(stationId)
       };
 
-      // Generate live data
+      
       const liveData: LiveStationData = {
         activeSessions: await this.getActiveSessionsCount(stationId),
         queueLength: currentQueueLength,
@@ -308,7 +308,7 @@ class AnalyticsService {
       const now = new Date();
       const currentHour = now.getHours();
       
-      // Get historical data for the last 30 days by hour
+      
       const hourlyData = await db
         .select({
           hour: sql<string>`EXTRACT(HOUR FROM ${chargingSessions.createdAt})`,
@@ -326,11 +326,11 @@ class AnalyticsService {
         .groupBy(sql`EXTRACT(HOUR FROM ${chargingSessions.createdAt})`)
         .orderBy(sql`EXTRACT(HOUR FROM ${chargingSessions.createdAt})`);
 
-      // Convert to optimal times array
+      
       const optimalTimes: OptimalTime[] = [];
       const hourlyMap = new Map(hourlyData.map(h => [parseInt(String(h.hour)), h]));
 
-      // Generate recommendations for next 12 hours
+      
       for (let i = 1; i <= 12; i++) {
         const targetHour = (currentHour + i) % 24;
         const histData = hourlyMap.get(targetHour);
@@ -404,7 +404,7 @@ class AnalyticsService {
       const currentHour = now.getHours();
       const dayOfWeek = now.getDay();
       
-      // Get current queue length
+      
       const queueData = await db
         .select({
           queueLength: count(),
@@ -420,7 +420,7 @@ class AnalyticsService {
 
       const currentQueueLength = Number(queueData[0]?.queueLength) || 0;
 
-      // Get recent average session duration
+      
       const recentSessions = await db
         .select({
           duration: sql<number>`EXTRACT(EPOCH FROM (${chargingSessions.endedAt} - ${chargingSessions.startedAt})) / 60`
@@ -439,7 +439,7 @@ class AnalyticsService {
         ? Math.round(recentSessions.reduce((sum, s) => sum + (Number(s.duration) || 0), 0) / recentSessions.length)
         : 45;
 
-      // Calculate dynamic factors
+      
       const factors: DynamicFactors = {
         timeOfDay: this.getTimeOfDayFactor(currentHour),
         dayOfWeek: this.getDayOfWeekFactor(dayOfWeek),
@@ -448,23 +448,23 @@ class AnalyticsService {
         stationEfficiency: 0.95
       };
 
-      // Calculate base wait time
+      
       const baseWaitTime = avgSessionDuration * Math.max(currentQueueLength, 0);
       
-      // Apply dynamic factors
+      
       const dynamicMultiplier = factors.timeOfDay * factors.dayOfWeek * factors.weatherImpact * factors.seasonalFactor;
       const adjustedWaitTime = Math.round(baseWaitTime * dynamicMultiplier / factors.stationEfficiency);
       
-      // Ensure realistic bounds
+      
       const estimatedWait = Math.max(Math.min(adjustedWaitTime, 180), 0);
 
-      // Calculate confidence based on data recency and volume
+      
       const confidence = Math.min(
         Math.round((recentSessions.length / 20) * 80 + 20),
         95
       );
 
-      // Generate expected time
+      
       const expectedTime = new Date(now.getTime() + estimatedWait * 60 * 1000);
       const expectedTimeStr = expectedTime.toLocaleTimeString('en-IN', { 
         hour: 'numeric', 
@@ -472,7 +472,7 @@ class AnalyticsService {
         hour12: true 
       });
 
-      // Generate recent changes analysis
+      
       const recentChanges: string[] = [];
       
       if (currentQueueLength === 0) {
@@ -489,7 +489,7 @@ class AnalyticsService {
         recentChanges.push('📉 Off-peak hours - faster service');
       }
 
-      // Generate contextual tip
+      
       let tip: string;
       
       if (estimatedWait <= 5) {
@@ -529,9 +529,9 @@ class AnalyticsService {
     }
   }
 
-  // ===============================================
-  // HELPER METHODS - CLEANED & ORGANIZED
-  // ===============================================
+  
+  
+  
 
   /**
    * Get active sessions count for a station
@@ -676,7 +676,7 @@ class AnalyticsService {
     }
   }
 
-  // Dynamic factor calculation methods
+  
   private getTimeOfDayFactor(hour: number): number {
     if (hour >= 8 && hour <= 10) return 1.4; // Morning rush
     if (hour >= 17 && hour <= 19) return 1.5; // Evening rush
@@ -698,9 +698,9 @@ class AnalyticsService {
     return 1.0; // Normal months
   }
 
-  // ===============================================
-  // ADDITIONAL UTILITY METHODS
-  // ===============================================
+  
+  
+  
 
   /**
    * Submit user rating for a station
@@ -739,5 +739,5 @@ class AnalyticsService {
   }
 }
 
-// Export singleton instance
+
 export const analyticsService = new AnalyticsService();

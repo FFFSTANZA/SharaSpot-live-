@@ -12,7 +12,7 @@ export interface LocationContext {
 }
 
 export class LocationContextManager {
-  // Store location contexts (in production, use Redis)
+  
   private locationContexts = new Map<string, LocationContext>();
 
   /**

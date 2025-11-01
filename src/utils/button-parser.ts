@@ -1,9 +1,9 @@
-// src/utils/button-parser.ts - UNIFIED BUTTON ID PARSER WITH START_CHARGING FIX
+
 import { logger } from './logger';
 
-// ===============================================
-// TYPES & INTERFACES
-// ===============================================
+
+
+
 
 export interface ButtonParseResult {
   action: string;
@@ -13,46 +13,46 @@ export interface ButtonParseResult {
   index?: number;
 }
 
-// ===============================================
-// BUTTON ID PATTERNS
-// ===============================================
+
+
+
 
 const BUTTON_PATTERNS = {
-  // Station patterns
+  
   BOOK_STATION: /^book_station_(\d+)$/,
   STATION_INFO: /^station_info_(\d+)$/,
   SELECT_STATION: /^select_station_(\d+)$/,
   GET_DIRECTIONS: /^get_directions_(\d+)$/,
   FIND_ALTERNATIVES: /^find_alternatives_(\d+)$/,
   
-  // Queue patterns
+  
   JOIN_QUEUE: /^join_queue_(\d+)$/,
   QUEUE_STATUS: /^queue_status_(\d+)$/,
   CANCEL_QUEUE: /^cancel_queue_(\d+)$/,
   CONFIRM_CANCEL: /^confirm_cancel_(\d+)$/,
   
-  // Session patterns
+  
   START_SESSION: /^start_session_(\d+)$/,
   START_CHARGING: /^start_charging_(\d+)$/,  // ✅ ADDED - Critical fix
   SESSION_STATUS: /^session_status_(\d+)$/,
   SESSION_STOP: /^session_stop_(\d+)$/,
   EXTEND_SESSION: /^extend_(\d+)_(\d+)$/, // extend_minutes_stationId
   
-  // Location patterns
+  
   RECENT_SEARCH: /^recent_search_(\d+)$/,
   
-  // Rating patterns
+  
   RATE_STATION: /^rate_(\d)_(\d+)$/, // rate_score_stationId
   
-  // General patterns (less specific)
+  
   GENERAL_STATION: /^(?:.*_)?station_(\d+)$/,
   GENERAL_ACTION: /^.*_(\d+)$/,
   NUMERIC_ONLY: /^(\d+)$/
 };
 
-// ===============================================
-// MAIN PARSER FUNCTION
-// ===============================================
+
+
+
 
 /**
  * Parse button ID into structured result
@@ -63,9 +63,9 @@ export function parseButtonId(buttonId: string): ButtonParseResult {
   }
 
   try {
-    // Try specific patterns first (most specific to least specific)
     
-    // Station patterns
+    
+    
     let match = buttonId.match(BUTTON_PATTERNS.BOOK_STATION);
     if (match) {
       return {
@@ -111,7 +111,7 @@ export function parseButtonId(buttonId: string): ButtonParseResult {
       };
     }
 
-    // Queue patterns
+    
     match = buttonId.match(BUTTON_PATTERNS.JOIN_QUEUE);
     if (match) {
       return {
@@ -148,7 +148,7 @@ export function parseButtonId(buttonId: string): ButtonParseResult {
       };
     }
 
-    // Session patterns
+    
     match = buttonId.match(BUTTON_PATTERNS.START_SESSION);
     if (match) {
       return {
@@ -158,7 +158,7 @@ export function parseButtonId(buttonId: string): ButtonParseResult {
       };
     }
 
-    // ✅ CRITICAL FIX: Handle start_charging pattern
+    
     match = buttonId.match(BUTTON_PATTERNS.START_CHARGING);
     if (match) {
       return {
@@ -196,7 +196,7 @@ export function parseButtonId(buttonId: string): ButtonParseResult {
       };
     }
 
-    // Location patterns
+    
     match = buttonId.match(BUTTON_PATTERNS.RECENT_SEARCH);
     if (match) {
       return {
@@ -207,7 +207,7 @@ export function parseButtonId(buttonId: string): ButtonParseResult {
       };
     }
 
-    // Rating patterns
+    
     match = buttonId.match(BUTTON_PATTERNS.RATE_STATION);
     if (match) {
       return {
@@ -218,7 +218,7 @@ export function parseButtonId(buttonId: string): ButtonParseResult {
       };
     }
 
-    // Generic patterns (fallback)
+    
     match = buttonId.match(BUTTON_PATTERNS.GENERAL_STATION);
     if (match) {
       const parts = buttonId.split('_');
@@ -248,7 +248,7 @@ export function parseButtonId(buttonId: string): ButtonParseResult {
       };
     }
 
-    // No pattern matched - check for system buttons
+    
     return parseSystemButton(buttonId);
 
   } catch (error) {
@@ -260,9 +260,9 @@ export function parseButtonId(buttonId: string): ButtonParseResult {
   }
 }
 
-// ===============================================
-// HELPER FUNCTIONS
-// ===============================================
+
+
+
 
 /**
  * Create empty parsing result
@@ -317,7 +317,7 @@ function parseSystemButton(buttonId: string): ButtonParseResult {
     };
   }
 
-  // Check for location buttons
+  
   const locationButtons = [
     'share_gps_location', 'type_address', 'location_help',
     'recent_searches', 'next_station', 'load_more_stations',
@@ -335,9 +335,9 @@ function parseSystemButton(buttonId: string): ButtonParseResult {
   return createEmptyResult();
 }
 
-// ===============================================
-// VALIDATION FUNCTIONS
-// ===============================================
+
+
+
 
 /**
  * Check if button ID is valid format
@@ -347,7 +347,7 @@ export function isValidButtonId(buttonId: string): boolean {
     return false;
   }
 
-  // Basic format validation
+  
   return /^[a-zA-Z0-9_-]+$/.test(buttonId) && buttonId.length <= 50;
 }
 
@@ -381,7 +381,7 @@ export function isLocationButton(buttonId: string): boolean {
     'expand_search', 'remove_filters', 'new_search'
   ];
   
-  // ✅ REMOVED 'start_charging' from location buttons - it's a session button
+  
   return locationButtons.includes(buttonId) || buttonId.startsWith('recent_search_');
 }
 
@@ -407,9 +407,9 @@ export function isSessionButton(buttonId: string): boolean {
   return sessionPrefixes.some(prefix => buttonId.startsWith(prefix));
 }
 
-// ===============================================
-// DEBUGGING UTILITIES
-// ===============================================
+
+
+
 
 /**
  * Get human-readable description of parsed button

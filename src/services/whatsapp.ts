@@ -1,12 +1,12 @@
-// src/services/whatsapp.ts - ENHANCED & EFFICIENT
+
 import axios from 'axios';
 import { env } from '../config/env';
 import { logger } from '../utils/logger';
 import { ButtonMessage, ListMessage, LocationMessage } from '../types/whatsapp';
 
-// ===============================================
-// INTERFACES & TYPES
-// ===============================================
+
+
+
 
 interface WhatsAppButtonData {
   id: string;
@@ -28,9 +28,9 @@ interface WhatsAppResponse {
   messages: Array<{ id: string }>;
 }
 
-// ===============================================
-// WHATSAPP SERVICE CLASS
-// ===============================================
+
+
+
 
 class WhatsAppService {
   private readonly baseUrl: string;
@@ -78,7 +78,7 @@ class WhatsAppService {
     header?: string
   ): Promise<boolean> {
     try {
-      // Validate and truncate button titles (20 char max)
+      
       const validatedButtons = buttons.slice(0, 3).map(btn => ({
         type: "reply" as const,
         reply: {
@@ -98,7 +98,7 @@ class WhatsAppService {
         },
       };
 
-      // Add header if provided
+      
       if (header?.trim()) {
         payload.interactive.header = {
           type: 'text',
@@ -130,7 +130,7 @@ class WhatsAppService {
     header?: string
   ): Promise<boolean> {
     try {
-      // Validate sections and rows
+      
       const validatedSections = sections.slice(0, 10).map(section => ({
         title: this.truncateText(section.title, 24),
         rows: section.rows.slice(0, 10).map(row => ({
@@ -154,7 +154,7 @@ class WhatsAppService {
         },
       };
 
-      // Add header if provided
+      
       if (header?.trim()) {
         payload.interactive.header = {
           type: 'text',
@@ -403,9 +403,9 @@ class WhatsAppService {
     }
   }
 
-  // ===============================================
-  // UTILITY METHODS
-  // ===============================================
+  
+  
+  
 
   /**
    * Truncate text to specified length with ellipsis
@@ -435,7 +435,7 @@ class WhatsAppService {
    * Validate phone number format
    */
   private isValidPhoneNumber(phoneNumber: string): boolean {
-    // Basic validation for international phone numbers
+    
     const phoneRegex = /^\+?[1-9]\d{1,14}$/;
     return phoneRegex.test(phoneNumber.replace(/\s+/g, ''));
   }
@@ -444,10 +444,10 @@ class WhatsAppService {
    * Format phone number for WhatsApp
    */
   private formatPhoneNumber(phoneNumber: string): string {
-    // Remove spaces and special characters, keep only digits and +
+    
     let formatted = phoneNumber.replace(/[^\d+]/g, '');
     
-    // Add + if missing for international numbers
+    
     if (!formatted.startsWith('+') && formatted.length > 10) {
       formatted = '+' + formatted;
     }
@@ -465,9 +465,9 @@ class WhatsAppService {
     return 'unknown';
   }
 
-  // ===============================================
-  // BULK OPERATIONS
-  // ===============================================
+  
+  
+  
 
   /**
    * Send bulk text messages (rate limited)
@@ -486,7 +486,7 @@ class WhatsAppService {
         if (sent) success++;
         else failed++;
         
-        // Rate limiting delay
+        
         if (delayMs > 0) {
           await this.delay(delayMs);
         }
@@ -507,16 +507,16 @@ class WhatsAppService {
     return new Promise(resolve => setTimeout(resolve, ms));
   }
 
-  // ===============================================
-  // HEALTH & MONITORING
-  // ===============================================
+  
+  
+  
 
   /**
    * Test WhatsApp API connection
    */
   async testConnection(): Promise<boolean> {
     try {
-      // Send a test message to a dummy number (will fail but test API access)
+      
       await axios.post(this.baseUrl, {
         messaging_product: 'whatsapp',
         to: '1234567890',
@@ -528,7 +528,7 @@ class WhatsAppService {
       
       return true;
     } catch (error: any) {
-      // If error is about invalid phone number, API is working
+      
       if (error.response?.status === 400) {
         return true;
       }
@@ -552,8 +552,8 @@ class WhatsAppService {
   }
 }
 
-// ===============================================
-// SINGLETON EXPORT
-// ===============================================
+
+
+
 
 export const whatsappService = new WhatsAppService();

@@ -1,4 +1,4 @@
-// src/utils/queue-scheduler.ts - PRODUCTION READY & FULLY OPTIMIZED
+
 
 import { queueService } from '../services/queue';
 import { analyticsService } from '../services/analytics';
@@ -12,9 +12,9 @@ import { eq, and, lt, sql, inArray } from 'drizzle-orm';
 import pLimit from 'p-limit';
 import { performance } from 'perf_hooks';
 
-// ===============================================
-// TYPES & INTERFACES
-// ===============================================
+
+
+
 
 interface ScheduledTask {
   id: string;
@@ -44,9 +44,9 @@ interface SystemMetrics {
   avgTaskLatencyMs: number;
 }
 
-// ===============================================
-// QUEUE SCHEDULER WITH PHOTO VERIFICATION
-// ===============================================
+
+
+
 
 class QueueScheduler {
   private isRunning = false;
@@ -56,7 +56,7 @@ class QueueScheduler {
   private taskLatencies: number[] = [];
   private readonly MAX_LATENCIES = 100;
 
-  // Concurrency limits per task type
+  
   private readonly concurrencyLimits = {
     cleanup: pLimit(2),
     optimization: pLimit(3),
@@ -68,7 +68,7 @@ class QueueScheduler {
     verification: pLimit(3),
   };
 
-  // Adaptive intervals
+  
   private readonly baseIntervals = {
     cleanup: 2 * 60 * 1000,           // 2 min - Queue cleanup
     optimization: 5 * 60 * 1000,      // 5 min - Queue optimization
@@ -131,9 +131,9 @@ class QueueScheduler {
     },
   ];
 
-  // ===============================================
-  // LIFECYCLE MANAGEMENT
-  // ===============================================
+  
+  
+  
 
   async start(): Promise<void> {
     if (this.isRunning) {
@@ -146,7 +146,7 @@ class QueueScheduler {
 
     logger.info('🚀 Starting Queue Scheduler with Photo Verification...');
 
-    // Start all processes
+    
     this.processes.forEach(({ name, interval, handler }) => {
       this.startProcess(name, interval, handler);
     });
@@ -160,22 +160,22 @@ class QueueScheduler {
     logger.info('🛑 Stopping Queue Scheduler...');
     this.isRunning = false;
 
-    // Clear all intervals
+    
     for (const [name, timer] of this.intervals) {
       clearInterval(timer);
       logger.debug(`⏹️ Stopped interval: ${name}`);
     }
     this.intervals.clear();
 
-    // Cancel pending tasks
+    
     this.tasks.clear();
 
     logger.info('⏹️ Queue Scheduler stopped');
   }
 
-  // ===============================================
-  // CORE PROCESS MANAGEMENT
-  // ===============================================
+  
+  
+  
 
   private startProcess(name: string, interval: number, handler: () => Promise<void>): void {
     const timer = setInterval(async () => {
@@ -207,9 +207,9 @@ class QueueScheduler {
     return this.taskLatencies.reduce((a, b) => a + b, 0) / this.taskLatencies.length;
   }
 
-  // ===============================================
-  // QUEUE MANAGEMENT HANDLERS
-  // ===============================================
+  
+  
+  
 
   /**
    * Cleanup expired reservations
@@ -290,7 +290,7 @@ class QueueScheduler {
 
     let optimized = false;
 
-    // Auto-promote if first slot expired >5 min
+    
     const first = queueData.find(q => q.position === 1 && q.status === 'reserved');
     if (first?.reservationExpiry && Date.now() - first.reservationExpiry.getTime() > 5 * 60 * 1000) {
       const next = queueData.find(q => q.position === 2 && q.status === 'waiting');
@@ -303,7 +303,7 @@ class QueueScheduler {
       }
     }
 
-    // Rebalance positions if needed
+    
     const active = queueData.filter(q => !['cancelled', 'completed'].includes(q.status));
     const needsRebalance = active.some((q, i) => q.position !== i + 1);
     
@@ -328,9 +328,9 @@ class QueueScheduler {
     return optimized;
   }
 
-  // ===============================================
-  // NOTIFICATION HANDLERS
-  // ===============================================
+  
+  
+  
 
   /**
    * Process queue notifications
@@ -356,7 +356,7 @@ class QueueScheduler {
     const notifications = active
       .map(q => {
         const waitMin = Math.floor((now - q.createdAt!.getTime()) / (1000 * 60));
-        // Send notification every 15 minutes for first hour
+        
         if (waitMin > 0 && waitMin % 15 === 0 && waitMin <= 60) {
           return this.concurrencyLimits.notifications(() =>
             notificationService.sendQueueProgressNotification(
@@ -377,9 +377,9 @@ class QueueScheduler {
     }
   }
 
-  // ===============================================
-  // ANALYTICS HANDLERS
-  // ===============================================
+  
+  
+  
 
   /**
    * Update analytics for all stations
@@ -438,9 +438,9 @@ class QueueScheduler {
     });
   }
 
-  // ===============================================
-  // SESSION MONITORING WITH VERIFICATION - FIXED
-  // ===============================================
+  
+  
+  
 
   /**
    * Monitor active charging sessions
@@ -458,7 +458,7 @@ class QueueScheduler {
             return null;
           }
 
-          // ✅ Check verification status
+          
           if (sessionData.verificationStatus === 'awaiting_start_photo') {
             const waitTime = Date.now() - sessionData.createdAt!.getTime();
             if (waitTime > 10 * 60 * 1000) { // 10 min timeout
@@ -484,14 +484,14 @@ class QueueScheduler {
             return 'verification_pending';
           }
 
-          // Only monitor active charging sessions
+          
           if (sessionData.status !== 'active') {
             return 'not_active';
           }
 
-          // ✅ FIX: Get battery data from in-memory session object (not DB)
-          // The DB schema doesn't have currentBatteryLevel/targetBatteryLevel
-          // These are tracked in memory by sessionService
+          
+          
+          
           const currentBattery = session.currentBatteryLevel || 0;
           const targetBattery = session.targetBatteryLevel || 80;
 
@@ -510,13 +510,13 @@ class QueueScheduler {
             return 'target_reached';
           }
 
-          // Check duration-based completion
+          
           if (sessionData.startTime) {
             const durationMinutes = Math.floor(
               (Date.now() - sessionData.startTime.getTime()) / (1000 * 60)
             );
             
-            // Auto-request end photo after 4 hours
+            
             if (durationMinutes > 240) {
               logger.info('⏰ Session exceeded 4 hours, requesting end photo', {
                 sessionId: session.id,
@@ -532,7 +532,7 @@ class QueueScheduler {
             }
           }
 
-          // Check for power anomalies (if available)
+          
           const maxPowerUsed = parseFloat(sessionData.maxPowerUsed?.toString() || '0');
           if (maxPowerUsed > 0 && maxPowerUsed < 5) {
             logger.warn('⚠️ Low power usage detected', {
@@ -582,19 +582,19 @@ class QueueScheduler {
     return sessions[0] || null;
   }
 
-  // ===============================================
-  // PHOTO VERIFICATION CLEANUP
-  // ===============================================
+  
+  
+  
 
   /**
    * Cleanup expired verification states
    */
 async cleanupVerificationStates() {
   try {
-    // Use the photoVerificationService cleanup method
+    
     photoVerificationService.cleanupExpiredStates();
 
-    // Also cleanup orphaned verification sessions in DB
+    
     const orphanedSessions = await db
       .select({
         sessionId: chargingSessions.sessionId,
@@ -629,28 +629,28 @@ async cleanupVerificationStates() {
       logger.info(`✅ Cleaned ${orphanedSessions.length} orphaned verification sessions`);
     }
   } catch (error) {
-    // ✅ Better error logging
+    
     logger.error('Verification cleanup failed', { 
       error: error instanceof Error ? error.message : String(error),
       stack: error instanceof Error ? error.stack : undefined
     });
   }
 }
-  // ===============================================
-  // ALERT HANDLERS
-  // ===============================================
+  
+  
+  
 
   /**
    * Check availability alerts
    */
   private async checkAvailabilityAlerts(): Promise<void> {
-    // Placeholder for future alert service integration
+    
     logger.debug('🚨 Availability alerts checked');
   }
 
-  // ===============================================
-  // PERFORMANCE MONITORING
-  // ===============================================
+  
+  
+  
 
   /**
    * Monitor system performance
@@ -676,7 +676,7 @@ async cleanupVerificationStates() {
 
     logger.info('📊 System Performance', metrics);
 
-    // Alert if too many expired verifications
+    
     if (expiredVerifications > 10) {
       logger.warn(`⚠️ High expired verification count: ${expiredVerifications}`);
     }
@@ -684,9 +684,9 @@ async cleanupVerificationStates() {
     this.cleanupCache();
   }
 
-  // ===============================================
-  // UTILITY METHODS
-  // ===============================================
+  
+  
+  
 
   private async countActiveQueues(): Promise<number> {
     const res = await db
@@ -744,9 +744,9 @@ async cleanupVerificationStates() {
     }
   }
 
-  // ===============================================
-  // SMART TASK SCHEDULING
-  // ===============================================
+  
+  
+  
 
   scheduleTask(
     type: ScheduledTask['type'],
@@ -827,9 +827,9 @@ async cleanupVerificationStates() {
     }
   }
 
-  // ===============================================
-  // STATUS & HEALTH
-  // ===============================================
+  
+  
+  
 
   getStatus() {
     return {
@@ -859,13 +859,13 @@ async cleanupVerificationStates() {
   }
 }
 
-// ===============================================
-// SINGLETON EXPORT
-// ===============================================
+
+
+
 
 export const queueScheduler = new QueueScheduler();
 
-// Auto-start in production
+
 if (process.env.NODE_ENV === 'production') {
   queueScheduler.start().catch(err => {
     logger.error('💥 Failed to start QueueScheduler', { err });
@@ -873,7 +873,7 @@ if (process.env.NODE_ENV === 'production') {
   });
 }
 
-// Graceful shutdown
+
 const shutdown = async () => {
   logger.info('⏳ Graceful shutdown initiated...');
   await queueScheduler.stop();

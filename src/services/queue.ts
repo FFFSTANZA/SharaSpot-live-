@@ -1,4 +1,4 @@
-// src/services/queue.ts - FINAL CONSTRAINT-SAFE VERSION
+
 import { db } from '../db/connection';
 import { sql } from 'drizzle-orm';
 import { logger } from '../utils/logger';
@@ -34,7 +34,7 @@ class QueueService {
     try {
       logger.info('Attempting to join queue - constraint-safe version', { userWhatsapp, stationId });
 
-      // Step 1: Check if an entry already exists (even if completed/cancelled)
+      
       const existingEntry = await db.execute(sql`
         SELECT id, status, position
         FROM queues 
@@ -44,7 +44,7 @@ class QueueService {
         LIMIT 1
       `);
 
-      // Step 2: Get station details first
+      
       const stationResult = await db.execute(sql`
         SELECT id, name, address, is_active, is_open, max_queue_length, average_session_minutes
         FROM charging_stations 
@@ -68,7 +68,7 @@ class QueueService {
         return null;
       }
 
-      // Step 3: Check current queue length
+      
       const queueCountResult = await db.execute(sql`
         SELECT COUNT(*) as count 
         FROM queues 
@@ -88,7 +88,7 @@ class QueueService {
         return null;
       }
 
-      // Step 4: Get next position
+      
       const positionResult = await db.execute(sql`
         SELECT COALESCE(MAX(position), 0) + 1 as next_position
         FROM queues 
@@ -101,11 +101,11 @@ class QueueService {
 
       let queueEntry: any;
 
-      // Step 5: CONSTRAINT-SAFE APPROACH - Update existing or insert new
+      
       if (existingEntry.rows.length > 0) {
         const existing = existingEntry.rows[0] as any;
         
-        // Update existing entry instead of creating new one (avoids constraint violation)
+        
         const updateResult = await db.execute(sql`
           UPDATE queues 
           SET 
@@ -128,7 +128,7 @@ class QueueService {
           });
         }
       } else {
-        // No existing entry - safe to insert new
+        
         const insertResult = await db.execute(sql`
           INSERT INTO queues (station_id, user_whatsapp, position, status, estimated_wait_minutes, joined_at)
           VALUES (${stationId}, ${userWhatsapp}, ${nextPosition}, 'waiting', ${estimatedWaitTime}, NOW())
@@ -151,10 +151,10 @@ class QueueService {
         return null;
       }
 
-      // Step 6: Update station queue count
+      
       await this.updateStationQueueCount(stationId);
 
-      // Step 7: Format response
+      
       const queuePosition: QueuePosition = {
         id: queueEntry.id,
         userWhatsapp: queueEntry.user_whatsapp,
@@ -169,7 +169,7 @@ class QueueService {
         stationAddress: station.address
       };
 
-      // Step 8: Send notifications (non-blocking)
+      
       this.sendNotifications(userWhatsapp, queuePosition, stationId, nextPosition);
 
       return queuePosition;
@@ -195,7 +195,7 @@ class QueueService {
     try {
       const status = reason === 'completed' ? 'completed' : 'cancelled';
       
-      // Get the queue entry before updating it
+      
       const queueResult = await db.execute(sql`
         SELECT id, position 
         FROM queues 
@@ -212,20 +212,20 @@ class QueueService {
 
       const queueEntry = queueResult.rows[0] as any;
 
-      // Update status instead of deleting (preserves history, avoids constraint issues)
+      
       await db.execute(sql`
         UPDATE queues 
         SET status = ${status}, updated_at = NOW()
         WHERE id = ${queueEntry.id}
       `);
 
-      // Reorder remaining queue
+      
       await this.reorderQueue(stationId, queueEntry.position);
 
-      // Update station queue count
+      
       await this.updateStationQueueCount(stationId);
 
-      // Notify queue progress
+      
       await this.notifyQueueProgress(stationId);
 
       logger.info('User left queue', { 
@@ -250,7 +250,7 @@ class QueueService {
     try {
       logger.info('Force joining queue - emergency method', { userWhatsapp, stationId });
 
-      // First, force update any existing entries to cancelled
+      
       await db.execute(sql`
         UPDATE queues 
         SET status = 'cancelled', updated_at = NOW()
@@ -259,10 +259,10 @@ class QueueService {
         AND status NOT IN ('completed', 'cancelled')
       `);
 
-      // Wait a moment for database consistency
+      
       await new Promise(resolve => setTimeout(resolve, 100));
 
-      // Now try the normal join
+      
       return await this.joinQueue(userWhatsapp, stationId);
 
     } catch (error) {
@@ -320,7 +320,7 @@ class QueueService {
    */
   async reserveSlot(userWhatsapp: string, stationId: number, reservationMinutes: number = 15): Promise<boolean> {
     try {
-      // Check if user is first in queue
+      
       const queueResult = await db.execute(sql`
         SELECT id 
         FROM queues 
@@ -339,7 +339,7 @@ class QueueService {
       const queueEntry = queueResult.rows[0] as any;
       const expiryTime = new Date(Date.now() + (reservationMinutes * 60 * 1000));
 
-      // Check if reservation_expiry column exists
+      
       const columnExists = await this.checkColumnExists('queues', 'reservation_expiry');
       
       if (columnExists) {
@@ -384,7 +384,7 @@ class QueueService {
         return false;
       }
 
-      // Promote next user in queue
+      
       await this.promoteNextInQueue(stationId);
 
       logger.info('Charging session started', { userWhatsapp, stationId });
@@ -415,7 +415,7 @@ class QueueService {
         return false;
       }
 
-      // Update station and promote next user
+      
       await Promise.all([
         this.updateStationQueueCount(stationId),
         this.promoteNextInQueue(stationId)
@@ -430,9 +430,9 @@ class QueueService {
     }
   }
 
-  // ==============================================
-  // PRIVATE HELPER METHODS
-  // ==============================================
+  
+  
+  
 
   /**
    * Check if a column exists in a table
@@ -524,7 +524,7 @@ class QueueService {
    */
   private async promoteNextInQueue(stationId: number): Promise<void> {
     try {
-      // Find next person in queue (position 2, since position 1 just left)
+      
       const nextResult = await db.execute(sql`
         SELECT user_whatsapp 
         FROM queues 
@@ -537,10 +537,10 @@ class QueueService {
       if (nextResult.rows.length > 0) {
         const nextInQueue = nextResult.rows[0] as any;
         
-        // Auto-reserve for 15 minutes
+        
         await this.reserveSlot(nextInQueue.user_whatsapp, stationId, 15);
         
-        // Reorder remaining queue
+        
         await this.reorderQueue(stationId, 1);
       }
     } catch (error) {
@@ -565,14 +565,14 @@ class QueueService {
         const userQueue = user as any;
         const newWaitTime = this.calculateWaitTime(userQueue.position, 45);
         
-        // Update estimated wait time
+        
         await db.execute(sql`
           UPDATE queues 
           SET estimated_wait_minutes = ${newWaitTime}, updated_at = NOW()
           WHERE id = ${userQueue.id}
         `);
 
-        // Send progress notification (non-blocking)
+        
         this.sendProgressNotification(userQueue.user_whatsapp, stationId, userQueue.position, newWaitTime);
       }
     } catch (error) {
@@ -585,10 +585,10 @@ class QueueService {
  */
 async getQueueStats(stationId: number): Promise<QueueStats> {
   try {
-    // Get current queue length
+    
     const queueLength = await this.getQueueLength(stationId);
     
-    // Get average wait time from completed queues in last 7 days
+    
     const avgWaitResult = await db.execute(sql`
       SELECT AVG(estimated_wait_minutes) as avg_wait
       FROM queues 
@@ -599,7 +599,7 @@ async getQueueStats(stationId: number): Promise<QueueStats> {
     
     const avgWaitTime = Number((avgWaitResult.rows[0] as any)?.avg_wait || 45);
 
-    // Get peak hours from last 30 days
+    
     const peakHoursResult = await db.execute(sql`
       SELECT 
         EXTRACT(HOUR FROM created_at) as hour,
@@ -632,9 +632,9 @@ async getQueueStats(stationId: number): Promise<QueueStats> {
   }
 }
 
-  // ==============================================
-  // NOTIFICATION HELPERS (NON-BLOCKING)
-  // ==============================================
+  
+  
+  
 
   /**
    * Send join queue notifications (non-blocking)

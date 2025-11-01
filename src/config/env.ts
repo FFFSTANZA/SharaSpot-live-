@@ -1,16 +1,16 @@
-// src/config/env.ts - ENHANCED ENVIRONMENT CONFIGURATION WITH VALIDATION
+
 import { z } from 'zod';
 import dotenv from 'dotenv';
 
-// Load environment variables
+
 dotenv.config();
 
-// ===============================================
-// ENHANCED ENVIRONMENT SCHEMA
-// ===============================================
+
+
+
 
 const envSchema = z.object({
-  // Core Application Settings
+  
   NODE_ENV: z.enum(['development', 'production', 'test']).default('development'),
   PORT: z.string().transform((val) => {
     const num = Number(val);
@@ -20,23 +20,23 @@ const envSchema = z.object({
     return num;
   }).default('3000'),
   
-  // WhatsApp Configuration (Required)
+  
   WHATSAPP_TOKEN: z.string().min(50, 'WhatsApp token must be at least 50 characters'),
   PHONE_NUMBER_ID: z.string().min(10, 'Phone number ID must be at least 10 characters'),
   VERIFY_TOKEN: z.string().min(8, 'Verify token must be at least 8 characters'),
   
-  // Razorpay Configuration
+  
   RAZORPAY_KEY_ID: z.string().optional(),
   RAZORPAY_KEY_SECRET: z.string().optional(),
-  // ✅ ADD THIS: Razorpay webhook signing secret
+  
   RAZORPAY_WEBHOOK_SECRET: z.string().optional(), // Required in production
   
-  // Application Base URL (Optional)
+  
   APP_BASE_URL: z.string()
     .url('APP_BASE_URL must be a valid URL')
     .default('http://localhost:3000'),
   
-  // Database Configuration (Required)
+  
   DATABASE_URL: z.string()
     .url('Must be a valid database URL')
     .refine((url) => {
@@ -44,10 +44,10 @@ const envSchema = z.object({
       return validProtocols.some(protocol => url.startsWith(protocol));
     }, 'Database URL must use a supported protocol (postgres, mysql, sqlite)'),
   
-  // Logging Configuration
+  
   LOG_LEVEL: z.enum(['error', 'warn', 'info', 'debug']).default('info'),
   
-  // Server Optimization Settings (Optional)
+  
   ENABLE_QUEUE_SCHEDULER: z.string()
     .optional()
     .transform((val) => val !== 'false')
@@ -67,13 +67,13 @@ const envSchema = z.object({
     })
     .default('60000'),
   
-  // CORS Configuration (Optional)
+  
   ALLOWED_ORIGINS: z.string()
     .optional()
     .transform((val) => val ? val.split(',').map(origin => origin.trim()) : [])
     .default(''),
   
-  // Security Settings (Optional)
+  
   ENABLE_HELMET: z.string()
     .optional()
     .transform((val) => val !== 'false')
@@ -85,7 +85,7 @@ const envSchema = z.object({
       return /^\d+[kmg]?b$/i.test(val);
     }, 'Request size limit must be in format like "5mb", "10kb", etc.'),
   
-  // Database Pool Settings (Optional)
+  
   DB_POOL_MIN: z.string()
     .transform((val) => Number(val) || 2)
     .default('2'),
@@ -98,7 +98,7 @@ const envSchema = z.object({
     .transform((val) => Number(val) || 10000)
     .default('10000'),
   
-  // Monitoring & Health Check Settings (Optional)
+  
   HEALTH_CHECK_TIMEOUT: z.string()
     .transform((val) => Number(val) || 5000)
     .default('5000'),
@@ -108,7 +108,7 @@ const envSchema = z.object({
     .transform((val) => val !== 'false')
     .default('true'),
   
-  // Background Job Settings (Optional)
+  
   QUEUE_PROCESS_INTERVAL: z.string()
     .transform((val) => Number(val) || 30000)
     .default('30000'),
@@ -117,7 +117,7 @@ const envSchema = z.object({
     .transform((val) => Number(val) || 300000)
     .default('300000'),
   
-  // Performance Settings (Optional)
+  
   ENABLE_COMPRESSION: z.string()
     .optional()
     .transform((val) => val !== 'false')
@@ -134,9 +134,9 @@ const envSchema = z.object({
     .default('false')
 });
 
-// ===============================================
-// ENVIRONMENT VALIDATION & EXPORT
-// ===============================================
+
+
+
 
 let env: z.infer<typeof envSchema>;
 
@@ -157,9 +157,9 @@ try {
   process.exit(1);
 }
 
-// ===============================================
-// ENVIRONMENT VALIDATION REPORT
-// ===============================================
+
+
+
 
 export const validateEnvironment = () => {
   const report = {
@@ -185,7 +185,7 @@ export const validateEnvironment = () => {
       report.recommendations.push('Set LOG_LEVEL to "info" or "warn" in production');
     }
 
-    // Razorpay production checks
+    
     if (!env.RAZORPAY_KEY_ID || !env.RAZORPAY_KEY_SECRET) {
       report.warnings.push('Razorpay credentials missing in production');
       report.recommendations.push('Set RAZORPAY_KEY_ID and RAZORPAY_KEY_SECRET');
@@ -211,9 +211,9 @@ export const validateEnvironment = () => {
   return report;
 };
 
-// ===============================================
-// CONFIGURATION HELPERS
-// ===============================================
+
+
+
 
 export const getDatabaseConfig = () => ({
   url: env.DATABASE_URL,
@@ -263,9 +263,9 @@ export const getBackgroundJobConfig = () => ({
   cleanupInterval: env.CLEANUP_INTERVAL
 });
 
-// ===============================================
-// CONFIGURATION SUMMARY
-// ===============================================
+
+
+
 
 export const getConfigSummary = () => {
   const summary = {
@@ -297,15 +297,15 @@ export const getConfigSummary = () => {
   return summary;
 };
 
-// ===============================================
-// EXPORT ENVIRONMENT
-// ===============================================
+
+
+
 
 export { env };
 
-// ===============================================
-// STARTUP ENVIRONMENT CHECK
-// ===============================================
+
+
+
 
 if (process.env.NODE_ENV !== 'test') {
   const validation = validateEnvironment();

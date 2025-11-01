@@ -1,10 +1,10 @@
-// src/controllers/booking-payment-integration.ts - WITH HYPERLINK BUTTON
+
 import { paymentService } from '../services/payment';
 import { whatsappService } from '../services/whatsapp';
 import { logger } from '../utils/logger';
 
 /**
- * ✅ PAYMENT 1: Booking Payment with Hyperlink Button
+ * PAYMENT 1: Booking Payment with Hyperlink Button
  */
 export async function handleBookingWithPayment(
   whatsappId: string,
@@ -13,19 +13,19 @@ export async function handleBookingWithPayment(
   bookingFee: number = 50
 ): Promise<void> {
   try {
-    // Create payment link
+    
     const paymentUrl = await paymentService.createBookingPayment(
       whatsappId,
       stationId,
       bookingFee
     );
 
-    // ✅ NEW: Send as clickable hyperlink with button
+    
     await whatsappService.sendTextMessage(
       whatsappId,
-      `🔋 *Booking Confirmation*\n\n` +
+      `*Booking Confirmation*\n\n` +
       `Station: ${stationName || `#${stationId}`}\n` +
-      `💰 *Booking Fee: ₹${bookingFee}*\n\n` +
+      `*Booking Fee: ₹${bookingFee}*\n\n` +
       `Click the button below to complete payment via UPI.\n` +
       `You'll be redirected back to WhatsApp after payment.\n\n` +
       `👇 *Pay Now*\n${paymentUrl}`
@@ -50,7 +50,7 @@ export async function handleBookingWithPayment(
 }
 
 /**
- * ✅ PAYMENT 2: Session Payment with Hyperlink Button
+ * PAYMENT 2: Session Payment with Hyperlink Button
  */
 export async function handleSessionPayment(
   whatsappId: string,
@@ -62,7 +62,7 @@ export async function handleSessionPayment(
   try {
     const totalAmount = Math.round(energyDelivered * pricePerKwh);
 
-    // Create payment link
+    
     const paymentUrl = await paymentService.createSessionPayment(
       whatsappId,
       sessionId,
@@ -71,15 +71,15 @@ export async function handleSessionPayment(
       energyDelivered
     );
 
-    // ✅ NEW: Send as clickable hyperlink
+    
     await whatsappService.sendTextMessage(
       whatsappId,
-      `⚡ *Charging Session Complete*\n\n` +
-      `📊 *Session Summary:*\n` +
+      `*Charging Session Complete*\n\n` +
+      `*Session Summary:*\n` +
       `Energy Delivered: ${energyDelivered.toFixed(2)} kWh\n` +
       `Rate: ₹${pricePerKwh}/kWh\n` +
       `━━━━━━━━━━━━━━━━━\n` +
-      `💰 *Total Amount: ₹${totalAmount}*\n\n` +
+      `*Total Amount: ₹${totalAmount}*\n\n` +
       `Click below to complete payment:\n\n` +
       `👉 *Pay ₹${totalAmount} Now*\n${paymentUrl}`
     );

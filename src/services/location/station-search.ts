@@ -1,4 +1,4 @@
-// src/services/location/station-search.ts - FIXED VERSION WITH CORRECT TYPE HANDLING
+
 import { db } from '../../config/database';
 import { chargingStations, users } from '../../db/schema';
 import { logger } from '../../utils/logger';
@@ -6,9 +6,9 @@ import { eq, and, or, gte, lte, ne, desc, asc, sql } from 'drizzle-orm';
 import type { SQL } from 'drizzle-orm';
 import { getDistance } from 'geolib';
 
-// ===============================================
-// TYPES & INTERFACES - ENHANCED WITH STRICT TYPING
-// ===============================================
+
+
+
 
 export interface StationSearchOptions {
   userWhatsapp: string;
@@ -54,7 +54,7 @@ export interface StationSearchResult {
   };
 }
 
-// Enhanced type safety for database records
+
 interface RawStationData {
   id: number;
   name: string;
@@ -78,7 +78,7 @@ interface RawStationData {
   distance?: number;
 }
 
-// User preferences type
+
 interface UserPreferences {
   vehicleType?: string;
   connectorType?: string;
@@ -89,9 +89,9 @@ interface UserPreferences {
   [key: string]: any; // Allow additional fields
 }
 
-// ===============================================
-// STATION SEARCH SERVICE - IMPROVED VERSION
-// ===============================================
+
+
+
 
 export class StationSearchService {
   /**
@@ -105,7 +105,7 @@ export class StationSearchService {
         radius: options.radius || 25
       });
 
-      // Use simple search to avoid complex SQL issues
+      
       return await this.simpleSearch(options);
 
     } catch (error) {
@@ -146,10 +146,10 @@ export class StationSearchService {
     } = options;
 
     try {
-      // Get user preferences
+      
       const userPrefs = await this.getUserPreferences(options.userWhatsapp);
 
-      // Get all active stations
+      
       const rawStations = await db
         .select()
         .from(chargingStations)
@@ -160,9 +160,9 @@ export class StationSearchService {
           )
         );
 
-      // Step 1: Convert raw data to our format with proper type handling
+      
       const stationsWithDistance = rawStations.map(station => {
-        // Ensure latitude and longitude are numbers
+        
         const stationLat = typeof station.latitude === 'string' 
           ? parseFloat(station.latitude) 
           : Number(station.latitude);
@@ -171,7 +171,7 @@ export class StationSearchService {
           ? parseFloat(station.longitude) 
           : Number(station.longitude);
         
-        // Calculate distance with null checking
+        
         let distance = 0;
         if (!isNaN(stationLat) && !isNaN(stationLng) && 
             !isNaN(latitude) && !isNaN(longitude)) {
@@ -196,25 +196,25 @@ export class StationSearchService {
         } as RawStationData & { distance: number };
       });
 
-      // Step 2: Filter by distance
+      
       const withinRadius = this.filterByDistance(stationsWithDistance, radius);
       
-      // Step 3: Apply additional filters
+      
       const filtered = this.applyFilters(withinRadius, options, userPrefs);
       
-      // Step 4: Sort by criteria
+      
       const sorted = this.sortStations(
         filtered, 
         options.sortBy || 'distance'
       );
       
-      // Step 5: Apply pagination
+      
       const paginatedStations = sorted.slice(offset, offset + maxResults);
       
-      // Step 6: Process to final format
+      
       const stations = this.processStationResults(paginatedStations, userPrefs);
 
-      // Return result with proper metadata
+      
       return {
         stations,
         totalCount: filtered.length,
@@ -255,7 +255,7 @@ export class StationSearchService {
   ): (RawStationData & { distance: number })[] {
     let filtered = [...stations];
     
-    // Filter by availability if requested
+    
     if (options.availableOnly === true) {
       filtered = filtered.filter(station => {
         const availablePorts = station.availablePorts ?? 0;
@@ -264,12 +264,12 @@ export class StationSearchService {
       });
     }
     
-    // Filter by price if specified
+    
     if (options.maxPrice && !isNaN(options.maxPrice)) {
       filtered = filtered.filter(station => {
         let price = 0;
         
-        // Handle different price formats
+        
         if (typeof station.pricePerKwh === 'number') {
           price = station.pricePerKwh;
         } else if (typeof station.pricePerKwh === 'string') {
@@ -280,7 +280,7 @@ export class StationSearchService {
       });
     }
     
-    // Filter by connector types if specified
+    
     if (options.connectorTypes && options.connectorTypes.length > 0) {
       filtered = filtered.filter(station => {
         const stationConnectors = this.parseConnectorTypes(station.connectorTypes);
@@ -290,7 +290,7 @@ export class StationSearchService {
       });
     }
     
-    // Apply user preference filters if relevant
+    
     if (userPrefs.connectorType && userPrefs.connectorType !== 'Any') {
       filtered = filtered.filter(station => {
         const stationConnectors = this.parseConnectorTypes(station.connectorTypes);
@@ -319,7 +319,7 @@ export class StationSearchService {
           return a.distance - b.distance;
 
         case 'price':
-          // Convert price strings to numbers safely
+          
           const aPrice = typeof a.pricePerKwh === 'string' 
             ? parseFloat(a.pricePerKwh) || 0 
             : Number(a.pricePerKwh) || 0;
@@ -348,21 +348,21 @@ export class StationSearchService {
     userPrefs: UserPreferences
   ): StationResult[] {
     return stations.map(station => {
-      // Safe access with defaults for all properties
+      
       const availablePorts = station.availablePorts ?? 0;
       const totalPorts = station.totalPorts ?? 1;
       const queueLength = station.currentQueueLength ?? 0;
       const maxQueue = station.maxQueueLength ?? 5;
       const avgSession = station.averageSessionMinutes ?? 45;
 
-      // Calculate wait time
+      
       const estimatedWait = availablePorts > 0 ? 0 : Math.ceil((queueLength * avgSession) / totalPorts);
       
-      // Calculate availability with null safety
+      
       const isOpen = station.isOpen === true;
       const isAvailable = isOpen && availablePorts > 0 && queueLength < maxQueue;
       
-      // Safe parsing for pricing
+      
       let pricePerKwh = 0;
       if (typeof station.pricePerKwh === 'number') {
         pricePerKwh = station.pricePerKwh;
@@ -370,7 +370,7 @@ export class StationSearchService {
         pricePerKwh = parseFloat(station.pricePerKwh) || 0;
       }
       
-      // Calculate match score
+      
       const matchScore = this.calculateMatchScore(station, userPrefs, station.distance, isAvailable);
 
       return {
@@ -411,7 +411,7 @@ export class StationSearchService {
             ? parsed.filter(item => typeof item === 'string')
             : [];
         } catch {
-          // If JSON parsing fails, check if it's a comma-separated string
+          
           return connectorTypes.split(',').map(item => item.trim());
         }
       }
@@ -437,18 +437,18 @@ export class StationSearchService {
   ): number {
     let score = 50; // Base score
     
-    // Availability bonus
+    
     if (isAvailable) {
       score += 20;
     }
     
-    // Distance factor (closer is better)
+    
     const maxDistance = userPrefs.maxDistance ?? 25;
     if (distance <= maxDistance) {
       score += Math.round(20 * (1 - distance / maxDistance));
     }
     
-    // Connector type match
+    
     if (userPrefs.connectorType && userPrefs.connectorType !== 'Any') {
       const stationConnectors = this.parseConnectorTypes(station.connectorTypes);
       if (stationConnectors.includes(userPrefs.connectorType)) {
@@ -456,7 +456,7 @@ export class StationSearchService {
       }
     }
     
-    // Price factor
+    
     const maxPrice = userPrefs.maxPrice ?? 30;
     let price = 0;
     
@@ -470,7 +470,7 @@ export class StationSearchService {
       score += Math.round(15 * (1 - price / maxPrice));
     }
     
-    // Clamp score to 0-100 range
+    
     return Math.max(0, Math.min(100, score));
   }
 
@@ -480,7 +480,7 @@ export class StationSearchService {
    */
   private async getUserPreferences(userWhatsapp: string): Promise<UserPreferences> {
     try {
-      // Get user from database
+      
       const user = await db
         .select()
         .from(users)
@@ -491,12 +491,12 @@ export class StationSearchService {
         return {}; // Return empty preferences if user not found
       }
 
-      // Use the actual schema properties instead of preferences
+      
       const userPrefs: UserPreferences = {
         connectorType: user[0].connectorType || undefined,
         chargingIntent: user[0].chargingIntent || undefined,
         queuePreference: user[0].queuePreference || undefined,
-        // Infer vehicle type from EV model
+        
         vehicleType: this.inferVehicleTypeFromModel(user[0].evModel || '')
       };
       
@@ -524,7 +524,7 @@ export class StationSearchService {
         radius: options.radius || 25
       });
 
-      // Use a larger limit for "show all" functionality
+      
       const expandedOptions: StationSearchOptions = {
         ...options,
         maxResults: options.maxResults || 20, // Show more stations in list view
@@ -533,7 +533,7 @@ export class StationSearchService {
         sortBy: options.sortBy || 'distance' // Default to distance sorting
       };
 
-      // Use the existing searchStations method with expanded parameters
+      
       const result = await this.searchStations(expandedOptions);
       
       logger.info('All nearby stations retrieved', {
@@ -551,7 +551,7 @@ export class StationSearchService {
         error: error instanceof Error ? error.message : String(error)
       });
       
-      // Return empty result on error
+      
       return this.emptyResult(options);
     }
   }
@@ -563,14 +563,14 @@ export class StationSearchService {
   private inferVehicleTypeFromModel(evModel: string): string {
     const model = evModel.toLowerCase();
     
-    // Electric car models
+    
     const carModels = [
       'tesla', 'model 3', 'model s', 'model x', 'model y',
       'tata nexon', 'tigor', 'punch', 
       'mg zs', 'audi e-tron', 'bmw', 'hyundai kona', 'kia ev6'
     ];
     
-    // Electric bike/scooter models
+    
     const bikeModels = [
       'ather', '450x', 'ola s1', 'tvs iqube', 'bajaj chetak', 
       'revolt', 'hero electric'
@@ -584,7 +584,7 @@ export class StationSearchService {
       return 'Bike/Scooter';
     }
     
-    // Default
+    
     return 'Any';
   }
 
@@ -622,5 +622,5 @@ export class StationSearchService {
   }
 }
 
-// Export singleton instance
+
 export const stationSearchService = new StationSearchService();

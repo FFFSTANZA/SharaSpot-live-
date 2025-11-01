@@ -1,4 +1,4 @@
-// src/controllers/location/index.ts - Fixed Main Controller with Consistent Flow
+
 import { whatsappService } from '../../services/whatsapp';
 import { geocodingService } from '../../services/location/geocoding';
 import { bookingController } from '../booking';
@@ -7,7 +7,7 @@ import { LocationContextManager } from './context-manager';
 import { LocationDisplayController } from './display-controller';
 import { LocationSearchController } from './search-controller';
 
-// Standardized button ID patterns for consistency
+
 const BUTTON_ID_PATTERNS = {
   SELECT_STATION: /^select_station_(\d+)$/,
   BOOK_STATION: /^book_station_(\d+)$/,
@@ -43,10 +43,10 @@ export class LocationMainController {
       contextExists: this.contextManager.hasLocationContext(whatsappId)
     });
 
-    // ENHANCED: Clear any existing context first
+    
     this.contextManager.clearLocationContext(whatsappId);
 
-    // Store location context with validation
+    
     const locationContext = {
       latitude,
       longitude,
@@ -56,7 +56,7 @@ export class LocationMainController {
 
     this.contextManager.setLocationContext(whatsappId, locationContext);
     
-    // ENHANCED: Verify context was set correctly
+    
     const verifyContext = this.contextManager.getLocationContext(whatsappId);
     if (!verifyContext) {
       throw new Error('Failed to set location context');
@@ -68,14 +68,14 @@ export class LocationMainController {
       storedLocation: verifyContext.currentLocation
     });
 
-    // Acknowledge location with better formatting
+    
     const locationName = name || address || `Location (${latitude.toFixed(4)}, ${longitude.toFixed(4)})`;
     await whatsappService.sendTextMessage(
       whatsappId,
       `📍 *Location Received!*\n\n${locationName}\n\n🔍 Searching for nearby charging stations...`
     );
 
-    // ENHANCED: Search for stations with comprehensive error handling
+    
     try {
       await this.searchController.searchAndShowStations(whatsappId, latitude, longitude, address);
       logger.info('✅ Station search completed successfully', { whatsappId });
@@ -86,7 +86,7 @@ export class LocationMainController {
         searchError: searchError instanceof Error ? searchError.message : String(searchError)
       });
       
-      // Provide fallback options
+      
       await whatsappService.sendTextMessage(
         whatsappId,
         '❌ Failed to search for stations at this location.\n\n' +
@@ -96,7 +96,7 @@ export class LocationMainController {
         '• Searching in a different area'
       );
       
-      // Show search options
+      
       setTimeout(async () => {
         await whatsappService.sendButtonMessage(
           whatsappId,
@@ -133,13 +133,13 @@ export class LocationMainController {
     try {
       logger.info('Address input received', { whatsappId, address });
 
-      // Show geocoding progress
+      
       await whatsappService.sendTextMessage(
         whatsappId,
         `🔍 *Searching for: "${address}"*\n\nFinding location and nearby charging stations...`
       );
 
-      // Geocode the address
+      
       const geocodeResults = await geocodingService.geocodeText(address, { userWhatsapp: whatsappId });
 
       if (geocodeResults.length === 0) {
@@ -150,20 +150,20 @@ export class LocationMainController {
 
       const location = geocodeResults[0];
       
-      // Store location context
+      
       this.contextManager.setLocationContext(whatsappId, {
         latitude: location.latitude,
         longitude: location.longitude,
         address: location.formattedAddress,
       });
 
-      // Show geocoding result
+      
       await whatsappService.sendTextMessage(
         whatsappId,
         `*Found: ${location.formattedAddress}*\n\nSearching for nearby charging stations... ⚡`
       );
 
-      // Search for stations
+      
       await this.searchController.searchAndShowStations(whatsappId, location.latitude, location.longitude, location.formattedAddress);
 
     } catch (error) {
@@ -222,7 +222,7 @@ export class LocationMainController {
    */
   async startNewSearch(whatsappId: string): Promise<void> {
     try {
-      // Clear location context
+      
       this.clearLocationContext(whatsappId);
       
       await whatsappService.sendButtonMessage(
@@ -259,7 +259,7 @@ export class LocationMainController {
         return;
       }
 
-      // Create list message with recent searches
+      
       const searchRows = recentSearches.map((search, index) => ({
         id: `recent_search_${index}`,
         title: search.substring(0, 24),
@@ -325,7 +325,7 @@ export class LocationMainController {
 
       logger.info('Station selected in location controller', { whatsappId, stationId });
 
-      // Delegate to booking controller for consistent station handling
+      
       await bookingController.handleStationSelection(whatsappId, stationId);
 
     } catch (error) {
@@ -349,7 +349,7 @@ export class LocationMainController {
 
       logger.info('Station booking requested from location controller', { whatsappId, stationId });
 
-      // Delegate to booking controller for consistent booking flow
+      
       await bookingController.handleStationBooking(whatsappId, stationId);
 
     } catch (error) {
@@ -373,7 +373,7 @@ export class LocationMainController {
 
       logger.info('Station details requested from location controller', { whatsappId, stationId });
 
-      // Delegate to booking controller for consistent station detail handling
+      
       await bookingController.showStationDetails(whatsappId, stationId);
 
     } catch (error) {
@@ -410,9 +410,9 @@ export class LocationMainController {
     await whatsappService.sendTextMessage(whatsappId, helpText);
   }
 
-  // ===============================================
-  // CONTEXT MANAGEMENT
-  // ===============================================
+  
+  
+  
 
   /**
    * Clear location context
@@ -442,9 +442,9 @@ export class LocationMainController {
     return this.contextManager.getActiveContextsCount();
   }
 
-  // ===============================================
-  // NAVIGATION HELPERS
-  // ===============================================
+  
+  
+  
 
   /**
    * Handle back to list request
@@ -459,10 +459,10 @@ export class LocationMainController {
   async handleFindOtherStations(whatsappId: string): Promise<void> {
     const context = this.contextManager.getLocationContext(whatsappId);
     if (context?.currentLocation) {
-      // Show stations with expanded radius
+      
       await this.expandSearchRadius(whatsappId);
     } else {
-      // Start new search
+      
       await this.startNewSearch(whatsappId);
     }
   }
@@ -483,9 +483,9 @@ export class LocationMainController {
     );
   }
 
-  // ===============================================
-  // UTILITY FUNCTIONS FOR CONSISTENT ID PARSING
-  // ===============================================
+  
+  
+  
 
   /**
    * Parse button/list ID for consistent station ID extraction
@@ -496,9 +496,9 @@ export class LocationMainController {
     }
 
     try {
-      // Try specific patterns first (most specific to least specific)
       
-      // Handle select station: select_station_123
+      
+      
       const selectMatch = buttonId.match(BUTTON_ID_PATTERNS.SELECT_STATION);
       if (selectMatch) {
         return {
@@ -507,7 +507,7 @@ export class LocationMainController {
         };
       }
 
-      // Handle book station: book_station_123
+      
       const bookMatch = buttonId.match(BUTTON_ID_PATTERNS.BOOK_STATION);
       if (bookMatch) {
         return {
@@ -516,7 +516,7 @@ export class LocationMainController {
         };
       }
 
-      // Handle station info: station_info_123
+      
       const stationInfoMatch = buttonId.match(BUTTON_ID_PATTERNS.STATION_INFO);
       if (stationInfoMatch) {
         return {
@@ -525,7 +525,7 @@ export class LocationMainController {
         };
       }
 
-      // Handle recent search: recent_search_0, recent_search_1, etc.
+      
       const recentMatch = buttonId.match(BUTTON_ID_PATTERNS.RECENT_SEARCH);
       if (recentMatch) {
         return {
@@ -535,11 +535,11 @@ export class LocationMainController {
         };
       }
 
-      // Generic patterns
+      
       const parts = buttonId.split('_');
       const action = parts[0];
 
-      // Try general station pattern
+      
       const generalStationMatch = buttonId.match(BUTTON_ID_PATTERNS.GENERAL_STATION);
       if (generalStationMatch) {
         return {
@@ -548,7 +548,7 @@ export class LocationMainController {
         };
       }
 
-      // Try general action pattern
+      
       const generalActionMatch = buttonId.match(BUTTON_ID_PATTERNS.GENERAL_ACTION);
       if (generalActionMatch) {
         return {
@@ -557,7 +557,7 @@ export class LocationMainController {
         };
       }
 
-      // Try numeric only pattern
+      
       const numericMatch = buttonId.match(BUTTON_ID_PATTERNS.NUMERIC_ONLY);
       if (numericMatch) {
         return {
@@ -600,12 +600,12 @@ export class LocationMainController {
         await this.showStationDetails(whatsappId, stationId);
         break;
       default:
-        // Default to station selection for unknown actions with station IDs
+        
         await this.handleStationSelection(whatsappId, stationId);
         break;
     }
   }
 }
 
-// Create and export singleton instance
+
 export const locationController = new LocationMainController();

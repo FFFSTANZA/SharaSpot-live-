@@ -172,7 +172,7 @@ export class ProfileService {
   updates: { name?: string; phoneNumber?: string }
 ): Promise<User | null> {
   try {
-    // Call the userService (database layer)
+    
     const updatedUser = await userService.updateUserProfile(whatsappId, updates);
     
     if (updatedUser) {

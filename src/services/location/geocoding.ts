@@ -1,4 +1,4 @@
-// src/services/location/geocoding.ts - MANUAL ALGORITHM VERSION (NO APIs)
+
 import { eq, desc, sql } from 'drizzle-orm';
 import { db } from '../../config/database';
 import { geocodeCacheV2, userSearchHistory } from '../../db/schema';
@@ -23,7 +23,7 @@ export interface GeocodeOptions {
   minConfidence?: number;
 }
 
-// ==================== INDIAN CITIES DATABASE ====================
+
 interface CityData {
   name: string;
   state: string;
@@ -130,21 +130,21 @@ export class GeocodingService {
     try {
       const searchTerm = this.cleanSearchTerm(searchText);
       
-      // Check cache first
+      
       const cached = await this.getCachedResult(searchTerm);
       if (cached) {
         await this.updateCacheUsage(searchTerm);
         return [cached];
       }
 
-      // Search in our Indian cities database
+      
       const results = await this.searchIndianCities(searchTerm);
       
       if (results.length > 0) {
-        // Cache the best result
+        
         await this.cacheResult(searchTerm, searchText, results[0]);
         
-        // Save to user search history
+        
         if (options.userWhatsapp) {
           await this.saveUserSearchHistory(options.userWhatsapp, searchText, results[0]);
         }
@@ -166,7 +166,7 @@ export class GeocodingService {
    */
   async reverseGeocode(latitude: number, longitude: number): Promise<GeocodeResult | null> {
     try {
-      // Find nearest city using simple distance calculation
+      
       let nearestCity: CityData | null = null;
       let minDistance = Infinity;
 
@@ -218,31 +218,31 @@ export class GeocodingService {
   private async searchIndianCities(cleanTerm: string): Promise<GeocodeResult[]> {
     const results: GeocodeResult[] = [];
     
-    // Algorithm 1: Exact matches (highest priority)
+    
     for (const city of this.indianCities) {
       const cityName = city.name.toLowerCase();
       const stateName = city.state.toLowerCase();
       const district = city.district?.toLowerCase();
       
-      // Check exact matches
+      
       if (cityName === cleanTerm) {
         results.push(this.createGeocodeResult(city, 1.0));
         continue;
       }
       
-      // Check with state
+      
       if (`${cityName} ${stateName}` === cleanTerm || `${cityName}, ${stateName}` === cleanTerm) {
         results.push(this.createGeocodeResult(city, 0.95));
         continue;
       }
       
-      // Check with district
+      
       if (district && (`${cityName} ${district}` === cleanTerm || cleanTerm.includes(cityName))) {
         results.push(this.createGeocodeResult(city, 0.9));
         continue;
       }
       
-      // Check aliases
+      
       if (city.aliases) {
         for (const alias of city.aliases) {
           if (alias.toLowerCase() === cleanTerm) {
@@ -253,7 +253,7 @@ export class GeocodingService {
       }
     }
 
-    // Algorithm 2: Contains matches
+    
     if (results.length === 0) {
       for (const city of this.indianCities) {
         const cityName = city.name.toLowerCase();
@@ -265,7 +265,7 @@ export class GeocodingService {
       }
     }
 
-    // Algorithm 3: Fuzzy matching (for typos)
+    
     if (results.length === 0) {
       for (const city of this.indianCities) {
         const cityName = city.name.toLowerCase();
@@ -275,7 +275,7 @@ export class GeocodingService {
           results.push(this.createGeocodeResult(city, similarity * 0.8));
         }
         
-        // Check aliases for fuzzy match
+        
         if (city.aliases) {
           for (const alias of city.aliases) {
             const aliasSimilarity = this.calculateSimilarity(alias.toLowerCase(), cleanTerm);
@@ -288,7 +288,7 @@ export class GeocodingService {
       }
     }
 
-    // Sort by confidence and return top results
+    
     return results
       .sort((a, b) => b.confidence - a.confidence)
       .slice(0, 5)
@@ -427,7 +427,7 @@ export class GeocodingService {
     return geohash;
   }
 
-  // ==================== CACHE METHODS ====================
+  
 
   /**
    * Get cached geocoding result
@@ -543,7 +543,7 @@ export class GeocodingService {
     }
   }
 
-  // ==================== UTILITY METHODS ====================
+  
 
   /**
    * Add new city to database (for expansion)

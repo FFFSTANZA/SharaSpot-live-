@@ -1,4 +1,4 @@
-// src/types/whatsapp.ts
+
 
 /**
  * WhatsApp message types as defined by the WhatsApp Business Platform API.
@@ -20,18 +20,18 @@ export interface WhatsAppMessage {
   timestamp: string;
   type: WhatsAppMessageType; // ← Now includes 'system'
   
-  // Text message
+  
   text?: {
     body: string;
   };
 
-  // Deprecated button message (legacy)
+  
   button?: {
     text: string;
     payload: string;
   };
 
-  // Interactive messages (buttons, lists)
+  
   interactive?: {
     type: 'button_reply' | 'list_reply';
     button_reply?: {
@@ -44,7 +44,7 @@ export interface WhatsAppMessage {
     };
   };
 
-  // Location message
+  
   location?: {
     latitude: number;
     longitude: number;
@@ -52,10 +52,10 @@ export interface WhatsAppMessage {
     address?: string;
   };
 
-  // System message (optional fields; WhatsApp may send minimal payload)
+  
   system?: {
     body?: string;
-    // Other fields are not standardized — treat as opaque
+    
   };
 }
 
@@ -86,7 +86,7 @@ export interface WhatsAppWebhook {
   }>;
 }
 
-// --- Outbound Message Types (for sending) ---
+
 
 export interface ButtonMessage {
   messaging_product: 'whatsapp';

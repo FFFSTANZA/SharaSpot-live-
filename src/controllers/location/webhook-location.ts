@@ -1,4 +1,4 @@
-// src/controllers/location/webhook-location.ts - FULLY INTEGRATED & FIXED
+
 import { whatsappService } from '../../services/whatsapp';
 import { locationController } from './index';
 import { bookingController } from '../booking';
@@ -9,7 +9,7 @@ import { logger } from '../../utils/logger';
 import { db } from '../../config/database';
 import { eq } from 'drizzle-orm';
 
-// Standardized button ID patterns - Same as queue webhook for consistency
+
 const BUTTON_ID_PATTERNS = {
   BOOK_STATION: /^book_station_(\d+)$/,
   JOIN_QUEUE: /^join_queue_(\d+)$/,
@@ -31,10 +31,10 @@ export class WebhookLocationController {
     try {
       logger.info('Location button pressed', { whatsappId, buttonId, buttonTitle });
 
-      // Parse button ID for consistent handling
+      
       const { action, stationId } = this.parseButtonId(buttonId);
 
-      // Handle standard navigation and search buttons
+      
       switch (buttonId) {
         // Navigation buttons
         case 'next_station':
@@ -54,7 +54,7 @@ export class WebhookLocationController {
           await this.backToTopResult(whatsappId);
           break;
 
-        // Search modification buttons
+        
         case 'expand_search':
           await this.expandSearchRadius(whatsappId);
           break;
@@ -67,7 +67,7 @@ export class WebhookLocationController {
           await this.startNewSearch(whatsappId);
           break;
 
-        // Location input buttons
+        
         case 'share_gps_location':
           await this.requestGPSLocation(whatsappId);
           break;
@@ -81,12 +81,12 @@ export class WebhookLocationController {
           await this.showLocationHelp(whatsappId);
           break;
 
-        // Recent searches
+        
         case 'recent_searches':
           await locationController.showRecentSearches(whatsappId);
           break;
 
-        // Queue management buttons
+        
         case 'check_queue_status':
           await this.handleQueueStatus(whatsappId);
           break;
@@ -111,7 +111,7 @@ export class WebhookLocationController {
           await this.handleGetDirections(whatsappId);
           break;
 
-        // Handle station-specific actions with parsed IDs
+        
         default:
           await this.handleStationActions(whatsappId, buttonId, action, stationId);
           break;
@@ -133,7 +133,7 @@ export class WebhookLocationController {
     try {
       logger.info('Location list selected', { whatsappId, listId, listTitle });
 
-      // Parse list ID for consistent handling
+      
       const { action, stationId, additionalData } = this.parseButtonId(listId);
 
       if (listId.startsWith('select_station_')) {
@@ -168,7 +168,7 @@ export class WebhookLocationController {
     }
 
     try {
-      // ✅ FIX: Handle start_charging_123 pattern
+      
       if (buttonId.match(BUTTON_ID_PATTERNS.START_CHARGING)) {
         const match = buttonId.match(BUTTON_ID_PATTERNS.START_CHARGING);
         return {
@@ -177,7 +177,7 @@ export class WebhookLocationController {
         };
       }
 
-      // Handle extend session: extend_30_123 -> minutes=30, stationId=123
+      
       if (buttonId.match(/^extend_(\d+)_(\d+)$/)) {
         const match = buttonId.match(/^extend_(\d+)_(\d+)$/);
         return {
@@ -187,7 +187,7 @@ export class WebhookLocationController {
         };
       }
 
-      // Handle rating: rate_5_123 -> rating=5, stationId=123
+      
       if (buttonId.match(/^rate_(\d)_(\d+)$/)) {
         const match = buttonId.match(/^rate_(\d)_(\d+)$/);
         return {
@@ -197,7 +197,7 @@ export class WebhookLocationController {
         };
       }
 
-      // Handle confirm cancel: confirm_cancel_123
+      
       if (buttonId.match(/^confirm_cancel_(\d+)$/)) {
         const match = buttonId.match(/^confirm_cancel_(\d+)$/);
         return {
@@ -206,7 +206,7 @@ export class WebhookLocationController {
         };
       }
 
-      // Handle book station: book_station_123
+      
       if (buttonId.match(BUTTON_ID_PATTERNS.BOOK_STATION)) {
         const match = buttonId.match(BUTTON_ID_PATTERNS.BOOK_STATION);
         return {
@@ -215,7 +215,7 @@ export class WebhookLocationController {
         };
       }
 
-      // Handle join queue: join_queue_123
+      
       if (buttonId.match(BUTTON_ID_PATTERNS.JOIN_QUEUE)) {
         const match = buttonId.match(BUTTON_ID_PATTERNS.JOIN_QUEUE);
         return {
@@ -224,7 +224,7 @@ export class WebhookLocationController {
         };
       }
 
-      // Handle station info: station_info_123
+      
       if (buttonId.match(BUTTON_ID_PATTERNS.STATION_INFO)) {
         const match = buttonId.match(BUTTON_ID_PATTERNS.STATION_INFO);
         return {
@@ -233,7 +233,7 @@ export class WebhookLocationController {
         };
       }
 
-      // Handle queue status: queue_status_123
+      
       if (buttonId.match(/^queue_status_(\d+)$/)) {
         const match = buttonId.match(/^queue_status_(\d+)$/);
         return {
@@ -242,7 +242,7 @@ export class WebhookLocationController {
         };
       }
 
-      // Handle session start: start_session_123
+      
       if (buttonId.match(/^start_session_(\d+)$/)) {
         const match = buttonId.match(/^start_session_(\d+)$/);
         return {
@@ -251,7 +251,7 @@ export class WebhookLocationController {
         };
       }
 
-      // Handle cancel queue: cancel_queue_123
+      
       if (buttonId.match(BUTTON_ID_PATTERNS.CANCEL_QUEUE)) {
         const match = buttonId.match(BUTTON_ID_PATTERNS.CANCEL_QUEUE);
         return {
@@ -260,7 +260,7 @@ export class WebhookLocationController {
         };
       }
 
-      // Handle select station: select_station_123
+      
       if (buttonId.match(BUTTON_ID_PATTERNS.SELECT_STATION)) {
         const match = buttonId.match(BUTTON_ID_PATTERNS.SELECT_STATION);
         return {
@@ -269,11 +269,11 @@ export class WebhookLocationController {
         };
       }
 
-      // Generic patterns
+      
       const parts = buttonId.split('_');
       const action = parts[0];
 
-      // Try general station pattern
+      
       if (buttonId.match(BUTTON_ID_PATTERNS.GENERAL_STATION)) {
         const match = buttonId.match(BUTTON_ID_PATTERNS.GENERAL_STATION);
         return {
@@ -282,7 +282,7 @@ export class WebhookLocationController {
         };
       }
 
-      // Try general action pattern
+      
       if (buttonId.match(BUTTON_ID_PATTERNS.GENERAL_ACTION)) {
         const match = buttonId.match(BUTTON_ID_PATTERNS.GENERAL_ACTION);
         return {
@@ -291,7 +291,7 @@ export class WebhookLocationController {
         };
       }
 
-      // Try numeric only pattern
+      
       if (buttonId.match(BUTTON_ID_PATTERNS.NUMERIC_ONLY)) {
         const match = buttonId.match(BUTTON_ID_PATTERNS.NUMERIC_ONLY);
         return {
@@ -343,7 +343,7 @@ export class WebhookLocationController {
         await this.handleQueueCancel(whatsappId, stationId);
         break;
       
-      // ✅ FIX: Added explicit handler for start_charging action
+      
       case 'start_charging':
         await this.handleChargingStart(whatsappId, stationId);
         break;
@@ -357,7 +357,7 @@ export class WebhookLocationController {
         break;
       
       default:
-        // Try to handle as station selection if we have a valid ID
+        
         if (stationId > 0) {
           await this.handleStationSelection(whatsappId, stationId);
         } else {
@@ -371,9 +371,9 @@ export class WebhookLocationController {
     }
   }
 
-  // ===============================================
-  // LOCATION HELPERS
-  // ===============================================
+  
+  
+  
 
   private async backToTopResult(whatsappId: string): Promise<void> {
     await locationController.showBackToTopResult(whatsappId);
@@ -452,9 +452,9 @@ export class WebhookLocationController {
     );
   }
 
-  // ===============================================
-  // STATION HANDLING - FULLY IMPLEMENTED & CONSISTENT
-  // ===============================================
+  
+  
+  
 
   private async handleStationSelection(whatsappId: string, stationId: number): Promise<void> {
     try {
@@ -475,9 +475,9 @@ export class WebhookLocationController {
     }
   }
 
-  // ===============================================
-  // BOOKING & QUEUE - CONSISTENT DELEGATION
-  // ===============================================
+  
+  
+  
 
   private async handleStationBooking(whatsappId: string, stationId: number): Promise<void> {
     try {
@@ -536,7 +536,7 @@ export class WebhookLocationController {
     try {
       logger.info('🔌 Processing charging start request', { whatsappId, stationId });
       
-      // Validate inputs
+      
       if (!whatsappId || !stationId) {
         await whatsappService.sendTextMessage(
           whatsappId,
@@ -545,7 +545,7 @@ export class WebhookLocationController {
         return;
       }
 
-      // Delegate to booking controller which handles session creation and photo verification
+      
       await bookingController.handleChargingStart(whatsappId, stationId);
       
       logger.info('✅ Charging start request delegated successfully', { whatsappId, stationId });
@@ -578,9 +578,9 @@ export class WebhookLocationController {
     }
   }
 
-  // ===============================================
-  // ADDITIONAL FEATURES
-  // ===============================================
+  
+  
+  
 
   private async setupNotificationAlerts(whatsappId: string): Promise<void> {
     await whatsappService.sendTextMessage(

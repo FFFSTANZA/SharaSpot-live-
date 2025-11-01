@@ -1,4 +1,4 @@
-// src/controllers/webhook.ts - PRODUCTION READY WITH DEDUPLICATION & ERROR FIXES
+
 import { Request, Response } from 'express';
 import { env } from '../config/env';
 import { logger } from '../utils/logger';
@@ -22,9 +22,9 @@ import { chargingStations } from '../db/schema';
 import { eq } from 'drizzle-orm';
 import axios from 'axios';
 
-// ===============================================
-// EXTENDED WHATSAPP MESSAGE TYPE
-// ===============================================
+
+
+
 
 interface ExtendedWhatsAppMessage extends WhatsAppMessage {
   image?: {
@@ -35,21 +35,21 @@ interface ExtendedWhatsAppMessage extends WhatsAppMessage {
   };
 }
 
-// ===============================================
-// PRODUCTION WEBHOOK CONTROLLER WITH DEDUPLICATION & ERROR HANDLING
-// ===============================================
+
+
+
 
 export class WebhookController {
   private readonly waitingUsers = new Map<string, 'name' | 'address'>();
   private readonly MAX_WAITING_USERS = 10_000; // Prevent memory exhaustion
   private readonly MAX_PROCESSING_MESSAGES = 5_000; // Prevent processing queue overflow
 
-  // Use message IDs for deduplication and processing tracking - keyed by WhatsApp's unique message ID
+  
   private processingMessages = new Set<string>();
 
-  // ===============================================
-  // WEBHOOK VERIFICATION & HANDLING
-  // ===============================================
+  
+  
+  
 
   async verifyWebhook(req: Request, res: Response): Promise<void> {
     try {
@@ -70,50 +70,50 @@ export class WebhookController {
     }
   }
 
- // src/controllers/webhook.ts - OPTIMIZED FOR MESSAGE-ONLY PROCESSING
+ 
 
 /**
  * Enhanced early-exit logic to ignore non-message webhooks
  * Only processes payloads with actual user-sent messages
  */
 async handleWebhook(req: Request, res: Response): Promise<void> {
-  // ✅ IMMEDIATE ACK to prevent retries
+  
   res.status(200).send('EVENT_RECEIVED');
 
   try {
     const webhookData = req.body as WhatsAppWebhook;
 
-    // 🔹 EARLY EXIT 1: Invalid or empty payload
+    
     if (!webhookData || !webhookData.object) {
       logger.debug('🚫 Ignored: Empty or invalid webhook payload');
       return;
     }
 
-    // 🔹 EARLY EXIT 2: Not a WhatsApp Business Account event
+    
     if (webhookData.object !== 'whatsapp_business_account') {
       logger.debug('🚫 Ignored: Non-WABA object', { object: webhookData.object });
       return;
     }
 
-    // 🔹 EARLY EXIT 3: No entries or changes
+    
     const entries = webhookData.entry || [];
     if (entries.length === 0) {
       logger.debug('🚫 Ignored: No entries in webhook');
       return;
     }
 
-    // 🔹 Extract ONLY message-type changes with actual user messages
+    
     const messagePayloads: WhatsAppMessage[] = [];
 
     for (const entry of entries) {
       const changes = entry.changes || [];
       for (const change of changes) {
-        // 🔸 Only care about "messages" field
+        
         if (change.field !== 'messages') continue;
 
         const value = change.value;
         if (!value || !Array.isArray(value.messages) || value.messages.length === 0) {
-          // This is likely a status/delivery/read receipt webhook → IGNORE
+          
           logger.debug('📩 Ignored: Non-message webhook (e.g., status/delivery event)', {
             field: change.field,
             hasMessages: !!value?.messages,
@@ -122,12 +122,12 @@ async handleWebhook(req: Request, res: Response): Promise<void> {
           continue;
         }
 
-        // ✅ Only push if messages exist AND are from users (not system)
+        
         for (const msg of value.messages) {
-          // Optional: Skip if not from a user (e.g., system-generated)
+          
           if (msg.type === 'system') continue;
 
-          // WhatsApp message IDs are unique per message
+          
           if (!msg.id || !msg.from) {
             logger.warn('⚠️ Malformed message skipped', { msg: JSON.stringify(msg).substring(0, 200) });
             continue;
@@ -138,13 +138,13 @@ async handleWebhook(req: Request, res: Response): Promise<void> {
       }
     }
 
-    // 🔹 EARLY EXIT 4: No actionable messages found
+    
     if (messagePayloads.length === 0) {
       logger.debug('📭 No user messages to process in this webhook');
       return;
     }
 
-    // ✅ Now process only real user messages
+    
     const batchId = `batch-${Date.now()}-${Math.random().toString(36).substring(2, 9)}`;
     logger.info('📥 Processing user message batch', {
       batchId,
@@ -163,7 +163,7 @@ async handleWebhook(req: Request, res: Response): Promise<void> {
         continue;
       }
 
-      // Small randomized delay to avoid rate limits
+      
       setTimeout(() => {
         setImmediate(async () => {
           try {
@@ -191,13 +191,13 @@ async handleWebhook(req: Request, res: Response): Promise<void> {
       error: (error as Error).message,
       stack: (error as Error).stack?.substring(0, 500)
     });
-    // Response already sent — no action needed
+    
   }
 }
 
-  // ===============================================
-  // MESSAGE PROCESSING PIPELINE
-  // ===============================================
+  
+  
+  
 
   private extractMessages(webhookData: WhatsAppWebhook): WhatsAppMessage[] {
     const messages: WhatsAppMessage[] = [];
@@ -220,7 +220,7 @@ async handleWebhook(req: Request, res: Response): Promise<void> {
     }
 
     try {
-      // ✅ Mark as read (non-blocking fire-and-forget)
+      
       whatsappService.markAsRead(messageId).catch(error => {
         logger.debug('Mark as read failed (non-critical)', {
           messageId,
@@ -234,7 +234,7 @@ async handleWebhook(req: Request, res: Response): Promise<void> {
         messageId
       });
 
-      // ✅ Parallel user lookup and preference check
+      
       const [userResult, preferenceResult] = await Promise.allSettled([
         userService.createUser({ whatsappId }),
         preferenceService.isInPreferenceFlow(whatsappId)
@@ -271,7 +271,7 @@ async handleWebhook(req: Request, res: Response): Promise<void> {
   ): Promise<void> {
     const { whatsappId } = user;
 
-    // ✅ PRIORITY 0: Photo verification flow
+    
     const verificationState = photoVerificationService.getVerificationState(whatsappId);
     if (verificationState) {
       logger.info('🔍 User in verification flow', { whatsappId, hasImage: !!message.image });
@@ -284,7 +284,7 @@ async handleWebhook(req: Request, res: Response): Promise<void> {
       }
     }
 
-    // ✅ Route by message type
+    
     switch (message.type) {
       case 'text':
         await this.handleTextMessage(user, message.text?.body || '', isInPreferenceFlow);
@@ -307,9 +307,9 @@ async handleWebhook(req: Request, res: Response): Promise<void> {
     }
   }
 
-  // ===============================================
-  // PHOTO VERIFICATION HANDLERS
-  // ===============================================
+  
+  
+  
 
   private async handleVerificationPhoto(
   whatsappId: string,
@@ -333,7 +333,7 @@ async handleWebhook(req: Request, res: Response): Promise<void> {
       return;
     }
 
-    // ✅ FIXED: Route to correct handler based on verification type
+    
     if (state.type === 'start') {
       await photoVerificationService.handleStartPhoto(whatsappId, imageBuffer);
     } else if (state.type === 'end') {
@@ -411,12 +411,12 @@ async handleWebhook(req: Request, res: Response): Promise<void> {
   }
 
   private async handleVerificationButtons(whatsappId: string, buttonId: string): Promise<void> {
-    // Define handlers that return Promise<void> to match the Record type
+    
     const handlers: Record<string, () => Promise<void>> = {
       'confirm_start_reading': async () => {
-        // Assuming these services return Promise<boolean>
+        
         await photoVerificationService.confirmStartReading(whatsappId);
-        // Explicitly return void
+        
       },
       'confirm_end_reading': async () => {
         await photoVerificationService.confirmEndReading(whatsappId);
@@ -447,15 +447,15 @@ async handleWebhook(req: Request, res: Response): Promise<void> {
   }
 
 
-  // ===============================================
-  // MESSAGE TYPE HANDLERS
-  // ===============================================
+  
+  
+  
 
   private async handleTextMessage(user: any, text: string, isInPreferenceFlow: boolean): Promise<void> {
     const { whatsappId } = user;
     const cleanText = text.toLowerCase().trim();
 
-    // Owner mode
+    
     if (ownerWebhookController.isInOwnerMode(whatsappId)) {
       await ownerWebhookController.handleOwnerMessage(whatsappId, 'text', text);
       return;
@@ -466,20 +466,20 @@ async handleWebhook(req: Request, res: Response): Promise<void> {
       return;
     }
 
-    // Preference flow
+    
     if (isInPreferenceFlow) {
       await preferenceController.handlePreferenceResponse(whatsappId, 'text', text);
       return;
     }
 
-    // Waiting input
+    
     const waitingType = this.waitingUsers.get(whatsappId);
     if (waitingType) {
       await this.handleWaitingInput(whatsappId, text, waitingType);
       return;
     }
 
-    // Commands
+    
     await this.handleCommand(whatsappId, cleanText, text);
   }
 
@@ -489,19 +489,19 @@ async handleWebhook(req: Request, res: Response): Promise<void> {
 
     logger.info('🔘 Button pressed', { whatsappId, buttonId, title });
 
-    // Verification buttons
+    
     if (photoVerificationService.isInVerificationFlow(whatsappId) && this.isVerificationButton(buttonId)) {
       await this.handleVerificationButtons(whatsappId, buttonId);
       return;
     }
 
-    // Owner mode
+    
     if (ownerWebhookController.isInOwnerMode(whatsappId)) {
       await ownerWebhookController.handleOwnerMessage(whatsappId, 'button', button);
       return;
     }
 
-    // Session stop (priority)
+    
     if (buttonId.startsWith('session_stop_')) {
       const stationId = parseInt(buttonId.split('_')[2], 10); // Use radix 10
       if (!isNaN(stationId)) {
@@ -510,13 +510,13 @@ async handleWebhook(req: Request, res: Response): Promise<void> {
       }
     }
 
-    // Preference flow
+    
     if (isInPreferenceFlow) {
       await preferenceController.handlePreferenceResponse(whatsappId, 'button', buttonId);
       return;
     }
 
-    // Normal routing
+    
     const parsed = parseButtonId(buttonId);
     await this.routeButtonAction(whatsappId, buttonId, parsed, title);
   }
@@ -592,9 +592,9 @@ async handleWebhook(req: Request, res: Response): Promise<void> {
     }
   }
 
-  // ===============================================
-  // BUTTON & LIST ROUTING
-  // ===============================================
+  
+  
+  
 
   private async routeButtonAction(
     whatsappId: string,
@@ -614,7 +614,7 @@ async handleWebhook(req: Request, res: Response): Promise<void> {
       return;
     }
 
-    // ✅ ADD THIS - Check for SESSION buttons
+    
     if (this.isSessionButton(buttonId)) {
       await queueWebhookController.handleQueueButton(whatsappId, buttonId, title);
       return;
@@ -647,7 +647,7 @@ async handleWebhook(req: Request, res: Response): Promise<void> {
       return;
     }
 
-    // Handle the missing method call
+    
     if (this.isLocationList(listId)) {
       await this.handleLocationList(whatsappId, listId, parsed);
       return;
@@ -661,9 +661,9 @@ async handleWebhook(req: Request, res: Response): Promise<void> {
     await whatsappService.sendTextMessage(whatsappId, 'Unknown selection. Please try again.');
   }
 
-  // ===============================================
-  // SPECIFIC HANDLERS
-  // ===============================================
+  
+  
+  
 
   private async handleStationButton(whatsappId: string, action: string, stationId: number): Promise<void> {
     const handlers: Record<string, () => Promise<void>> = {
@@ -677,7 +677,7 @@ async handleWebhook(req: Request, res: Response): Promise<void> {
     if (handler) {
       await handler();
     } else {
-      // Default to selection if action is unknown
+      
       await bookingController.handleStationSelection(whatsappId, stationId);
     }
   }
@@ -688,7 +688,7 @@ async handleWebhook(req: Request, res: Response): Promise<void> {
     } catch (error) {
       logger.error('❌ Location button handler failed', { whatsappId, buttonId, error: (error as Error).message });
 
-      // Fallback handlers
+      
       const fallbacks: Record<string, () => Promise<void>> = {
         'share_gps_location': () => this.requestGPSLocation(whatsappId),
         'type_address': () => this.requestAddressInput(whatsappId),
@@ -708,7 +708,7 @@ async handleWebhook(req: Request, res: Response): Promise<void> {
     }
   }
 
-  // Added the missing method
+  
   private async handleLocationList(
     whatsappId: string,
     listId: string,
@@ -744,9 +744,9 @@ async handleWebhook(req: Request, res: Response): Promise<void> {
     }
   }
 
-  // ===============================================
-  // COMMAND HANDLING
-  // ===============================================
+  
+  
+  
 
   private async handleCommand(whatsappId: string, cleanText: string, originalText: string): Promise<void> {
     const commands: Record<string, () => Promise<void>> = {
@@ -779,7 +779,7 @@ async handleWebhook(req: Request, res: Response): Promise<void> {
     if (handler) {
       await handler();
     } else {
-      // Check if it looks like an address
+      
       if (this.looksLikeAddress(originalText)) {
         await locationController.handleAddressInput(whatsappId, originalText);
       } else {
@@ -805,9 +805,9 @@ async handleWebhook(req: Request, res: Response): Promise<void> {
     }
   }
 
-  // ===============================================
-  // LOCATION & ADDRESS HANDLING
-  // ===============================================
+  
+  
+  
 
 
   private looksLikeAddress(text: string): boolean {
@@ -916,9 +916,9 @@ async handleWebhook(req: Request, res: Response): Promise<void> {
     );
   }
 
-  // ===============================================
-  // USER INTERACTION METHODS
-  // ===============================================
+  
+  
+  
 
   private async handleGreeting(whatsappId: string): Promise<void> {
     const user = await userService.createUser({ whatsappId });
@@ -1007,9 +1007,9 @@ private async showHelp(whatsappId: string): Promise<void> {
     );
   }
 
-  // ===============================================
-  // INPUT REQUEST METHODS
-  // ===============================================
+  
+  
+  
 
   private async requestGPSLocation(whatsappId: string): Promise<void> {
   await whatsappService.sendTextMessage(
@@ -1060,9 +1060,9 @@ private async showHelp(whatsappId: string): Promise<void> {
     );
   }
 
-  // ===============================================
-  // INPUT PROCESSING
-  // ===============================================
+  
+  
+  
 
   private async processNameInput(whatsappId: string, name: string): Promise<void> {
     if (name.length < 2 || name.length > 50) {
@@ -1070,13 +1070,13 @@ private async showHelp(whatsappId: string): Promise<void> {
         whatsappId,
         '❌ Please provide a valid name (2-50 characters).\n\nTry again:'
       );
-      // Re-queue for name input if validation fails
+      
       this.waitingUsers.set(whatsappId, 'name');
       return;
     }
 
     try {
-      // Assuming updateUserName returns Promise<boolean>
+      
       const success = await profileService.updateUserName(whatsappId, name);
       if (!success) {
         logger.error('Name update failed in service layer', { whatsappId, name });
@@ -1087,7 +1087,7 @@ private async showHelp(whatsappId: string): Promise<void> {
         this.waitingUsers.set(whatsappId, 'name'); // Retry
         return;
       }
-      // Success: Name updated, no further action needed here.
+      
       await whatsappService.sendTextMessage(
         whatsappId,
         `Your name has been updated to *${name}*!`
@@ -1112,9 +1112,9 @@ private async showHelp(whatsappId: string): Promise<void> {
     await locationController.handleAddressInput(whatsappId, address);
   }
 
-  // ===============================================
-  // UTILITY METHODS
-  // ===============================================
+  
+  
+  
 
   private isVerificationButton(buttonId: string): boolean {
     return [
@@ -1176,9 +1176,9 @@ private async showHelp(whatsappId: string): Promise<void> {
     }
   }
 
-  // ===============================================
-  // MONITORING & CLEANUP
-  // ===============================================
+  
+  
+  
 
   public getStats() {
     return {
