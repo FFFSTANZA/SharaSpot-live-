@@ -42,7 +42,38 @@ class SessionService {
     queueId?: number
   ): Promise<ChargingSession | null> {
     try {
-      
+
+      const unpaidSessions = await db
+        .select()
+        .from(chargingSessions)
+        .where(
+          and(
+            eq(chargingSessions.userWhatsapp, userWhatsapp),
+            eq(chargingSessions.paymentStatus, 'pending'),
+            eq(chargingSessions.status, 'completed')
+          )
+        );
+
+      if (unpaidSessions.length > 0) {
+        logger.warn('⚠️ User has unpaid sessions, blocking new session', {
+          userWhatsapp,
+          unpaidCount: unpaidSessions.length,
+        });
+
+
+        const { whatsappService } = await import('./whatsapp');
+        await whatsappService.sendTextMessage(
+          userWhatsapp,
+          '⚠️ *Payment Required*\n\n' +
+          `You have ${unpaidSessions.length} unpaid charging session(s).\n\n` +
+          '❌ Cannot start a new session until previous payments are completed.\n\n' +
+          'Please complete your pending payments to continue using SharaSpot.'
+        );
+
+        return null;
+      }
+
+
       const existingSession = await this.getActiveSession(userWhatsapp, stationId);
       if (existingSession && ['active', 'initiated'].includes(existingSession.status)) {
         logger.warn('Active session already exists', { userWhatsapp, stationId });

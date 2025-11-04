@@ -1,4 +1,37 @@
 "use strict";
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || (function () {
+    var ownKeys = function(o) {
+        ownKeys = Object.getOwnPropertyNames || function (o) {
+            var ar = [];
+            for (var k in o) if (Object.prototype.hasOwnProperty.call(o, k)) ar[ar.length] = k;
+            return ar;
+        };
+        return ownKeys(o);
+    };
+    return function (mod) {
+        if (mod && mod.__esModule) return mod;
+        var result = {};
+        if (mod != null) for (var k = ownKeys(mod), i = 0; i < k.length; i++) if (k[i] !== "default") __createBinding(result, mod, k[i]);
+        __setModuleDefault(result, mod);
+        return result;
+    };
+})();
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.sessionService = void 0;
 const connection_1 = require("../db/connection");
@@ -13,6 +46,22 @@ class SessionService {
     }
     async startSession(userWhatsapp, stationId, queueId) {
         try {
+            const unpaidSessions = await connection_1.db
+                .select()
+                .from(schema_1.chargingSessions)
+                .where((0, drizzle_orm_1.and)((0, drizzle_orm_1.eq)(schema_1.chargingSessions.userWhatsapp, userWhatsapp), (0, drizzle_orm_1.eq)(schema_1.chargingSessions.paymentStatus, 'pending'), (0, drizzle_orm_1.eq)(schema_1.chargingSessions.status, 'completed')));
+            if (unpaidSessions.length > 0) {
+                logger_1.logger.warn('⚠️ User has unpaid sessions, blocking new session', {
+                    userWhatsapp,
+                    unpaidCount: unpaidSessions.length,
+                });
+                const { whatsappService } = await Promise.resolve().then(() => __importStar(require('./whatsapp')));
+                await whatsappService.sendTextMessage(userWhatsapp, '⚠️ *Payment Required*\n\n' +
+                    `You have ${unpaidSessions.length} unpaid charging session(s).\n\n` +
+                    '❌ Cannot start a new session until previous payments are completed.\n\n' +
+                    'Please complete your pending payments to continue using SharaSpot.');
+                return null;
+            }
             const existingSession = await this.getActiveSession(userWhatsapp, stationId);
             if (existingSession && ['active', 'initiated'].includes(existingSession.status)) {
                 logger_1.logger.warn('Active session already exists', { userWhatsapp, stationId });

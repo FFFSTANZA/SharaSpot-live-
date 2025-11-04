@@ -5,6 +5,9 @@ const payment_1 = require("../services/payment");
 const logger_1 = require("../utils/logger");
 const booking_1 = require("../controllers/booking");
 const whatsapp_1 = require("../services/whatsapp");
+const connection_1 = require("../db/connection");
+const schema_1 = require("../db/schema");
+const drizzle_orm_1 = require("drizzle-orm");
 const router = (0, express_1.Router)();
 router.get('/callback', async (req, res) => {
     try {
@@ -29,14 +32,45 @@ router.get('/callback', async (req, res) => {
             if (parts.length >= 3) {
                 const whatsappId = parts[1];
                 const stationId = parseInt(parts[2]);
-                logger_1.logger.info('Confirming booking after payment', { whatsappId, stationId });
+                logger_1.logger.info('✅ Confirming booking after payment', { whatsappId, stationId });
                 setImmediate(async () => {
                     try {
                         await booking_1.bookingController.handleJoinQueue(whatsappId, stationId);
-                        await whatsapp_1.whatsappService.sendTextMessage(whatsappId, 'Payment confirmed! Your booking is complete.\n\nYou can now join the queue or start charging.');
+                        await whatsapp_1.whatsappService.sendTextMessage(whatsappId, '✅ Payment confirmed! Your booking is complete.\n\nYou can now join the queue or start charging.');
                     }
                     catch (error) {
                         logger_1.logger.error('❌ Failed to confirm booking', { whatsappId, stationId, error });
+                    }
+                });
+            }
+        }
+        if (result.success && result.paymentType === 'session') {
+            const parts = result.referenceId.split('_');
+            if (parts.length >= 2) {
+                const sessionId = parts[1];
+                logger_1.logger.info('✅ Confirming session payment', { sessionId });
+                setImmediate(async () => {
+                    try {
+                        await connection_1.db
+                            .update(schema_1.chargingSessions)
+                            .set({
+                            paymentStatus: 'paid',
+                            updatedAt: new Date(),
+                        })
+                            .where((0, drizzle_orm_1.eq)(schema_1.chargingSessions.sessionId, sessionId));
+                        const session = await connection_1.db
+                            .select()
+                            .from(schema_1.chargingSessions)
+                            .where((0, drizzle_orm_1.eq)(schema_1.chargingSessions.sessionId, sessionId))
+                            .limit(1);
+                        if (session.length > 0) {
+                            await whatsapp_1.whatsappService.sendTextMessage(session[0].userWhatsapp, '✅ Payment confirmed! Thank you for using SharaSpot.\n\n' +
+                                'You can now start a new charging session whenever needed.');
+                        }
+                        logger_1.logger.info('✅ Session payment status updated', { sessionId });
+                    }
+                    catch (error) {
+                        logger_1.logger.error('❌ Failed to update session payment', { sessionId, error });
                     }
                 });
             }
@@ -89,6 +123,37 @@ router.post('/webhook', async (req, res) => {
                         }
                         catch (error) {
                             logger_1.logger.error('❌ Webhook: Failed to confirm booking', { whatsappId, stationId, error });
+                        }
+                    });
+                }
+            }
+            if (referenceId && referenceId.startsWith('session_')) {
+                const parts = referenceId.split('_');
+                if (parts.length >= 2) {
+                    const sessionId = parts[1];
+                    logger_1.logger.info('✅ Webhook: Session payment confirmed', { sessionId, referenceId });
+                    setImmediate(async () => {
+                        try {
+                            await connection_1.db
+                                .update(schema_1.chargingSessions)
+                                .set({
+                                paymentStatus: 'paid',
+                                updatedAt: new Date(),
+                            })
+                                .where((0, drizzle_orm_1.eq)(schema_1.chargingSessions.sessionId, sessionId));
+                            const session = await connection_1.db
+                                .select()
+                                .from(schema_1.chargingSessions)
+                                .where((0, drizzle_orm_1.eq)(schema_1.chargingSessions.sessionId, sessionId))
+                                .limit(1);
+                            if (session.length > 0) {
+                                await whatsapp_1.whatsappService.sendTextMessage(session[0].userWhatsapp, '✅ Payment confirmed! Thank you for using SharaSpot.\n\n' +
+                                    'You can now start a new charging session whenever needed.');
+                            }
+                            logger_1.logger.info('✅ Webhook: Session payment status updated', { sessionId });
+                        }
+                        catch (error) {
+                            logger_1.logger.error('❌ Webhook: Failed to update session payment', { sessionId, error });
                         }
                     });
                 }
