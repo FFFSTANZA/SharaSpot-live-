@@ -25,7 +25,6 @@ import axios from 'axios';
 
 
 
-
 interface ExtendedWhatsAppMessage extends WhatsAppMessage {
   image?: {
     id: string;

@@ -1,4 +1,3 @@
-
 import { whatsappService } from '../services/whatsapp';
 import { bookingController } from './booking';
 import { logger } from '../utils/logger';
@@ -15,10 +14,10 @@ interface QueuePosition {
   stationName?: string;
   stationAddress?: string;
   estimatedWaitMinutes: number;
-  status: string;  // ✅ Changed to string (not union) to match actual type
+  status: string;  
   isReserved: boolean;
   reservationExpiry?: Date;
-  createdAt?: Date;  // ✅ Made optional to match actual type
+  createdAt?: Date; 
 }
 
 interface SessionData {
@@ -32,9 +31,6 @@ interface SessionData {
 
 export class QueueWebhookController {
 
-  
-  
-  
 
  async handleQueueButton(whatsappId: string, buttonId: string, buttonTitle: string): Promise<void> {
   if (!validateWhatsAppId(whatsappId)) {
@@ -101,9 +97,46 @@ export class QueueWebhookController {
   }
 }
 
-  
-  
-  
+  async handleQueueList(whatsappId: string, listId: string, listTitle: string): Promise<void> {
+    if (!validateWhatsAppId(whatsappId)) {
+      logger.error('Invalid WhatsApp ID', { whatsappId });
+      return;
+    }
+
+    try {
+      logger.info('📋 Processing queue list selection', { 
+        whatsappId, 
+        listId, 
+        listTitle 
+      });
+      
+      const parsed = parseButtonId(listId);
+      
+      logger.info('📋 List parsed', { 
+        whatsappId,
+        listId,
+        parsed: {
+          action: parsed.action,
+          category: parsed.category,
+          stationId: parsed.stationId
+        }
+      });
+      
+      await this.routeAction(whatsappId, listId, parsed, listTitle);
+    } catch (error) {
+      logger.error('❌ handleQueueList failed', {
+        whatsappId,
+        listId,
+        listTitle,
+        error: error instanceof Error ? {
+          message: error.message,
+          stack: error.stack
+        } : error
+      });
+      
+      await this.handleError(error, 'queue list', { whatsappId, listId });
+    }
+  }
 
   private async routeAction(
     whatsappId: string,
@@ -130,10 +163,6 @@ export class QueueWebhookController {
         await this.handleSpecificActions(whatsappId, actionId, stationId);
     }
   }
-
-  
-  
-  
 
   private async handleQueueCategory(whatsappId: string, action: string, stationId: number): Promise<void> {
     switch (action) {
@@ -203,10 +232,6 @@ export class QueueWebhookController {
       await this.handleUnknownAction(whatsappId, actionId);
     }
   }
-
-  
-  
-  
 
   private async handleQueueStatus(whatsappId: string, stationId: number): Promise<void> {
   try {
@@ -349,9 +374,6 @@ export class QueueWebhookController {
     }
   }
 
-  
-  
-  
 
   private async handleSessionStatus(whatsappId: string, stationId: number): Promise<void> {
     try {
@@ -421,9 +443,6 @@ export class QueueWebhookController {
     }
   }
 
-  
-  
-  
  private formatQueueStatus(queueData: QueuePosition): string {
   const statusEmoji = this.getQueueStatusEmoji(queueData.status);
   const progressBar = this.generateProgressBar(queueData.position, 5);
@@ -443,7 +462,6 @@ export class QueueWebhookController {
     `${this.getQueueTip(queueData)}`;
 }
 
-
  
   private formatSessionStatus(sessionData: SessionData): string {
     
@@ -462,10 +480,6 @@ export class QueueWebhookController {
 
     return message;
   }
-
-  
-  
-  
 
   private async sendQueueManagementButtons(whatsappId: string, queueData: QueuePosition): Promise<void> {
   
@@ -492,10 +506,6 @@ export class QueueWebhookController {
   );
 }
 
-  /**
-   * ✅ SIMPLIFIED: Only essential session controls
-   * ❌ REMOVED: Pause, Extend, Time Estimates
-   */
   private async sendSessionControls(whatsappId: string, sessionData: SessionData): Promise<void> {
     const buttons = sessionData.status === 'active'
       ? [
@@ -526,9 +536,6 @@ export class QueueWebhookController {
     );
   }
 
-  
-  
-  
 
   private getQueueStatusEmoji(status: string): string {
     const emojiMap: Record<string, string> = {
@@ -575,10 +582,6 @@ export class QueueWebhookController {
     }
   }
 
-  
-  
-  
-
   private async getQueueData(whatsappId: string, stationId: number): Promise<QueuePosition | null> {
     
     const hasQueue = Math.random() > 0.5;
@@ -612,9 +615,6 @@ export class QueueWebhookController {
     };
   }
 
-  
-  
-  
 
   private async handleUnknownAction(whatsappId: string, actionId: string): Promise<void> {
     logger.warn('Unknown action', { whatsappId, actionId });
@@ -643,10 +643,6 @@ export class QueueWebhookController {
       );
     }
   }
-
-  
-  
-  
 
   public getHealthStatus(): {
     status: 'healthy' | 'degraded';
